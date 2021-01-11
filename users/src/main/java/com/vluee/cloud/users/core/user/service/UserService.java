@@ -33,4 +33,11 @@ public interface UserService {
      * @param nickName
      */
     void changeNickName(String username, String nickName);
+
+    /**
+     * 将相关账号设定为锁定
+     *
+     * @param username
+     */
+    void lockUser(String username);
 }

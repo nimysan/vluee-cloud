@@ -1,17 +1,21 @@
 package com.vluee.cloud.users;
 
+import com.vluee.cloud.commons.common.audit.BaseAuditConfig;
+import com.vluee.cloud.commons.common.data.id.IdConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Import;
 
 @EnableFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication
-public class AistoreUserApplication {
+@Import({IdConfig.class, BaseAuditConfig.class})
+public class UserApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AistoreUserApplication.class, args);
+        SpringApplication.run(UserApplication.class, args);
     }
 
 }

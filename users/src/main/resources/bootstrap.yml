@@ -11,7 +11,7 @@ management:
 
 spring:
   application:
-    name: aistore-user
+    name: saas-users
 
   cloud:
     nacos:

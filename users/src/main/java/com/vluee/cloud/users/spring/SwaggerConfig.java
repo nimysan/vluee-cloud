@@ -12,9 +12,9 @@ public class SwaggerConfig extends BaseSwaggerConfig {
     @Override
     public SwaggerProperties swaggerProperties() {
         return SwaggerProperties.builder()
-                .apiBasePackage("cn.jzdata.aistore.user.interfaces.rest")
-                .title("AS用户中心")
-                .description("AS用户中心相关接口文档")
+                .apiBasePackage("com.vluee.cloud.users.interfaces")
+                .title("用户服务")
+                .description("用户注册，状态维护相关服务")
                 .contactName("234aini@163.com")
                 .version("1.0")
                 .enableSecurity(true)

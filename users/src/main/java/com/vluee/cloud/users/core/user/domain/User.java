@@ -1,13 +1,17 @@
 package com.vluee.cloud.users.core.user.domain;
 
 import com.vluee.cloud.commons.common.data.AuditAware;
+import com.vluee.cloud.commons.common.data.id.LongIdGenerator;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 
 @Entity
+@GenericGenerator(name = LongIdGenerator.ID_GENERATOR_NAME, strategy = LongIdGenerator.DISTRIBUTED_ID_GENERATOR_CLASS_NAME)
 public class User extends AuditAware {
 
     @Deprecated
@@ -19,6 +23,7 @@ public class User extends AuditAware {
     }
 
     @Id
+    @GeneratedValue(generator = LongIdGenerator.ID_GENERATOR_NAME)
     private Long id;
 
     /**
@@ -32,7 +37,7 @@ public class User extends AuditAware {
     private String nickName;
 
     /**
-     *
+     * 全局唯一的可读的账号ID，与数据库ID作为区别
      */
     @Column(length = 64, nullable = false, unique = true)
     private String userName;
@@ -82,5 +87,17 @@ public class User extends AuditAware {
 
     public boolean isExpired() {
         return expired;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public void setExpired(boolean expired) {
+        this.expired = expired;
     }
 }

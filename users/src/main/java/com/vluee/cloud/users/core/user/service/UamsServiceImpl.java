@@ -41,10 +41,20 @@ public class UamsServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void changeNickName(String username, String nickName) {
         User user = uamsUserRepository.findByUserName(username).orElseThrow(UamsUserNotExistException::new);
         checkNickName(nickName);
         user.setNickName(nickName);
+        auditModify(user);
+        uamsUserRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void lockUser(String username) {
+        User user = uamsUserRepository.findByUserName(username).orElseThrow(UamsUserNotExistException::new);
+        user.setLocked(true);
         auditModify(user);
         uamsUserRepository.save(user);
     }

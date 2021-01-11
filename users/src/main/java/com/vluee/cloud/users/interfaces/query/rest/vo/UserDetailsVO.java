@@ -1,4 +1,4 @@
-package com.vluee.cloud.users.interfaces.rest.vo;
+package com.vluee.cloud.users.interfaces.query.rest.vo;
 
 import com.vluee.cloud.users.core.user.domain.User;
 import lombok.AccessLevel;
