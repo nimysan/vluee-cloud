@@ -1,6 +1,6 @@
 package com.vluee.cloud.users.core.user.service;
 
-import com.vluee.cloud.users.core.user.User;
+import com.vluee.cloud.users.core.user.domain.User;
 
 /**
  * 用户/用户组/角色/资源 管理服务

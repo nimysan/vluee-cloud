@@ -1,6 +1,6 @@
 package com.vluee.cloud.users.interfaces.rest.vo;
 
-import com.vluee.cloud.users.core.user.User;
+import com.vluee.cloud.users.core.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;

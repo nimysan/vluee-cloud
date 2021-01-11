@@ -1,4 +1,4 @@
-package com.vluee.cloud.tenants.interfaces.rest;
+package com.vluee.cloud.tenants.interfaces.query.rest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

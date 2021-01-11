@@ -11,10 +11,10 @@ public class SwaggerConfig extends BaseSwaggerConfig {
     @Override
     public SwaggerProperties swaggerProperties() {
         return SwaggerProperties.builder()
-                .apiBasePackage("cn.jzdata.aistore.tenant.interfaces")
-                .title("mall搜索系统")
-                .description("mall搜索相关接口文档")
-                .contactName("macro")
+                .apiBasePackage("com.vluee.cloud.tenants.interfaces")
+                .title("租户管理服务")
+                .description("租户管理服务相关")
+                .contactName("234aini@163.com")
                 .version("1.0")
                 .enableSecurity(false)
                 .build();

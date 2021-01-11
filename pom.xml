@@ -39,12 +39,6 @@
         <!-- Deploy related -->
     </properties>
     <modules>
-        <!--
-        <module>aistore-gateway</module>
-        <module>aistore-monitor</module>
-        <module>aistore-uams</module>
-        <module>aistore-user</module>
-        -->
         <module>monitor</module>
         <module>commons</module>
         <module>gateway</module>
@@ -54,7 +48,6 @@
         <module>authentications</module>
         <module>uams</module>
         <!--
-        <module>aistore-auth-server</module>
         <module>vluee-docker-maven-plugin</module>
         -->
     </modules>

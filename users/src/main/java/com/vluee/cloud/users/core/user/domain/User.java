@@ -1,4 +1,4 @@
-package com.vluee.cloud.users.core.user;
+package com.vluee.cloud.users.core.user.domain;
 
 import com.vluee.cloud.commons.common.data.AuditAware;
 

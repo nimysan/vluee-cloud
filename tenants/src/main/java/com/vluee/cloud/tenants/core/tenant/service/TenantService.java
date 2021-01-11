@@ -3,70 +3,50 @@ package com.vluee.cloud.tenants.core.tenant.service;
 import com.vluee.cloud.commons.common.audit.AuditContext;
 import com.vluee.cloud.commons.common.data.AuditAware;
 import com.vluee.cloud.commons.common.date.DateUtils;
-import com.vluee.cloud.tenants.core.brand.domain.Brand;
-import com.vluee.cloud.tenants.core.brand.domain.BrandRepository;
 import com.vluee.cloud.tenants.core.tenant.domain.Tenant;
 import com.vluee.cloud.tenants.core.tenant.domain.TenantRepository;
-import com.vluee.cloud.tenants.core.tenant.exception.DomainNotExitException;
+import com.vluee.cloud.tenants.core.tenant.exception.TenantNameExistException;
+import com.vluee.cloud.tenants.core.tenant.exception.TenantNotExitException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.function.Supplier;
 
 @Service
 @AllArgsConstructor
 public class TenantService {
 
     private final TenantRepository tenantRepository;
-    private final BrandRepository brandRepository;
     private final AuditContext auditContext;
 
     @Transactional
     public Tenant addTenant(@NotBlank String tenantName) {
+
+        checkNameDuplicate(tenantName);
+
         Tenant tenant = new Tenant(tenantName);
         audit(tenant);
+
         tenantRepository.save(tenant);
+
         return tenant;
     }
 
-    @Transactional
-    public Brand addBrand(@NotBlank Serializable tenantId, @NotBlank String brandName) {
-        Tenant tenant = tenantRepository.findById(tenantId).orElseThrow(DomainNotExitException::new);
-
-        Brand brand = new Brand(brandName);
-        audit(brand);
-        Brand entity = brandRepository.save(brand);
-
-        tenant.addBrand(brand);
-        tenantRepository.save(tenant);
-        return brand;
+    private void checkNameDuplicate(String tenantName) {
+        boolean isPresent = tenantRepository.findByTenantName(tenantName).isPresent();
+        if (isPresent) throw new TenantNameExistException(tenantName);
     }
 
-    /**
-     * 增加子品牌
-     *
-     * @param brandId
-     * @param brandName
-     * @return
-     */
-    @Transactional
-    public Brand addChildBrand(@NotBlank Serializable brandId, @NotBlank String brandName) {
-        Brand brand = brandRepository.findById(brandId).orElseThrow(DomainNotExitException::new);
-
-        Brand childBrand = new Brand(brandName);
-        audit(childBrand);
-        brand.addChildBrand(childBrand);
-
-        final Brand save = brandRepository.save(childBrand);
-        brandRepository.save(brand);
-        return save;
+    public Tenant getByName(String tenantName) {
+        return tenantRepository.findByTenantName(tenantName).orElseThrow((Supplier<RuntimeException>) () -> new TenantNotExitException());
     }
 
     @Transactional
     public Tenant getTenant(@NotBlank Serializable tenantId) {
-        return tenantRepository.findById(tenantId).orElseThrow(DomainNotExitException::new);
+        return tenantRepository.findById(tenantId).orElseThrow(TenantNotExitException::new);
     }
 
     private void audit(AuditAware auditAware) {

@@ -10,7 +10,7 @@ public interface LongIdGenerator {
     /**
      * Delegate Id Generator
      */
-    public static final String DISTRIBUTED_ID_GENERATOR_CLASS_NAME = "cn.jzdata.aistore.common.data.id.HibernateIdGenerator";
+    public static final String DISTRIBUTED_ID_GENERATOR_CLASS_NAME = "com.vluee.cloud.commons.common.data.id.HibernateIdGenerator";
 
     /**
      * 产生下一个ID
