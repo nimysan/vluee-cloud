@@ -2,9 +2,9 @@ package com.vluee.cloud.auth.core.client.service;
 
 import com.vluee.cloud.auth.core.client.domain.OauthClientDetails;
 import com.vluee.cloud.auth.core.client.domain.OauthClientDetailsRepository;
+import com.vluee.cloud.auth.core.client.exception.ClientNotExistException;
 import com.vluee.cloud.commons.common.audit.AuditContext;
 import com.vluee.cloud.commons.common.ddd.exception.EntityAlreadyExistException;
-import com.vluee.cloud.auth.core.client.exception.ClientNotExistException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -62,5 +63,9 @@ public class ClientManageService {
         oauthClientDetails.setClientSecret(commenceSecret());
         auditContext.auditModify(oauthClientDetails);
         clientRepository.save(oauthClientDetails);
+    }
+
+    public List<OauthClientDetails> listClients() {
+        return clientRepository.findAll();
     }
 }

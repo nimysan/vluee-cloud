@@ -5,9 +5,9 @@ public interface AiStoreConstants {
     /**
      * 通用前缀
      */
-    public static final String NORMAL_COMMON_KEY_PREFIX = "cn.jzdata.aistore";
+    public static final String NORMAL_COMMON_KEY_PREFIX = "com.vluee.cloud.pms";
 
-    public static final String SERVICE_NAME_SPACE = "aistore";
+    public static final String SERVICE_NAME_SPACE = "saas";
 
     /**
      * 授权： 角色和授权码映射关系得主键
@@ -44,9 +44,9 @@ public interface AiStoreConstants {
      */
     public static class Services {
         public static final String PREFIX = "-";
-        public static final String USER = SERVICE_NAME_SPACE + PREFIX + "user";
+        public static final String USER = SERVICE_NAME_SPACE + PREFIX + "users";
         public static final String GATEWAY = SERVICE_NAME_SPACE + PREFIX + "gateway";
-        public static final String TENANT = SERVICE_NAME_SPACE + PREFIX + "tenant";
+        public static final String TENANT = SERVICE_NAME_SPACE + PREFIX + "tenants";
     }
 
 

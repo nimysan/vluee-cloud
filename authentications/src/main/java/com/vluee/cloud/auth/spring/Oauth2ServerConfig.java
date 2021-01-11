@@ -1,6 +1,5 @@
 package com.vluee.cloud.auth.spring;
 
-import com.vluee.cloud.commons.common.audit.AuditContext;
 import com.vluee.cloud.auth.spring.security.JwtTokenEnhancer;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -70,15 +69,5 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
         //从classpath下的证书中获取秘钥对
         KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"), "123456".toCharArray());
         return keyStoreKeyFactory.getKeyPair("jwt", "123456".toCharArray());
-    }
-
-    @Bean
-    public AuditContext auditContext() {
-        return new AuditContext() {
-            @Override
-            public String getOpId() {
-                return "aistore";
-            }
-        };
     }
 }
