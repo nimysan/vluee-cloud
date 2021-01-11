@@ -5,8 +5,7 @@ spring:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-
-    jpa:
-      database-platform: org.hibernate.dialect.MySQL55Dialect
-      hibernate:
-        ddl-auto: create-drop
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL55Dialect
+    hibernate:
+      ddl-auto: 'create-drop'
