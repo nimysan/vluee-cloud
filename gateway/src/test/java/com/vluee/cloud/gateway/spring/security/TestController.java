@@ -1,4 +1,4 @@
-package com.vluee.cloud.gateway.core.security;
+package com.vluee.cloud.gateway.spring.security;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

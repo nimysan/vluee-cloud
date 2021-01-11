@@ -9,7 +9,7 @@ management:
 
 spring:
   application:
-    name: aistore-gateway
+    name: saas-gateway
   cloud:
     inetutils:
       preferred-networks: 10.0.1

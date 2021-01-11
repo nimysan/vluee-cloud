@@ -1,4 +1,4 @@
-package com.vluee.cloud.gateway.core.security;
+package com.vluee.cloud.gateway.spring.security;
 
 import cn.hutool.json.JSONUtil;
 import com.vluee.cloud.gateway.interfaces.common.CommonResult;
@@ -15,9 +15,9 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.Charset;
 
 /**
- * 提供未登录配置
+ * 提供未登录处理定制
  */
-public class GatewayServerAuthenticationEntryPoint implements ServerAuthenticationEntryPoint {
+public class UnauthenticatedHandler implements ServerAuthenticationEntryPoint {
     @Override
     public Mono<Void> commence(ServerWebExchange exchange, AuthenticationException e) {
         ServerHttpResponse response = exchange.getResponse();

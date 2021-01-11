@@ -17,4 +17,25 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://aistore-auth-server:8080/rsa/publicKey
+          jwk-set-uri: http://localhost:8082/rsa/publicKey
+
+
+secure:
+  ignore:
+    urls: #配置白名单路径
+      - "/doc.html"
+      - "/swagger-resources/**"
+      - "/swagger/**"
+      - "/**/v2/api-docs"
+      - "/**/*.js"
+      - "/**/*.css"
+      - "/**/*.png"
+      - "/**/*.ico"
+      - "/webjars/springfox-swagger-ui/**"
+      - "/actuator/**"
+      - "/user/me"
+      - "/sample/**"
+
+logging:
+  level:
+    org.springframework.security: DEBUG

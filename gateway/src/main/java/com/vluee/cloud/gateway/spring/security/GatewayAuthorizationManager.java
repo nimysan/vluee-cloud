@@ -1,4 +1,4 @@
-package com.vluee.cloud.gateway.core.security;
+package com.vluee.cloud.gateway.spring.security;
 
 import com.vluee.cloud.gateway.core.events.AddResourceRoleEvent;
 import com.vluee.cloud.gateway.core.events.DeleteResourceRoleEvent;
@@ -27,12 +27,7 @@ import static org.springframework.security.authorization.AuthorityReactiveAuthor
 import static org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers.pathMatchers;
 
 /**
- * 授权规则来自于两方面
- *
- * <ul>
- *     <li>1. 构造函数传入的 静态规则， 初始化的时候载入的静态规则</li>
- *     <li>2. 从 RbacResourceRepository 处读取的规则。 新规则产生后刷新，规则生效</li>
- * </ul>
+ * 根据Uams设置的权限表，做授权操作
  */
 @Slf4j
 public class GatewayAuthorizationManager implements ReactiveAuthorizationManager<AuthorizationContext> {

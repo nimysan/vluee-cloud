@@ -1,4 +1,4 @@
-package com.vluee.cloud.gateway.core.security.jwt;
+package com.vluee.cloud.gateway.spring.security.jwt;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

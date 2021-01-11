@@ -1,4 +1,4 @@
-package com.vluee.cloud.gateway.core.security;
+package com.vluee.cloud.gateway.spring.security;
 
 import cn.hutool.json.JSONUtil;
 import com.vluee.cloud.gateway.interfaces.common.CommonResult;
@@ -20,10 +20,8 @@ import java.nio.charset.Charset;
  * 自定义返回结果：没有权限访问时
  */
 @Component
-public class GatewayAccessDeniedHandler implements ServerAccessDeniedHandler {
-
-
-
+public class AccessDeniedHandler implements ServerAccessDeniedHandler {
+    
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, AccessDeniedException denied) {
         ServerHttpResponse response = exchange.getResponse();

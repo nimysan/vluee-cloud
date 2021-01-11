@@ -14,7 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Swagger资源配置
+ * 通用Swagger入口配置器
  */
 @Slf4j
 @Component

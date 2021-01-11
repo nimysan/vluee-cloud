@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 
 /**
  * 请不要在分布式环境下使用该Long Id生产器, 可能会导致Id重复.
- *
+ * <p>
  * 分布式环境下使用 redis/id 等解决方案
  *
  * @author sean.ye

@@ -57,10 +57,6 @@
             <artifactId>spring-kafka-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-mysql-client</artifactId>
-        </dependency>
 
         <!-- 添加 spring security -->
         <dependency>
