@@ -1,0 +1,41 @@
+@startuml
+title ApiGateway和Oauth2组件工作关系说明
+actor Postman  order 10
+
+box "Oauth2Server为独立部署" #LightBlue
+participant Oauth2Server order 20
+endbox
+
+|||
+
+box "ApiGateway是一个ResourceServer"
+participant DynamicAuthorizeRuleAuthorizationManager order 40
+database AuthorizeRuleRepository order 50
+participant ApiGateway order 30 #ABF
+endbox
+
+Postman -> Oauth2Server: 验证并获取token
+activate Oauth2Server
+
+Oauth2Server -> Postman: 返回token
+deactivate Oauth2Server
+activate ApiGateway
+Postman -> ApiGateway: 带token访问gateway
+note right: Gateway是OAuth2 Resource Server(资源服务器)
+ApiGateway -> ApiGateway: 解析token并authenticated
+ApiGateway -> DynamicAuthorizeRuleAuthorizationManager: 验证授权
+activate DynamicAuthorizeRuleAuthorizationManager
+
+
+DynamicAuthorizeRuleAuthorizationManager -> AuthorizeRuleRepository: 读取授权规则
+activate AuthorizeRuleRepository
+AuthorizeRuleRepository <-> DynamicAuthorizeRuleAuthorizationManager: 返回授权规则
+note left: 不是每次都需要，允许有缓存
+deactivate AuthorizeRuleRepository
+
+DynamicAuthorizeRuleAuthorizationManager -> ApiGateway: 授权通过
+deactivate DynamicAuthorizeRuleAuthorizationManager
+
+ApiGateway -> Postman: 业务操作
+deactivate ApiGateway
+@enduml

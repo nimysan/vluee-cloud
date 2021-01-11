@@ -1,0 +1,14 @@
+@startuml
+autonumber
+entity SysUser
+entity WorkRole
+entity SysRole
+entity AuthorityRule
+SysUser -> WorkRole: getWorkRoles-获取工作身份
+note right: token存的是这个值
+activate WorkRole
+WorkRole --> WorkRole: getDataScope-获取数据权限列表
+WorkRole --> SysRole: getSysRoles-获取系统角色
+deactivate  WorkRole
+SysRole --> AuthorityRule: getRules-获取授权规则
+@enduml

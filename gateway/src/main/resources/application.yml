@@ -1,0 +1,20 @@
+spring:
+  redis:
+    host: localhost
+    port: 6379
+
+  kafka:
+    producer:
+      bootstrap-servers:
+        - local_kafka:9092
+
+    consumer:
+      bootstrap-servers:
+        - local_kafka:9092
+      group-id: rule-reader-gateway
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://aistore-auth-server:8080/rsa/publicKey

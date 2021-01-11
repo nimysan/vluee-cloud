@@ -1,0 +1,18 @@
+version: '3'
+services:
+  canal:
+    image: canal/canal-server
+    environment:
+      "canal.instance.master.address": "127.0.0.1:3306"
+      "canal.instance.dbUsername": root
+      "canal.instance.dbPassword": 123456
+      "canal.instance.connectionCharset": UTF-8
+    host:
+      - "192.168.3.48"
+    ports:
+      - "11111:11111"
+    networks:
+      - as-dev-swarm
+networks:
+  as-dev-swarm:
+    external: true

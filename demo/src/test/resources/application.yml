@@ -1,0 +1,23 @@
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: never
+spring:
+  cloud:
+    nacos:
+      discovery:
+        enabled: false
+  h2:
+    console:
+      enabled: false
+      path: /h2
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver

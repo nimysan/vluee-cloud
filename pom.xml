@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.vluee.cloud</groupId>
+    <artifactId>vlueecloud-boot-starter</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+    <properties>
+        <vluee.cloud.starter.version>1.0.0</vluee.cloud.starter.version>
+
+        <java.version>1.8</java.version>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+
+        <!-- spring related version -->
+        <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
+        <spring.cloud.alibaba.version>2.1.3.RELEASE</spring.cloud.alibaba.version>
+        <admin-starter-server.version>2.2.3</admin-starter-server.version>
+        <eureka.version>2.2.4.RELEASE</eureka.version>
+        <!-- spring related version -->
+
+
+        <reactor-netty-version>0.9.9.RELEASE</reactor-netty-version>
+        <hutool.version>5.4.0</hutool.version>
+        <commons-lang.version>2.6</commons-lang.version>
+        <vertx.mysql.client.version>3.9.4</vertx.mysql.client.version>
+        <axon.version>4.4.5</axon.version>
+
+
+        <!-- doc -->
+        <knife4j.version>2.0.4</knife4j.version>
+
+        <!-- Deploy related -->
+        <docker.maven.plugin.version>0.34.1</docker.maven.plugin.version>
+        <docker.host>tcp://localhost:2375</docker.host>
+        <docker.from>fabric8/java-jboss-openjdk8-jdk:1.0.13</docker.from>
+        <!-- Deploy related -->
+    </properties>
+    <modules>
+        <!--
+        <module>aistore-gateway</module>
+        <module>aistore-monitor</module>
+        <module>aistore-uams</module>
+        <module>aistore-user</module>
+        -->
+        <module>monitor</module>
+        <module>commons</module>
+        <module>gateway</module>
+        <module>tenants</module>
+        <module>demo</module>
+        <module>users</module>
+        <module>authentications</module>
+        <module>uams</module>
+        <!--
+        <module>aistore-auth-server</module>
+        <module>vluee-docker-maven-plugin</module>
+        -->
+    </modules>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.8.RELEASE</version>
+        <relativePath/>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <!--集成SpringBoot Admin监控-->
+            <dependency>
+                <groupId>com.vluee.cloud</groupId>
+                <artifactId>commons</artifactId>
+                <version>1.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-server</artifactId>
+                <version>${admin-starter-server.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+                <version>${eureka.version}</version>
+            </dependency>
+            <!-- Axon DDD and CQRS support -->
+            <dependency>
+                <groupId>org.axonframework</groupId>
+                <artifactId>axon-spring-boot-starter</artifactId>
+                <version>${axon.version}</version>
+            </dependency>
+
+            <!--Knife4j API文档生产工具-->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-micro-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons-lang.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.vertx</groupId>
+                <artifactId>vertx-mysql-client</artifactId>
+                <version>${vertx.mysql.client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring.cloud.alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+                <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>${docker.maven.plugin.version}</version>
+                    <configuration>
+                        <dockerHost>${docker.host}</dockerHost>
+                        <verbose>true</verbose>
+                        <authConfig>
+                            <username>nimysan</username>
+                            <password>csaums*#6</password>
+                        </authConfig>
+                        <images>
+                            <image>
+                                <name>aistore/${project.name}</name>
+                                <build>
+                                    <from>${docker.from}</from>
+                                    <assembly>
+                                        <basedir>/app</basedir>
+                                        <descriptorRef>artifact</descriptorRef>
+                                    </assembly>
+                                    <env>
+                                        <JAVA_APP_JAR>${project.build.finalName}.jar</JAVA_APP_JAR>
+                                    </env>
+                                    <tags>
+                                        <tag>latest</tag>
+                                    </tags>
+                                </build>
+                            </image>
+                        </images>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>build-image</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>build</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!--
+                <plugin>
+                    <groupId>cn.jzdata.aistore</groupId>
+                    <artifactId>vluee-docker-maven-plugin</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <networkName>as-dev-swarm</networkName>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                -->
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

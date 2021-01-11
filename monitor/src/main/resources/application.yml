@@ -1,0 +1,17 @@
+server:
+  port: 9502
+spring:
+  application:
+    name: aistore-monitor
+  security:
+    user:
+      name: jzboss
+      password: jzboss123
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  boot:
+    admin:
+      discovery:
+        ignored-services: ${spring.application.name}

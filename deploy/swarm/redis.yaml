@@ -1,0 +1,16 @@
+version: "3"
+services:
+  redis:
+    image: redis:latest
+    volumes:
+      - c:/docker/projects/redis:/data
+    environment:
+      - appendonly=yes
+    ports:
+      - "6380:6379"
+    networks:
+      - as-dev-swarm
+
+networks:
+  as-dev-swarm:
+    external: true      

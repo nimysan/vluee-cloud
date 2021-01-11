@@ -1,0 +1,10 @@
+version: "3"
+services:
+  ntool:
+    image: alpine
+    networks:
+      - as-dev-swarm
+
+networks:
+  as-dev-swarm:
+    external: true      

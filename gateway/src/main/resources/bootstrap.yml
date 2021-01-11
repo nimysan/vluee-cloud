@@ -1,0 +1,31 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+spring:
+  application:
+    name: aistore-gateway
+  cloud:
+    inetutils:
+      preferred-networks: 10.0.1
+    discovery:
+      enabled: true
+    nacos:
+      config:
+        enabled: false
+        server-addr: localhost:8848
+      discovery:
+        watch:
+          enabled: true
+        enabled: true
+        server-addr: localhost:8848
+
+    gateway:
+      discovery:
+        locator:
+          enabled: true

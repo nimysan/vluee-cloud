@@ -1,0 +1,13 @@
+@startuml
+
+AccessDecisionManager -> AccessDecisionManager: load the defined rules
+
+ResourceAccessor -> ResourceAccessor: Retrieve Http Verb
+ResourceAccessor -> ResourceAccessor: Retrieve Http URL
+
+ResourceAccessor -> AccessDecisionManager: vote for decision
+AccessDecisionManager -> ResourceAccessor: positive vote
+
+AccessDecisionManager -> AccessDenyHandler: negative vote
+
+@enduml

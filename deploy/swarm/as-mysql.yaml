@@ -1,0 +1,25 @@
+version: "3"
+services:
+  mysql:
+    image: mariadb:latest
+    volumes:
+    - c:/docker/projects/mysql/data:/var/lib/mysql
+    - c:/docker/projects/mysql/conf:/etc/mysql/conf.d
+    environment:
+    - MYSQL_ROOT_PASSWORD=my-secret-pw
+    ports:
+      - "3308:3306"
+    networks:
+      - as-dev-swarm
+      
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8090:8080"
+    networks:
+      - as-dev-swarm      
+
+networks:
+  as-dev-swarm:
+    external: true      

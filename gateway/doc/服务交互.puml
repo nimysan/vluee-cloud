@@ -1,0 +1,22 @@
+@startuml
+title Gateway作为资源服务器的授权交互
+actor User order 1
+participant AuthServer order 5
+participant Uams order 10
+participant Gateway order 2
+
+User --> AuthServer: 输入用户名和密码获取token
+
+AuthServer <--> Uams: 获取用户信息
+
+AuthServer --> AuthServer: 认证用户，发放token
+
+User --> Gateway: 访问资源
+
+Gateway <--> Uams: 读取 Resource/Role配置表
+
+Gateway --> Gateway: 验证权限
+
+Gateway --> User: 返回资源数据
+
+@enduml
