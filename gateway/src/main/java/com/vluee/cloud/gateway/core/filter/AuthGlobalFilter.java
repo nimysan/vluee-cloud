@@ -2,6 +2,7 @@ package com.vluee.cloud.gateway.core.filter;
 
 import cn.hutool.core.util.StrUtil;
 import com.nimbusds.jose.JWSObject;
+import com.vluee.cloud.commons.common.rest.AuthConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;

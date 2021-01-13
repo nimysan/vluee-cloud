@@ -16,9 +16,7 @@ public class AntMatcherTest {
         assertTrue(matcher.match("/webjars/**", "/webjars/js/chunk-vendors.9ff0f717.js"));
         assertTrue(matcher.match("/swagger-resources/**", "/swagger-resources/js/chunk-vendors.9ff0f717.js"));
         assertTrue(matcher.match("/swagger-resources/**", "/swagger-resources"));
-
         assertTrue(matcher.match("/**/v2/api-docs", "/aistore-monitor/test/v2/api-docs"));
-
         assertTrue(matcher.match("/*/v2/api-docs", "/aistore-monitor/v2/api-docs"));
     }
 }

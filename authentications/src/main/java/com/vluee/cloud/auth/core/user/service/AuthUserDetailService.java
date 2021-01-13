@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
@@ -31,6 +33,9 @@ public class AuthUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDetailsVO vo = userService.loadUserByUsername(username);
         log.info("--- {} --- ", vo);
+
+        Collection<String> authorities = vo.getAuthorities();
+        authorities.addAll(Arrays.asList("ROLE_admin", "ROLE_guest", "ROLE_tenant", "ROLE_superusers", "admin", "superuser"));
         vo.setPassword(passwordEncoder.encode("123456"));// TODO for testing, 用户密码永远返回123456
         return new User(username, vo.getPassword(), vo.isEnable(), !vo.isExpired(), !vo.isCredentialsNonExpired(), !vo.isLocked(), vo.getAuthorities().stream().map(t -> new SimpleGrantedAuthority(t)).collect(Collectors.toList()));
     }

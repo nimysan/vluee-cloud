@@ -1,5 +1,6 @@
 package com.vluee.cloud.gateway.core.filter;
 
+import com.vluee.cloud.commons.common.rest.AuthConstant;
 import com.vluee.cloud.gateway.spring.security.IgnoreUrlsConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.server.reactive.ServerHttpRequest;
