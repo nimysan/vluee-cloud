@@ -1,4 +1,4 @@
-package com.vluee.cloud.gateway.spring.security.jwt;
+package com.vluee.cloud.gateway.spring.security;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.GrantedAuthority;

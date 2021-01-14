@@ -1,6 +1,7 @@
 package com.vluee.cloud.gateway.core.rbac;
 
 import cn.hutool.core.convert.Convert;
+import com.vluee.cloud.commons.common.rest.AuthConstant;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -27,7 +29,9 @@ public class RestGrantRuleService {
                 boolean match = matchExchange(url, method, resource);
                 if (match) {
                     String roleDefinition = restGrantRuleRepository.getRoleDefinition(stringKey);
-                    return RestGrantRule.builder().url(url).method(method).roles(Convert.toList(String.class, roleDefinition)).build();
+                    java.util.List<String> collect = Convert.toList(String.class, roleDefinition).stream().map(t -> AuthConstant.AUTHORITY_PREFIX + t).collect(Collectors.toList());
+                    RestGrantRule build = RestGrantRule.builder().url(url).method(method).roles(collect).build();
+                    return build;
                 }
             }
         }

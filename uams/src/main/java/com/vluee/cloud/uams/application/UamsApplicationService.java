@@ -9,6 +9,10 @@ import javax.validation.constraints.NotNull;
  */
 public class UamsApplicationService {
 
+    public String getRoles(String username, String clientId) {
+        return "admin,guest";
+    }
+
     private RestResourceDescriptor apiPermission;
 
     /**

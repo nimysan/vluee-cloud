@@ -35,12 +35,13 @@ public class AuthUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDetailsVO vo = userService.loadUserByUsername(username);
-        log.info("--- {} --- ", vo);
-        Set<String> strings = uamsFacade.listAuthorities("", username);
+
+        Set<String> strings = uamsFacade.listAuthorities("1111", username);
         Collection<String> authorities = vo.getAuthorities();
         authorities.addAll(strings);
         // 授予游客角色， 所有人默认都授予游客角色
         authorities.addAll(Arrays.asList("guest"));
+        log.info("--- {} --- ", vo);
         vo.setPassword(passwordEncoder.encode("123456"));// TODO for testing, 用户密码永远返回123456
         return new User(username, vo.getPassword(), vo.isEnable(), !vo.isExpired(), !vo.isCredentialsNonExpired(), !vo.isLocked(), vo.getAuthorities().stream().map(t -> new SimpleGrantedAuthority(t)).collect(Collectors.toList()));
     }

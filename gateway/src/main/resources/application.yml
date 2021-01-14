@@ -36,6 +36,7 @@ secure:
       - "/user/me"
       - "/sample/**"
       - "/saas-users/users"
+      - "/saas-uams/**"
 
 logging:
   level:

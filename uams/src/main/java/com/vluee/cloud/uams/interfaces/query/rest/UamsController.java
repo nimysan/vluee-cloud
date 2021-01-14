@@ -14,7 +14,7 @@ public class UamsController {
      * @param clientId
      * @return
      */
-    @GetMapping("/users/{username}/clients/${clientId}/roles")
+    @GetMapping("/users/{username}/clients/{clientId}/roles")
     public String getUserRoles(@PathVariable String username, @PathVariable String clientId) {
         return "admin,guest,super"; //TODO 真实实现
     }
