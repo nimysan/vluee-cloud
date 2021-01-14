@@ -32,9 +32,15 @@ class RestGrantRuleServiceTest {
 
     @Test
     public void testSpecificMethodMatching() {
-        RestGrantRuleService restGrantRuleService = setupService("1,2", "POST /users");
+        RestGrantRuleService restGrantRuleService = setupService("1,2", "POST    /users");
         Assertions.assertNull(restGrantRuleService.findRule(SimpleRestResourceRequest.builder().method(HttpMethod.GET).url("/users").build()));
         Assertions.assertNotNull(restGrantRuleService.findRule(SimpleRestResourceRequest.builder().method(HttpMethod.POST).url("/users").build()));
+    }
+
+    @Test
+    public void testNoRuleMatching() {
+        RestGrantRuleService restGrantRuleService = setupService("1,2", "POST    /users");
+        Assertions.assertNull(restGrantRuleService.findRule(SimpleRestResourceRequest.builder().method(HttpMethod.GET).url("/mock").build()));
     }
 
     private RestGrantRuleService setupService(String roles, String... keys) {
