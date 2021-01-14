@@ -29,6 +29,7 @@ public class RedisRestGrantRuleRepository implements RestGrantRuleRepository {
         redisTemplate.opsForHash().put(RESOURCE_ROLES_MAP_KEY, "GET /saas-users/users/roles", "users-admin");
         redisTemplate.opsForHash().put(RESOURCE_ROLES_MAP_KEY, "PUT /saas-users/users/read", "users-read");
         redisTemplate.opsForHash().put(RESOURCE_ROLES_MAP_KEY, "* /saas-users/config/get", "guest");
+        redisTemplate.opsForHash().put(RESOURCE_ROLES_MAP_KEY, "PUT /saas-tenants/tenants/**", "guest");
         log.info("测试规则输入成功");
 
         Map<Object, Object> entries = redisTemplate.opsForHash().entries(RESOURCE_ROLES_MAP_KEY);

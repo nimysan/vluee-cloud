@@ -16,7 +16,7 @@ public class SwaggerConfig extends BaseSwaggerConfig {
                 .description("租户管理服务相关")
                 .contactName("234aini@163.com")
                 .version("1.0")
-                .enableSecurity(false)
+                .enableSecurity(true)
                 .build();
     }
 }

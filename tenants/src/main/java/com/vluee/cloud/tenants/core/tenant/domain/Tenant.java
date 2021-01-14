@@ -33,4 +33,7 @@ public class Tenant extends AuditAware {
         return id;
     }
 
+    public void setTenantName(String tenantName) {
+        this.tenantName = tenantName;
+    }
 }

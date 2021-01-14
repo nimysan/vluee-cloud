@@ -35,6 +35,14 @@ public class TenantService {
         return tenant;
     }
 
+    public void changeTenantName(@NotBlank Long tenantId, @NotBlank String tenantName) {
+        Tenant tenant = tenantRepository.findById(tenantId).orElseThrow(TenantNotExitException::new);
+        checkNameDuplicate(tenantName);
+        tenant.setTenantName(tenantName);
+        auditModify(tenant);
+        tenantRepository.save(tenant);
+    }
+
     private void checkNameDuplicate(String tenantName) {
         boolean isPresent = tenantRepository.findByTenantName(tenantName).isPresent();
         if (isPresent) throw new TenantNameExistException(tenantName);
