@@ -1,6 +1,6 @@
 package com.vluee.cloud.uams.core.uams.domain;
 
-import com.vluee.cloud.commons.common.AiStoreConstants;
+import com.vluee.cloud.commons.common.ServiceConstants;
 import com.vluee.cloud.commons.common.data.TenancyAndAuditAware;
 import com.vluee.cloud.commons.common.string.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
@@ -88,7 +88,7 @@ public class UamsRole extends TenancyAndAuditAware implements BrandResource {
      *
      * @return
      */
-    public Collection<String> getAllResourceKeys(AiStoreConstants.UamsPermissionType type) {
+    public Collection<String> getAllResourceKeys(ServiceConstants.UamsPermissionType type) {
         return getResources().stream().map(t -> t.getId()).collect(Collectors.toList());
     }
 

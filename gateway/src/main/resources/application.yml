@@ -35,7 +35,9 @@ secure:
       - "/actuator/**"
       - "/user/me"
       - "/sample/**"
+      - "/saas-users/users"
 
 logging:
   level:
     org.springframework.security: DEBUG
+    com.vluee.cloud.gateway: DEBUG

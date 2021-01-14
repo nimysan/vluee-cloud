@@ -3,7 +3,7 @@ package com.vluee.cloud.uams.core.uams.service;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.json.JSONUtil;
-import com.vluee.cloud.commons.common.AiStoreConstants;
+import com.vluee.cloud.commons.common.ServiceConstants;
 import com.vluee.cloud.commons.common.audit.AuditContext;
 import com.vluee.cloud.commons.common.brand.exception.BrandNotExistException;
 import com.vluee.cloud.commons.common.data.AuditAware;
@@ -87,7 +87,7 @@ public class UamsServiceImpl implements UamsService {
         UamsUser uamsUser = uamsUserRepository.findById(userId).orElseThrow(UamsUserNotExistException::new);
         UamsProtectedResource uamsProtectedResource = uamsProtectedResourceRepository.findById(resourceId).orElseThrow(UamsProtectedResourceNotExistException::new);
         //TODO n+1 SQL问题，需要优化
-        return uamsUser.getRoleKeys().stream().flatMap(t -> uamsRoleRepository.findById(t).orElseThrow(UamsRoleNotExistException::new).getAllResourceKeys(AiStoreConstants.UamsPermissionType.API).stream()).anyMatch(t -> resourceId.equalsIgnoreCase(t));
+        return uamsUser.getRoleKeys().stream().flatMap(t -> uamsRoleRepository.findById(t).orElseThrow(UamsRoleNotExistException::new).getAllResourceKeys(ServiceConstants.UamsPermissionType.API).stream()).anyMatch(t -> resourceId.equalsIgnoreCase(t));
     }
 
     @Override

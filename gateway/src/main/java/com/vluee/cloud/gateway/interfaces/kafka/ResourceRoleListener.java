@@ -1,6 +1,6 @@
 package com.vluee.cloud.gateway.interfaces.kafka;
 
-import com.vluee.cloud.commons.common.AiStoreConstants;
+import com.vluee.cloud.commons.common.ServiceConstants;
 import com.vluee.cloud.gateway.core.events.AddResourceRoleEvent;
 import com.vluee.cloud.gateway.core.events.DeleteResourceRoleEvent;
 import com.vluee.cloud.gateway.core.events.RefreshAllEvent;
@@ -21,7 +21,7 @@ public class ResourceRoleListener implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
-    @KafkaListener(topics = AiStoreConstants.KafkaTopics.TOPIC_UAMS_RESOURCE_ROLE)
+    @KafkaListener(topics = ServiceConstants.KafkaTopics.TOPIC_UAMS_RESOURCE_ROLE)
     public void handleMessage(ConsumerRecord<String, String> record) throws Exception {
         log.info(" --- {} --- ", record.value());
         String value = record.value();

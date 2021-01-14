@@ -1,6 +1,6 @@
 package com.vluee.cloud.uams.application;
 
-import com.vluee.cloud.commons.common.AiStoreConstants;
+import com.vluee.cloud.commons.common.ServiceConstants;
 import com.vluee.cloud.commons.common.audit.AuditContext;
 import com.vluee.cloud.commons.common.brand.exception.BrandNotExistException;
 import com.vluee.cloud.commons.common.uams.ResourceDescriptor;
@@ -187,7 +187,7 @@ class UamsServiceImplTest {
      * @return decision
      */
     private boolean authorityDecision(UamsRole role, ResourceDescriptor resourceDescriptor) {
-        Collection<String> authorityCodes = role.getAllResourceKeys(AiStoreConstants.UamsPermissionType.API);
+        Collection<String> authorityCodes = role.getAllResourceKeys(ServiceConstants.UamsPermissionType.API);
         if (authorityCodes == null) {
             throw new RuntimeException("无法正常获取Role关联的授权码");
         }

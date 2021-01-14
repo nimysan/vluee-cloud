@@ -1,6 +1,6 @@
 package com.vluee.cloud.commons.common;
 
-public interface AiStoreConstants {
+public interface ServiceConstants {
 
     /**
      * 通用前缀
@@ -45,6 +45,8 @@ public interface AiStoreConstants {
     public static class Services {
         public static final String PREFIX = "-";
         public static final String USER = SERVICE_NAME_SPACE + PREFIX + "users";
+        public static final String UAMS = SERVICE_NAME_SPACE + PREFIX + "uams";
+
         public static final String GATEWAY = SERVICE_NAME_SPACE + PREFIX + "gateway";
         public static final String TENANT = SERVICE_NAME_SPACE + PREFIX + "tenants";
     }

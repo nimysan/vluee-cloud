@@ -17,6 +17,11 @@ public class UserController {
         return UserDetailsVO.from(uamsService.loadUserByUserName(username));
     }
 
+    @GetMapping("/{username}/roles")
+    public String userRole(@PathVariable String username, @RequestParam String clientId) {
+        return "guest, admin, super";
+    }
+
     @PostMapping
     void register(@RequestParam String tenantId, @RequestParam String username, @RequestParam String rawPassword) {
         uamsService.createUser(tenantId, username);

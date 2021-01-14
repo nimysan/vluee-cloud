@@ -1,9 +1,10 @@
 package com.vluee.cloud.auth.core.user.service;
 
+import com.vluee.cloud.auth.core.uams.service.UamsFacade;
 import com.vluee.cloud.auth.interfaces.outbound.feign.UserDetailsVO;
-import com.vluee.cloud.auth.interfaces.outbound.feign.UserService;
+import com.vluee.cloud.auth.interfaces.outbound.feign.UserServiceProxy;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -21,21 +23,24 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
+@AllArgsConstructor
 public class AuthUserDetailService implements UserDetailsService {
 
-    @Autowired
-    private UserService userService;
+    private final UserServiceProxy userService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UamsFacade uamsFacade;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDetailsVO vo = userService.loadUserByUsername(username);
         log.info("--- {} --- ", vo);
-
+        Set<String> strings = uamsFacade.listAuthorities("", username);
         Collection<String> authorities = vo.getAuthorities();
-        authorities.addAll(Arrays.asList("ROLE_admin", "ROLE_guest", "ROLE_tenant", "ROLE_superusers", "admin", "superuser"));
+        authorities.addAll(strings);
+        // 授予游客角色， 所有人默认都授予游客角色
+        authorities.addAll(Arrays.asList("guest"));
         vo.setPassword(passwordEncoder.encode("123456"));// TODO for testing, 用户密码永远返回123456
         return new User(username, vo.getPassword(), vo.isEnable(), !vo.isExpired(), !vo.isCredentialsNonExpired(), !vo.isLocked(), vo.getAuthorities().stream().map(t -> new SimpleGrantedAuthority(t)).collect(Collectors.toList()));
     }
