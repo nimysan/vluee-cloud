@@ -100,4 +100,8 @@ public class User extends AuditAware {
     public void setExpired(boolean expired) {
         this.expired = expired;
     }
+
+    public void createPassword(String password) {
+
+    }
 }

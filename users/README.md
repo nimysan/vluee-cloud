@@ -5,6 +5,7 @@
 > documents/Abdallah-Khayat2005_Chapter_AFormalModelForParameterizedRo.pdf PRBAC说明
 
 > [垂直权限(功能权限)-水平权限(数据权限)](https://cloud.tencent.com/developer/article/1099266)
+> [网关穿透traceId方案](https://www.sohu.com/a/388387969_120342270)
 
 ### 需要解决的问题
 

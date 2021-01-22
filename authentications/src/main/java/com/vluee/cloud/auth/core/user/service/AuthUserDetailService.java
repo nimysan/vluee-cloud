@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,9 +35,16 @@ public class AuthUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDetailsVO vo = userService.loadUserByUsername(username);
+        UserDetailsVO vo;
+        try {
+            vo = userService.loadUserByUsername(username);
+        } catch (Exception e) {
+            vo = new UserDetailsVO();
+            vo.setUsername(username).setEnable(true).setExpired(false).setLocked(false).setCredentialsNonExpired(false).setPassword("");
+        }
 
-        Set<String> strings = uamsFacade.listAuthorities("1111", username);
+
+        Set<String> strings = new HashSet<>(); //uamsFacade.listAuthorities("1111", username);
         Collection<String> authorities = vo.getAuthorities();
         authorities.addAll(strings);
         // 授予游客角色， 所有人默认都授予游客角色

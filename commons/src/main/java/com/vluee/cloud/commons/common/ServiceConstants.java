@@ -47,6 +47,8 @@ public interface ServiceConstants {
         public static final String USER = SERVICE_NAME_SPACE + PREFIX + "users";
         public static final String UAMS = SERVICE_NAME_SPACE + PREFIX + "uams";
 
+        public static final String AUTH_SERVER = SERVICE_NAME_SPACE + PREFIX + "auth-server";
+
         public static final String GATEWAY = SERVICE_NAME_SPACE + PREFIX + "gateway";
         public static final String TENANT = SERVICE_NAME_SPACE + PREFIX + "tenants";
     }

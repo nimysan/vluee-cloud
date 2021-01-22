@@ -4,26 +4,28 @@ package com.vluee.cloud.users.core.user.service;
 import com.vluee.cloud.commons.common.audit.AuditContext;
 import com.vluee.cloud.commons.common.data.AuditAware;
 import com.vluee.cloud.commons.common.date.DateUtils;
+import com.vluee.cloud.users.core.user.domain.LoginPassword;
+import com.vluee.cloud.users.core.user.domain.LoginPasswordRepository;
 import com.vluee.cloud.users.core.user.domain.User;
 import com.vluee.cloud.users.core.user.domain.UserRepository;
 import com.vluee.cloud.users.core.user.exception.UamsUserNotExistException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 @Service
+@AllArgsConstructor
+@Slf4j
 public class UamsServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository uamsUserRepository;
+    private final UserRepository uamsUserRepository;
+
+//    private final LoginPasswordRepository loginPasswordRepository;
 
     private final AuditContext auditContext;
-
-    public UamsServiceImpl(@NotNull AuditContext auditContext) {
-        this.auditContext = auditContext;
-    }
 
     @Override
     @Transactional
@@ -57,6 +59,13 @@ public class UamsServiceImpl implements UserService {
         user.setLocked(true);
         auditModify(user);
         uamsUserRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public Optional<LoginPassword> getLoginPassword(String username) {
+//        return loginPasswordRepository.findByUsernameAndActiveStatus(username, true);
+        return null;
     }
 
     private void checkNickName(String nickName) {

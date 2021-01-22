@@ -33,6 +33,7 @@ secure:
       - "/**/*.ico"
       - "/webjars/springfox-swagger-ui/**"
       - "/actuator/**"
+      - "/auth/token/**"
       - "/user/me"
       - "/sample/**"
       - "/saas-users/users"

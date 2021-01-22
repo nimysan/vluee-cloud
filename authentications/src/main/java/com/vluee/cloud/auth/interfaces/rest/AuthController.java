@@ -3,10 +3,14 @@ package com.vluee.cloud.auth.interfaces.rest;
 import com.vluee.cloud.commons.common.rest.AuthConstant;
 import com.vluee.cloud.commons.common.rest.CommonResult;
 import io.swagger.annotations.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -25,10 +29,12 @@ import java.util.Map;
 @RestController
 @Api(tags = "AuthController", description = "认证中心登录认证")
 @RequestMapping("/oauth")
+@AllArgsConstructor
 public class AuthController {
 
-    @Autowired
-    private TokenEndpoint tokenEndpoint;
+    private final TokenEndpoint tokenEndpoint;
+
+    private final AuthenticationManager authenticationManager;
 
     @ApiOperation("Oauth2获取token")
     @ApiImplicitParams({
@@ -41,6 +47,12 @@ public class AuthController {
     })
     @RequestMapping(value = "/rest_token", method = RequestMethod.POST)
     public CommonResult<Oauth2TokenDto> postAccessToken(@ApiIgnore Principal principal, @ApiIgnore @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
+        if (principal == null) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(parameters.get("client_id"),
+                    parameters.get("client_secret"));
+            principal = authenticationManager.authenticate(authRequest);
+        }
         OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
         Oauth2TokenDto oauth2TokenDto = Oauth2TokenDto.builder()
                 .accessToken(oAuth2AccessToken.getValue())

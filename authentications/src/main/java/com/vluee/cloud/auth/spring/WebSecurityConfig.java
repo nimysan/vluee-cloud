@@ -12,17 +12,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@EnableWebSecurity(debug = false)
+@EnableWebSecurity(debug = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER).and()
-                .authorizeRequests()
+        http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
+        http.authorizeRequests()
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
-                .antMatchers("/clients/**").permitAll()
-                .antMatchers("/oauth/rest_token").permitAll()
                 .antMatchers("/rsa/publicKey").permitAll()
+                .antMatchers("/oauth/rest_token").permitAll()
                 .antMatchers("/v2/api-docs").permitAll()
                 .anyRequest().authenticated();
     }

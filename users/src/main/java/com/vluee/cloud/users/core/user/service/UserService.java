@@ -1,6 +1,9 @@
 package com.vluee.cloud.users.core.user.service;
 
+import com.vluee.cloud.users.core.user.domain.LoginPassword;
 import com.vluee.cloud.users.core.user.domain.User;
+
+import java.util.Optional;
 
 /**
  * 用户/用户组/角色/资源 管理服务
@@ -40,4 +43,13 @@ public interface UserService {
      * @param username
      */
     void lockUser(String username);
+
+
+    /**
+     * 获取用户的登录密码
+     *
+     * @param username
+     * @return
+     */
+    Optional<LoginPassword> getLoginPassword(String username);
 }
