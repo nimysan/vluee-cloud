@@ -1,6 +1,6 @@
 package com.vluee.cloud.gateway.interfaces.query.rest;
 
-import com.vluee.cloud.gateway.interfaces.outbound.feign.AccessTokenVo;
+import com.vluee.cloud.gateway.interfaces.common.CommonResult;
 import com.vluee.cloud.gateway.interfaces.outbound.feign.OAuth2Feign;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -31,9 +31,9 @@ public class UserTokenController {
             @ApiImplicitParam(name = "password", value = "登录密码")
     })
     @PostMapping("/auth/token")
-    public Mono<AccessTokenVo> authForToken(ServerWebExchange exchange) {
+    public Mono<CommonResult> authForToken(ServerWebExchange exchange) {
         Mono<MultiValueMap<String, String>> formData = exchange.getFormData();
-        return formData.map(data -> oAuth2Feign.fetchToken(data.toSingleValueMap()));
+        return formData.map(data -> oAuth2Feign.fetchToken(data.toSingleValueMap())).map(t -> CommonResult.success(t));
     }
 
     /**
@@ -44,13 +44,13 @@ public class UserTokenController {
      * @return
      */
     @PostMapping("/auth/token/gateway")
-    public Mono<AccessTokenVo> gatewayProxyToken(@RequestParam String username, @RequestParam String password) {
+    public Mono<CommonResult> gatewayProxyToken(@RequestParam String username, @RequestParam String password) {
         java.util.Map<String, String> map = new HashMap<>();
         map.put("username", username);
         map.put("password", password);
         map.put("client_id", "wxapp");
         map.put("client_secret", "F8rQuFW71AHb");
         map.put("grant_type", "password");
-        return Mono.just(oAuth2Feign.fetchToken(map));
+        return Mono.just(CommonResult.success(oAuth2Feign.fetchToken(map)));
     }
 }

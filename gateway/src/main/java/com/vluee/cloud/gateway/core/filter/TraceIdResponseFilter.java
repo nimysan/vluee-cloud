@@ -12,20 +12,20 @@ import reactor.core.publisher.Mono;
 //@Component
 public class TraceIdResponseFilter implements GlobalFilter, Ordered {
 
-	@Override
-	public int getOrder() {
-		return -3;
-	}
+    @Override
+    public int getOrder() {
+        return -3;
+    }
 
-	@Override
-	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-		ServerHttpResponse originalResponse = exchange.getResponse();
-		DataBufferFactory bufferFactory = originalResponse.bufferFactory();
-		ServerHttpResponseDecorator decoratedResponse = new ServerHttpResponseDecorator(originalResponse);
-		// 将Request中的traceId加入到response里面去
-		decoratedResponse.getHeaders().add(RequestDecorateFilter.X_TRACE_ID,
-				exchange.getRequest().getHeaders().getFirst(RequestDecorateFilter.X_TRACE_ID));
-		return chain.filter(exchange.mutate().response(decoratedResponse).build()); // replace response with decorator
-	}
+    @Override
+    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        ServerHttpResponse originalResponse = exchange.getResponse();
+        DataBufferFactory bufferFactory = originalResponse.bufferFactory();
+        ServerHttpResponseDecorator decoratedResponse = new ServerHttpResponseDecorator(originalResponse);
+        // 将Request中的traceId加入到response里面去
+        decoratedResponse.getHeaders().add(RequestDecorateFilter.X_TRACE_ID,
+                exchange.getRequest().getHeaders().getFirst(RequestDecorateFilter.X_TRACE_ID));
+        return chain.filter(exchange.mutate().response(decoratedResponse).build()); // replace response with decorator
+    }
 
 }

@@ -36,6 +36,7 @@ secure:
       - "/auth/token/**"
       - "/user/me"
       - "/sample/**"
+      - "/saas-demo/**"
       - "/saas-users/users"
       - "/saas-uams/**"
 

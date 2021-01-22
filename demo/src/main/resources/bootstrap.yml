@@ -1,5 +1,3 @@
-server:
-  port: 8081
 management:
   endpoints:
     web:
@@ -11,5 +9,23 @@ management:
 
 spring:
   application:
-    name: aistore-demo
+    name: saas-demo
+  cloud:
+    inetutils:
+      preferred-networks: 10.0.1
+    discovery:
+      enabled: true
+    nacos:
+      config:
+        enabled: false
+        server-addr: localhost:8848
+      discovery:
+        watch:
+          enabled: true
+        enabled: true
+        server-addr: localhost:8848
 
+    gateway:
+      discovery:
+        locator:
+          enabled: true

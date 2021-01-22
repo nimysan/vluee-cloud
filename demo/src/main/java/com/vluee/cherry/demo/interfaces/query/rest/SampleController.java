@@ -1,4 +1,4 @@
-package com.vluee.cloud.gateway.interfaces;
+package com.vluee.cherry.demo.interfaces.query.rest;
 
 import cn.hutool.core.net.NetUtil;
 import lombok.AllArgsConstructor;
@@ -28,7 +28,7 @@ public class SampleController {
 
     @Data
     @AllArgsConstructor
-    public static class SampleVo{
+    public static class SampleVo {
         private String foo;
         private String bar;
     }
