@@ -30,7 +30,7 @@
 
 
         <!-- doc -->
-        <knife4j.version>2.0.4</knife4j.version>
+        <knife4j.version>3.0.2</knife4j.version>
 
         <!-- Deploy related -->
         <docker.maven.plugin.version>0.34.1</docker.maven.plugin.version>

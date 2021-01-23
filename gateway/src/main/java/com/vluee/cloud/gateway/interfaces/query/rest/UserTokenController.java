@@ -2,8 +2,7 @@ package com.vluee.cloud.gateway.interfaces.query.rest;
 
 import com.vluee.cloud.gateway.interfaces.common.CommonResult;
 import com.vluee.cloud.gateway.interfaces.outbound.feign.OAuth2Feign;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.util.MultiValueMap;
@@ -12,24 +11,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
 
 @RestController
 @AllArgsConstructor
+@Api(value = "网关本身管理", tags = {"网关管理"})
 public class UserTokenController {
 
     private final OAuth2Feign oAuth2Feign;
 
-    @ApiOperation("Oauth2获取token")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "grant_type", value = "授权模式", required = true),
-            @ApiImplicitParam(name = "client_id", value = "Oauth2客户端ID", required = true),
-            @ApiImplicitParam(name = "client_secret", value = "Oauth2客户端秘钥", required = true),
-            @ApiImplicitParam(name = "refresh_token", value = "刷新token"),
-            @ApiImplicitParam(name = "username", value = "登录用户名"),
-            @ApiImplicitParam(name = "password", value = "登录密码")
-    })
+    /**
+     * 正常不使用该接口， 建议相关方直接使用auth-server的认证接口
+     *
+     * @param exchange
+     * @return
+     */
+    @ApiIgnore
     @PostMapping("/auth/token")
     public Mono<CommonResult> authForToken(ServerWebExchange exchange) {
         Mono<MultiValueMap<String, String>> formData = exchange.getFormData();
@@ -44,6 +43,7 @@ public class UserTokenController {
      * @return
      */
     @PostMapping("/auth/token/gateway")
+    @ApiOperation(value = "通用用户名和密码获取网关认证token", response = CommonResult.class)
     public Mono<CommonResult> gatewayProxyToken(@RequestParam String username, @RequestParam String password) {
         java.util.Map<String, String> map = new HashMap<>();
         map.put("username", username);

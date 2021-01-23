@@ -1,5 +1,6 @@
 package com.vluee.cloud.commons.config;
 
+import com.google.common.collect.Lists;
 import com.vluee.cloud.commons.common.doc.SwaggerProperties;
 import org.springframework.context.annotation.Bean;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -20,6 +21,13 @@ public abstract class BaseSwaggerConfig {
 
     @Bean
     public Docket createRestApi() {
+//        RequestParameterBuilder parameterBuilder=new RequestParameterBuilder();
+//        List<RequestParameter> parameters= Lists.newArrayList();
+//        parameterBuilder.name("token").description("token令牌"). .modelRef(new ModelRef("String"))
+//                .parameterType("header")
+//                .required(true).build();
+//        parameters.add(parameterBuilder.build());
+
         SwaggerProperties swaggerProperties = swaggerProperties();
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo(swaggerProperties))
@@ -42,12 +50,12 @@ public abstract class BaseSwaggerConfig {
                 .build();
     }
 
-    private List<ApiKey> securitySchemes() {
+    private ArrayList<SecurityScheme> securitySchemes() {
         //设置请求头信息
         List<ApiKey> result = new ArrayList<>();
         ApiKey apiKey = new ApiKey("Authorization", "Authorization", "header");
         result.add(apiKey);
-        return result;
+        return Lists.<SecurityScheme>newArrayList(result);
     }
 
     private List<SecurityContext> securityContexts() {
