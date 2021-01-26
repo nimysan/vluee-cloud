@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Import;
 @EnableFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication
-
 @ComponentScans({
         @ComponentScan("cn.hutool.extra.spring"),
         @ComponentScan("com.vluee.cloud.users")

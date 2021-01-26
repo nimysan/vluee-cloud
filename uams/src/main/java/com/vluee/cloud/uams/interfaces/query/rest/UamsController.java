@@ -1,10 +1,12 @@
 package com.vluee.cloud.uams.interfaces.query.rest;
 
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@AllArgsConstructor
 public class UamsController {
 
     /**
@@ -18,4 +20,6 @@ public class UamsController {
     public String getUserRoles(@PathVariable String username, @PathVariable String clientId) {
         return "admin,guest,super"; //TODO 真实实现
     }
+
+
 }
