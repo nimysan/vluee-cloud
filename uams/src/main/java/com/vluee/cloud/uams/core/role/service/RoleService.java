@@ -17,4 +17,8 @@ public class RoleService {
     public Role loadRole(Long roleId) {
         return roleRepository.findById(roleId).orElseThrow(RoleNotExistException::new);
     }
+
+    public Iterable<Role> list() {
+        return roleRepository.findAll();
+    }
 }

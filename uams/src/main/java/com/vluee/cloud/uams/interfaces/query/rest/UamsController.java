@@ -1,5 +1,7 @@
 package com.vluee.cloud.uams.interfaces.query.rest;
 
+import com.vluee.cloud.uams.application.UamsApplicationService;
+import com.vluee.cloud.uams.core.role.domain.Role;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 public class UamsController {
+
+    private final UamsApplicationService uamsApplicationService;
 
     /**
      * 查询 某个用户在某个客户端得角色列表
@@ -21,5 +25,9 @@ public class UamsController {
         return "admin,guest,super"; //TODO 真实实现
     }
 
+    @GetMapping("roles")
+    public Iterable<Role> getRoles() {
+        return uamsApplicationService.listRoles();
+    }
 
 }

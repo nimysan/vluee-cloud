@@ -19,6 +19,7 @@ public class Role extends AuditAware {
     }
 
     @Id
+    @Getter
     @GeneratedValue(generator = LongIdGenerator.ID_GENERATOR_NAME)
     private Long id;
 

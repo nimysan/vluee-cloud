@@ -43,4 +43,7 @@ public class UamsApplicationService {
     }
 
 
+    public Iterable<Role> listRoles() {
+        return roleService.list();
+    }
 }
