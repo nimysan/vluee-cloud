@@ -14,11 +14,14 @@ import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.http.server.reactive.ServerHttpResponseDecorator;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -30,14 +33,14 @@ import java.nio.charset.Charset;
  * 2. gateway自身的controller的请求
  *
  * @see org.springframework.cloud.gateway.filter.GlobalFilter
- *
  * @see org.springframework.cloud.gateway.filter.NettyRoutingFilter
- *
  * @see CustomExceptionHandlerConfiguration
  */
 @Component
 @Slf4j
 public class WrapperResponseGlobalFilter implements GlobalFilter, Ordered {
+
+    private final static List<String> IGNORE_LIST = Arrays.asList("/v2/api-docs", "/**/actuator/**");
 
     @Override
     public int getOrder() {
@@ -48,8 +51,11 @@ public class WrapperResponseGlobalFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         //忽略 swagger 文档相关url
-        if (exchange.getRequest().getURI().getPath().contains("/v2/api-docs")) {
-            return chain.filter(exchange);
+        AntPathMatcher antPathMatcher = new AntPathMatcher();
+        for (String ignore : IGNORE_LIST) {
+            if (antPathMatcher.match(ignore, exchange.getRequest().getURI().getPath())) {
+                return chain.filter(exchange);
+            }
         }
         ServerHttpResponse originalResponse = exchange.getResponse();
         DataBufferFactory bufferFactory = originalResponse.bufferFactory();
