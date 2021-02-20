@@ -1,41 +1,43 @@
 package com.vluee.cloud.uams.application;
 
-import com.vluee.cloud.commons.common.rest.AuthConstant;
-import com.vluee.cloud.uams.core.resource.domain.RestResource;
-import com.vluee.cloud.uams.core.resource.domain.RestResourceRoleMap;
+import com.vluee.cloud.commons.ddd.annotations.application.ApplicationService;
 import com.vluee.cloud.uams.core.resource.domain.RestResourceRoleMapRepository;
 import com.vluee.cloud.uams.core.resource.service.RestResourceService;
 import com.vluee.cloud.uams.core.role.domain.Role;
-import com.vluee.cloud.uams.core.role.service.RoleService;
+import com.vluee.cloud.uams.core.role.domain.RoleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+
 /**
- * DDD application service
+ * DDD application service。
+ * DDD的应用层就是一些编排脚本，真正的业务逻辑请放回到domain相关代码去。
  */
 @Service
 @AllArgsConstructor
+@ApplicationService
 public class UamsApplicationService {
 
     private final RestResourceRoleMapRepository restResourceRoleMapRepository;
 
     private final RestResourceService restResourceService;
 
-    private final RoleService roleService;
+    private final RoleRepository roleRepository;
 
     private final RedisTemplate redisTemplate;
 
     @Transactional
     public void grant(Long resourceId, Long roleId) {
-        RestResourceRoleMap roleMap = new RestResourceRoleMap(resourceId, roleId);
-        restResourceRoleMapRepository.save(roleMap);
-
-        //TODO update to redis
-        RestResource resource = restResourceService.loadResource(resourceId);
-        Role role = roleService.loadRole(roleId);
-        redisTemplate.opsForHash().put(AuthConstant.RESOURCE_ROLES_MAP_KEY, resource.composeKey(), role.getName());
+//        RestResourceRoleMap roleMap = new RestResourceRoleMap(resourceId, roleId);
+//        restResourceRoleMapRepository.save(roleMap);
+//
+//        //TODO update to redis
+//        RestResource resource = restResourceService.loadResource(resourceId);
+//        Role role = roleService.loadRole(roleId);
+//        redisTemplate.opsForHash().put(AuthConstant.RESOURCE_ROLES_MAP_KEY, resource.composeKey(), role.getName());
     }
 
     public String getRoles(String username, String clientId) {
@@ -44,6 +46,33 @@ public class UamsApplicationService {
 
 
     public Iterable<Role> listRoles() {
-        return roleService.list();
+//        return roleService.list();
+        return Collections.emptyList();
     }
+
+    /**
+     * 创建指定名称的角色
+     *
+     * @param roleName
+     */
+    public void createRole(String roleName) {
+        Role role = new Role(roleName);
+        roleRepository.save(role);
+    }
+
+    /**
+     * 检查角色名称是否可用
+     *
+     * @param name
+     * @return
+     */
+    public String isRoleNameAvailable(String name) {
+        boolean exists = roleRepository.existsByName(name);
+        if (exists) {
+            return "Role name exists";
+        }
+        return null;
+    }
+
+
 }
