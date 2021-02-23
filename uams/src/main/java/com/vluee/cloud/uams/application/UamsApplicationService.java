@@ -50,15 +50,6 @@ public class UamsApplicationService {
         return Collections.emptyList();
     }
 
-    /**
-     * 创建指定名称的角色
-     *
-     * @param roleName
-     */
-    public void createRole(String roleName) {
-        Role role = new Role(roleName);
-        roleRepository.save(role);
-    }
 
     /**
      * 检查角色名称是否可用

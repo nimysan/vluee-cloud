@@ -1,5 +1,7 @@
 package com.vluee.cloud.uams.core.permission;
 
+import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
+import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
 import com.vluee.cloud.uams.core.role.domain.Role;
 import lombok.Getter;
 
@@ -8,7 +10,7 @@ import javax.validation.constraints.NotNull;
 /**
  * Operation + Resource构成Permission
  */
-public class Permission {
+public class Permission extends BaseAggregateRoot {
 
     @Getter
     private Operation operation;
@@ -19,9 +21,10 @@ public class Permission {
     @Getter
     private boolean disabled = false;
 
-    public Permission(@NotNull Operation operation, @NotNull Resource resource) {
+    public Permission(@NotNull AggregateId aggregateId, @NotNull Operation operation, @NotNull Resource resource) {
         this.operation = operation;
         this.resource = resource;
+        this.aggregateId = aggregateId;
     }
 
     @Override

@@ -10,7 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Set;
@@ -22,14 +24,10 @@ import java.util.Set;
 @GenericGenerator(name = LongIdGenerator.ID_GENERATOR_NAME, strategy = LongIdGenerator.DISTRIBUTED_ID_GENERATOR_CLASS_NAME)
 public class Role extends BaseAggregateRoot {
 
-    public Role(String name) {
+    public Role(AggregateId id, String name) {
         this.name = name;
+        this.aggregateId = id;
     }
-
-    @Id
-    @Getter
-    @GeneratedValue(generator = LongIdGenerator.ID_GENERATOR_NAME)
-    private Long id;
 
     @Getter
     @Column(name = "role_name")
@@ -64,5 +62,6 @@ public class Role extends BaseAggregateRoot {
     }
 
     public void grantPermission(@NotNull Permission permission) {
+        this.ownedPermissions.add(permission.getAggregateId());
     }
 }

@@ -1,11 +1,9 @@
 package com.vluee.cloud.uams.application;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
-import com.vluee.cloud.uams.core.authorize.AuthorizeService;
 import com.vluee.cloud.uams.core.authorize.domain.CheckPermission;
-import com.vluee.cloud.uams.core.permission.Permission;
-import com.vluee.cloud.uams.core.permission.PermissionFactory;
-import com.vluee.cloud.uams.core.permission.PermissionRepository;
+import com.vluee.cloud.uams.core.authorize.service.AuthorizeService;
+import com.vluee.cloud.uams.core.permission.*;
 import com.vluee.cloud.uams.core.role.domain.Role;
 import com.vluee.cloud.uams.core.role.domain.RoleRepository;
 import com.vluee.cloud.uams.core.user.User;
@@ -27,10 +25,11 @@ class AuthorizeApplicationServiceTest {
     private PermissionFactory permissionFactory = new PermissionFactory();
 
     private RoleRepository roleRepository = Mockito.mock(RoleRepository.class);
+    private GrantRepository grantRepository = Mockito.mock(GrantRepository.class);
 
     @BeforeEach
     public void setup() {
-        authorizeApplicationService = new AuthorizeApplicationService(authorizeService, permissionRepository, roleRepository);
+        authorizeApplicationService = new AuthorizeApplicationService(authorizeService, grantRepository, permissionRepository);
     }
 
 
@@ -57,15 +56,14 @@ class AuthorizeApplicationServiceTest {
         Permission apiPermission = permissionFactory.createApiPermission("GET", "/hotels", "酒店列表", "列出所有酒店");
         Role role = Mockito.mock(Role.class);
         //given
-        when(roleRepository.findById(8901L)).thenReturn(Optional.of(role));
+        when(roleRepository.findById(roleId)).thenReturn(Optional.of(role));
         when(permissionRepository.findById(988L)).thenReturn(Optional.of(apiPermission)); // mock repository behaviour
 
         //do
-        authorizeApplicationService.grantPermissionToRole(roleId, permissionId);
+        Grant grant = authorizeApplicationService.grant(role, apiPermission);
 
         //verify
-        verify(role).grantPermission(apiPermission);
-        verify(roleRepository).save(role);
+        verify(authorizeService).grant(role, apiPermission);
     }
 
 }

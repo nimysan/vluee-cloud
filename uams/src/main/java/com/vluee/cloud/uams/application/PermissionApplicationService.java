@@ -1,5 +1,6 @@
 package com.vluee.cloud.uams.application;
 
+import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.annotations.application.ApplicationService;
 import com.vluee.cloud.uams.core.permission.*;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,7 @@ public class PermissionApplicationService {
 
     Permission registerApiPermission(@NotNull RestApi restApi, @NotNull String resourceName, String description) {
         RestApiResource resource = new RestApiResource(resourceName, restApi.getUrl(), description);
-        Permission permission = new Permission(new Operation(restApi.getVerb()), resource);
+        Permission permission = new Permission(AggregateId.generate(), new Operation(restApi.getVerb()), resource);
         permissionRepository.save(permission);
         return permission;
     }
