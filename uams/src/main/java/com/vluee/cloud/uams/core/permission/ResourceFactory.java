@@ -11,4 +11,8 @@ public class ResourceFactory {
         Resource resource = new Resource(Resource.ResourceType.API, name, description);
         return resource;
     }
+
+    public Permission createApiPermission(String method, String url, String name, String description) {
+        return null;
+    }
 }

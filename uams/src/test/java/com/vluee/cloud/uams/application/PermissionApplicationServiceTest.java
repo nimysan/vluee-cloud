@@ -40,4 +40,9 @@ class PermissionApplicationServiceTest {
         log.info(permission.toString());
     }
 
+    @Test
+    public void testClassical() {
+        applicationService.registerApiPermission(new RestApi("GET", "/hotels"), "列出酒店", "列出所有酒店列表");
+    }
+
 }

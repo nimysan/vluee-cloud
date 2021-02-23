@@ -1,5 +1,7 @@
 package com.vluee.cloud.uams.core.permission;
 
-public interface PermissionRepository {
-    public void save(Permission permission);
+import org.springframework.data.repository.CrudRepository;
+
+public interface PermissionRepository extends CrudRepository<Permission, Long> {
+
 }

@@ -1,7 +1,9 @@
 package com.vluee.cloud.uams.application;
 
+import com.vluee.cloud.commons.ddd.annotations.application.ApplicationService;
 import com.vluee.cloud.uams.core.permission.*;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
 
@@ -14,7 +16,9 @@ import javax.validation.constraints.NotNull;
  * <p>
  * 更新酒店房间数量 ---  动词： update 资源：酒店房间数量  ---> POST /hotels/{hotelid}/rooms/{size}
  */
+@ApplicationService
 @AllArgsConstructor
+@Service
 public class PermissionApplicationService {
 
     private final PermissionRepository permissionRepository;

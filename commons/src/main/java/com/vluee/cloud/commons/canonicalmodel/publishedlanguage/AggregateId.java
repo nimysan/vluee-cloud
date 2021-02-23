@@ -43,6 +43,10 @@ public class AggregateId implements Serializable{
 		return aggregateId;
 	}
 
+	public Long getLongId(){
+		return Long.parseLong(aggregateId);
+	}
+
 	@Override
 	public int hashCode() {
 		return aggregateId.hashCode();
