@@ -2,7 +2,7 @@ package com.vluee.cloud.uams.core.authorize.domain;
 
 import com.vluee.cloud.commons.ddd.annotations.domain.ValueObject;
 import com.vluee.cloud.uams.core.permission.Permission;
-import com.vluee.cloud.uams.core.user.User;
+import com.vluee.cloud.uams.core.user.domain.User;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;

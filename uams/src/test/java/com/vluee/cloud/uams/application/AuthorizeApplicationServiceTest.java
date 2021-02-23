@@ -6,7 +6,7 @@ import com.vluee.cloud.uams.core.authorize.service.AuthorizeService;
 import com.vluee.cloud.uams.core.permission.*;
 import com.vluee.cloud.uams.core.role.domain.Role;
 import com.vluee.cloud.uams.core.role.domain.RoleRepository;
-import com.vluee.cloud.uams.core.user.User;
+import com.vluee.cloud.uams.core.user.domain.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

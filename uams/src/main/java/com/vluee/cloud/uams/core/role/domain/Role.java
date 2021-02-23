@@ -5,7 +5,7 @@ import com.vluee.cloud.commons.common.data.id.LongIdGenerator;
 import com.vluee.cloud.commons.ddd.annotations.domain.AggregateRoot;
 import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
 import com.vluee.cloud.uams.core.permission.Permission;
-import com.vluee.cloud.uams.core.user.User;
+import com.vluee.cloud.uams.core.user.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;

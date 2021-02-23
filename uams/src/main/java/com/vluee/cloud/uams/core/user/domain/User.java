@@ -1,4 +1,4 @@
-package com.vluee.cloud.uams.core.user;
+package com.vluee.cloud.uams.core.user.domain;
 
 import com.google.common.base.Objects;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;

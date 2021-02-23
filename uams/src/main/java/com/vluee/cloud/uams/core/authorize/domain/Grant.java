@@ -3,7 +3,7 @@ package com.vluee.cloud.uams.core.authorize.domain;
 import com.vluee.cloud.commons.ddd.annotations.domain.AggregateRoot;
 import com.vluee.cloud.uams.core.permission.Permission;
 import com.vluee.cloud.uams.core.role.domain.Role;
-import com.vluee.cloud.uams.core.user.User;
+import com.vluee.cloud.uams.core.user.domain.User;
 
 import javax.validation.constraints.NotNull;
 

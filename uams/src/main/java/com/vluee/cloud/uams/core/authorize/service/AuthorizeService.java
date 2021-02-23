@@ -8,7 +8,7 @@ import com.vluee.cloud.uams.core.permission.GrantRepository;
 import com.vluee.cloud.uams.core.permission.Permission;
 import com.vluee.cloud.uams.core.role.domain.Role;
 import com.vluee.cloud.uams.core.role.domain.RoleRepository;
-import com.vluee.cloud.uams.core.user.User;
+import com.vluee.cloud.uams.core.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
