@@ -2,7 +2,7 @@ package com.vluee.cloud.uams.core.permission;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
-import com.vluee.cloud.uams.core.role.domain.Role;
+import com.vluee.cloud.uams.core.role.domain.CRole;
 import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
@@ -43,7 +43,7 @@ public class Permission extends BaseAggregateRoot {
         this.disabled = true;
     }
 
-    public boolean isGrantToRole(Role role) {
+    public boolean isGrantToRole(CRole role) {
         return true;
     }
 }

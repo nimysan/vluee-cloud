@@ -10,7 +10,7 @@ import com.vluee.cloud.uams.core.permission.Grant;
 import com.vluee.cloud.uams.core.permission.GrantRepository;
 import com.vluee.cloud.uams.core.permission.Permission;
 import com.vluee.cloud.uams.core.permission.PermissionRepository;
-import com.vluee.cloud.uams.core.role.domain.Role;
+import com.vluee.cloud.uams.core.role.domain.CRole;
 import com.vluee.cloud.uams.core.user.domain.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -82,7 +82,7 @@ public class AuthorizeApplicationService {
         return new User(userId);
     }
 
-    public Grant grant(Role role, Permission permission) {
+    public Grant grant(CRole role, Permission permission) {
         return authorizeService.grant(role, permission);
     }
 

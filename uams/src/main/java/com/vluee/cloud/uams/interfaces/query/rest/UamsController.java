@@ -1,7 +1,7 @@
 package com.vluee.cloud.uams.interfaces.query.rest;
 
 import com.vluee.cloud.uams.application.UamsApplicationService;
-import com.vluee.cloud.uams.core.role.domain.Role;
+import com.vluee.cloud.uams.core.role.domain.CRole;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +26,7 @@ public class UamsController {
     }
 
     @GetMapping("roles")
-    public Iterable<Role> getRoles() {
+    public Iterable<CRole> getRoles() {
         return uamsApplicationService.listRoles();
     }
 

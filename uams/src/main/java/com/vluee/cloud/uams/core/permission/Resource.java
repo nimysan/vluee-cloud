@@ -27,6 +27,6 @@ public class Resource {
         /**
          * API 为 rest api的类型
          */
-        API, MENU, UI
+        API, MENU, UI, BUTTON, MODULE
     }
 }

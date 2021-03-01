@@ -1,7 +1,7 @@
 package com.vluee.cloud.uams.core.permission;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
-import com.vluee.cloud.uams.core.role.domain.Role;
+import com.vluee.cloud.uams.core.role.domain.CRole;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +14,7 @@ class GrantTest {
 
         Permission apiPermission = permissionFactory.createApiPermission("GET", "/hotels", "酒店", "获取酒店列表");
         AggregateId roleId = AggregateId.generate();
-        Role role = new Role(roleId, "super");
+        CRole role = new CRole(roleId, "super");
 
         //授权
         AggregateId grantId = AggregateId.generate();

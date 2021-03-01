@@ -14,10 +14,10 @@ import java.util.Collections;
 @AggregateRoot
 public class User {
     @Getter
-    private Long id;
+    private AggregateId id;
 
     public User(AggregateId id) {
-        this.id = id.getLongId();
+        this.id = id;
     }
 
     private Collection<AggregateId> roles;

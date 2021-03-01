@@ -5,9 +5,9 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface RoleRepository extends CrudRepository<Role, AggregateId> {
+public interface RoleRepository extends CrudRepository<CRole, AggregateId> {
 
-    Optional<Role> loadByName(String roleName);
+    Optional<CRole> loadByName(String roleName);
 
     boolean existsByName(String roleName);
 }

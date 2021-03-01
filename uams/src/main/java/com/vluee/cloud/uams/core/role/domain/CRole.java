@@ -22,9 +22,9 @@ import java.util.Set;
 @Table(name = "roles")
 @NoArgsConstructor
 @GenericGenerator(name = LongIdGenerator.ID_GENERATOR_NAME, strategy = LongIdGenerator.DISTRIBUTED_ID_GENERATOR_CLASS_NAME)
-public class Role extends BaseAggregateRoot {
+public class CRole extends BaseAggregateRoot {
 
-    public Role(AggregateId id, String name) {
+    public CRole(AggregateId id, String name) {
         this.name = name;
         this.aggregateId = id;
     }
@@ -43,8 +43,8 @@ public class Role extends BaseAggregateRoot {
      */
     private Collection<AggregateId> ownedPermissions;
 
-    public boolean hasPermission(@NotNull Permission permission) {
-        return ownedPermissions != null && this.ownedPermissions.contains(permission);
+    public boolean hasPermission(@NotNull AggregateId permissionId) {
+        return ownedPermissions != null && this.ownedPermissions.contains(permissionId);
     }
 
     private Set<User> users;
@@ -64,4 +64,5 @@ public class Role extends BaseAggregateRoot {
     public void grantPermission(@NotNull Permission permission) {
         this.ownedPermissions.add(permission.getAggregateId());
     }
+
 }

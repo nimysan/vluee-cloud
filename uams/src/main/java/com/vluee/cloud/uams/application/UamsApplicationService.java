@@ -3,7 +3,7 @@ package com.vluee.cloud.uams.application;
 import com.vluee.cloud.commons.ddd.annotations.application.ApplicationService;
 import com.vluee.cloud.uams.core.resource.domain.RestResourceRoleMapRepository;
 import com.vluee.cloud.uams.core.resource.service.RestResourceService;
-import com.vluee.cloud.uams.core.role.domain.Role;
+import com.vluee.cloud.uams.core.role.domain.CRole;
 import com.vluee.cloud.uams.core.role.domain.RoleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -45,7 +45,7 @@ public class UamsApplicationService {
     }
 
 
-    public Iterable<Role> listRoles() {
+    public Iterable<CRole> listRoles() {
 //        return roleService.list();
         return Collections.emptyList();
     }
