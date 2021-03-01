@@ -4,7 +4,7 @@ import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.annotations.domain.DomainService;
 import com.vluee.cloud.uams.core.permission.Permission;
 import com.vluee.cloud.uams.core.role.domain.CRole;
-import com.vluee.cloud.uams.core.role.domain.RoleRepository;
+import com.vluee.cloud.uams.core.role.domain.CRoleRepository;
 import com.vluee.cloud.uams.core.user.domain.User;
 import lombok.AllArgsConstructor;
 
@@ -13,11 +13,14 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * 鉴权服务
+ */
 @DomainService
 @AllArgsConstructor
 public class AccessControlService {
 
-    private final RoleRepository roleRepository;
+    private final CRoleRepository roleRepository;
 
     private final AccessControlCheckingRepository accessControlCheckingRepository;
 

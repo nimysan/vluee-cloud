@@ -1,4 +1,4 @@
-package com.vluee.cloud.uams.core.permission;
+package com.vluee.cloud.uams.core.grant;
 
 import cn.hutool.core.date.DateUtil;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
@@ -12,7 +12,7 @@ import java.util.Date;
 
 @AggregateRoot
 @Slf4j
-public class Grant extends BaseAggregateRoot {
+public class GrantAction extends BaseAggregateRoot {
 
     @Getter
     private Date grantTime;
@@ -31,35 +31,12 @@ public class Grant extends BaseAggregateRoot {
      * @param roleId
      * @param permissionId
      */
-    public Grant(@NotNull AggregateId id, @NotNull AggregateId roleId, @NotNull AggregateId permissionId) {
+    public GrantAction(@NotNull AggregateId id, @NotNull AggregateId roleId, @NotNull AggregateId permissionId, GrantOperation grantOperation) {
         this.aggregateId = id;
         this.roleId = roleId;
         this.permissionId = permissionId;
         this.grantTime = DateUtil.date();
-        this.grantOperation = GrantOperation.ADD;
-    }
-
-    /**
-     * 取消授权
-     */
-    public void cancelGrant() {
-        this.grantOperation = GrantOperation.REMOVE;
-        this.grantTime = DateUtil.date();
-    }
-
-    /**
-     * 判定给定的permission是否有授权给给定的角色
-     *
-     * @param roleId
-     * @param permissionId
-     * @return
-     */
-    public boolean positiveMatch(AggregateId roleId, AggregateId permissionId) {
-        log.info("I am {}", this);
-        if (GrantOperation.ADD.equals(this.grantOperation)) {
-            return this.roleId.equals(roleId) && this.permissionId.equals(permissionId);
-        }
-        return false;
+        this.grantOperation = grantOperation;
     }
 
     @Override
@@ -73,7 +50,7 @@ public class Grant extends BaseAggregateRoot {
                 '}';
     }
 
-    enum GrantOperation {
+    public enum GrantOperation {
         ADD, REMOVE
     }
 }

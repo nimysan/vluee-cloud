@@ -2,7 +2,7 @@ package com.vluee.cloud.uams.application;
 
 import com.vluee.cloud.commons.ddd.annotations.application.ApplicationService;
 import com.vluee.cloud.uams.core.role.domain.CRole;
-import com.vluee.cloud.uams.core.role.domain.RoleRepository;
+import com.vluee.cloud.uams.core.role.domain.CRoleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.util.Collections;
 public class UamsApplicationService {
 
 
-    private final RoleRepository roleRepository;
+    private final CRoleRepository roleRepository;
 
     private final RedisTemplate redisTemplate;
 

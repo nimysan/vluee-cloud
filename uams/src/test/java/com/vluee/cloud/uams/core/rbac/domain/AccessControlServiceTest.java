@@ -4,7 +4,7 @@ import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.uams.core.permission.Permission;
 import com.vluee.cloud.uams.core.permission.PermissionFactory;
 import com.vluee.cloud.uams.core.role.domain.CRole;
-import com.vluee.cloud.uams.core.role.domain.RoleRepository;
+import com.vluee.cloud.uams.core.role.domain.CRoleRepository;
 import com.vluee.cloud.uams.core.user.domain.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,13 +16,13 @@ class AccessControlServiceTest {
     private AccessControlService accessControlService;
     private PermissionFactory permissionFactory = new PermissionFactory();
 
-    private RoleRepository roleRepository;
+    private CRoleRepository roleRepository;
 
     private AccessControlCheckingRepository accessControlCheckingRepository;
 
     @BeforeEach
     public void setup() {
-        roleRepository = Mockito.mock(RoleRepository.class);
+        roleRepository = Mockito.mock(CRoleRepository.class);
         accessControlCheckingRepository = Mockito.mock(AccessControlCheckingRepository.class);
         accessControlService = new AccessControlService(roleRepository, accessControlCheckingRepository);
     }
@@ -39,7 +39,7 @@ class AccessControlServiceTest {
         CRole role = new CRole(roleId1, "super");
 
         Permission apiPermission = permissionFactory.createApiPermission("GET", "/hotels", "酒店", "获取酒店列表");
-        role.grantPermission(apiPermission);
+        role.addPermission(apiPermission.getAggregateId());
         user.addRole(roleId1);
         Mockito.when(roleRepository.load(roleId1)).thenReturn(role);
 
@@ -66,7 +66,7 @@ class AccessControlServiceTest {
         CRole role = new CRole(roleId1, "super");
 
         Permission apiPermission = permissionFactory.createApiPermission("GET", "/hotels", "酒店", "获取酒店列表");
-        role.grantPermission(apiPermission);
+        role.addPermission(apiPermission.getAggregateId());
         user.addRole(roleId1);
         Mockito.when(roleRepository.load(roleId1)).thenReturn(null);
 

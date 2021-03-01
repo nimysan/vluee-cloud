@@ -8,7 +8,7 @@ import lombok.ToString;
 @Data
 @ToString
 @AllArgsConstructor
-public class GrantPermissionToRoleCommand {
+public class RemoveRolePermissionCommand {
     private AggregateId roleId;
     private AggregateId permissionId;
 }

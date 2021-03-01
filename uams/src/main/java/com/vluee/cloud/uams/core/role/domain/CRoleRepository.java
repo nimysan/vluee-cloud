@@ -4,7 +4,9 @@ import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 
 import java.util.Optional;
 
-public interface RoleRepository {
+public interface CRoleRepository {
+
+    void save(CRole role);
 
     CRole load(AggregateId roleId);
 

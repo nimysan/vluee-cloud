@@ -4,7 +4,6 @@ import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.common.data.id.LongIdGenerator;
 import com.vluee.cloud.commons.ddd.annotations.domain.AggregateRoot;
 import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
-import com.vluee.cloud.uams.core.permission.Permission;
 import com.vluee.cloud.uams.core.user.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -62,8 +61,12 @@ public class CRole extends BaseAggregateRoot {
         users.add(user);
     }
 
-    public void grantPermission(@NotNull Permission permission) {
-        this.ownedPermissions.add(permission.getAggregateId());
+    public void addPermission(@NotNull AggregateId permissionId) {
+        this.ownedPermissions.add(permissionId);
+    }
+
+    public void removePermission(@NotNull AggregateId permissionId) {
+        this.ownedPermissions.remove(permissionId);
     }
 
 }
