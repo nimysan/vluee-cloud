@@ -19,11 +19,13 @@
 package com.vluee.cloud.commons.ddd.support.domain;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Slawek
@@ -32,6 +34,7 @@ import javax.persistence.*;
 @Component
 @Scope("prototype")//created in domain factories, not in spring container, therefore we don't want eager creation
 @MappedSuperclass
+@Slf4j
 public abstract class BaseAggregateRoot {
 
     public static enum AggregateStatus {
@@ -67,6 +70,15 @@ public abstract class BaseAggregateRoot {
 
     protected void domainError(String message) {
         throw new DomainOperationException(aggregateId, message);
+    }
+
+    protected void publish(Serializable event) {
+        log.info("Event is published {}", event);
+        if (eventPublisher != null) {
+            eventPublisher.publish(event);
+            return;
+        }
+
     }
 
     @Override

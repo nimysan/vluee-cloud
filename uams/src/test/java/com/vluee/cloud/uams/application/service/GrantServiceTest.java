@@ -41,7 +41,9 @@ class GrantServiceTest {
 
         Permission apiPermission = permissionFactory.createApiPermission("GET", "/hotels", "酒店", "获取酒店列表");
 
-        GrantPermissionToRoleCommand grantPermissionToRoleCommand = new GrantPermissionToRoleCommand(apiPermission.getAggregateId(), roleId1);
+        Mockito.when(roleRepository.load(roleId1)).thenReturn(role);
+
+        GrantPermissionToRoleCommand grantPermissionToRoleCommand = new GrantPermissionToRoleCommand(roleId1, apiPermission.getAggregateId());
         grantService.grantPermissionToRole(grantPermissionToRoleCommand);
 //        Assertions.assertNotNull(grant);
 //        Assertions.assertEquals(GrantAction.GrantOperation.ADD, grant.getGrantOperation());
