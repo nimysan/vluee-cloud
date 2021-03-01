@@ -1,29 +1,24 @@
 package com.vluee.cloud.uams.core.role.domain;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
-import com.vluee.cloud.commons.common.data.id.LongIdGenerator;
 import com.vluee.cloud.commons.ddd.annotations.domain.AggregateRoot;
 import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
 import com.vluee.cloud.uams.core.role.domain.events.RolePermissionAddedEvent;
 import com.vluee.cloud.uams.core.role.domain.events.RolePermissionRemovedEvent;
-import com.vluee.cloud.uams.core.user.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 @AggregateRoot
 @Entity
 @Table(name = "roles")
 @NoArgsConstructor
-@GenericGenerator(name = LongIdGenerator.ID_GENERATOR_NAME, strategy = LongIdGenerator.DISTRIBUTED_ID_GENERATOR_CLASS_NAME)
 public class CRole extends BaseAggregateRoot {
 
     public CRole(AggregateId id, String name) {
@@ -43,24 +38,19 @@ public class CRole extends BaseAggregateRoot {
     /**
      * 标识该角色拥有的所有权限
      */
+    @Fetch(FetchMode.JOIN)
+    @CollectionTable(name = "role_permissions")
+    @ElementCollection
+    @AttributeOverrides({
+            @AttributeOverride(name = "permission_id",
+                    column = @Column(name = "aggregate_id")),
+            @AttributeOverride(name = "role_id",
+                    column = @Column(name = "crole_aggregate_id"))
+    })
     private Collection<AggregateId> ownedPermissions = new HashSet<>();
 
     public boolean hasPermission(@NotNull AggregateId permissionId) {
         return ownedPermissions != null && this.ownedPermissions.contains(permissionId);
-    }
-
-    private Set<User> users;
-
-    /**
-     * 将用户分配进角色
-     *
-     * @param user
-     */
-    public void assignUser(@NotNull User user) {
-        if (users.contains(user)) {
-            return;
-        }
-        users.add(user);
     }
 
     public void addPermission(@NotNull AggregateId permissionId) {

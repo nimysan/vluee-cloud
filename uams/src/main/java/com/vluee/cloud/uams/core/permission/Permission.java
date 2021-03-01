@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 /**
  * Operation + Resource构成Permission
  */
+//@Entity
+//@Table(name = "permissions")
 public class Permission extends BaseAggregateRoot {
 
     @Getter
