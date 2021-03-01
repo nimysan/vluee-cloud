@@ -1,6 +1,6 @@
 package com.vluee.cloud.uams.interfaces.query.rest;
 
-import com.vluee.cloud.uams.application.UamsApplicationService;
+import com.vluee.cloud.uams.application.service.UamsApplicationService;
 import com.vluee.cloud.uams.core.role.domain.CRole;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

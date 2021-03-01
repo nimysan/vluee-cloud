@@ -1,5 +1,6 @@
 package com.vluee.cloud.uams.application;
 
+import com.vluee.cloud.uams.application.service.PermissionApplicationService;
 import com.vluee.cloud.uams.core.permission.Permission;
 import com.vluee.cloud.uams.core.permission.PermissionRepository;
 import com.vluee.cloud.uams.core.permission.RestApi;

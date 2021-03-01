@@ -1,4 +1,4 @@
-package com.vluee.cloud.uams.application;
+package com.vluee.cloud.uams.application.service;
 
 import com.vluee.cloud.commons.ddd.annotations.application.ApplicationService;
 import com.vluee.cloud.uams.core.role.domain.CRole;

@@ -15,8 +15,14 @@
  */
 package com.vluee.cloud.uams.infrastructure.events.impl;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.json.JSONUtil;
+import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.support.domain.DomainEventPublisher;
+import com.vluee.cloud.commons.ddd.support.domain.DomainEventRepository;
+import com.vluee.cloud.commons.ddd.support.domain.SimpleDomainEvent;
 import com.vluee.cloud.uams.infrastructure.events.impl.handlers.EventHandler;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +33,10 @@ import java.util.Set;
 
 @Component
 @Slf4j
+@AllArgsConstructor
 public class SimpleEventPublisher implements DomainEventPublisher {
+
+    private final DomainEventRepository domainEventRepository;
 
     private Set<EventHandler> eventHandlers = new HashSet<EventHandler>();
 
@@ -38,10 +47,18 @@ public class SimpleEventPublisher implements DomainEventPublisher {
 
     @Override
     public void publish(Serializable event) {
-        doPublish(event);
+        //Normally we will save the domain event always
+        SimpleDomainEvent simpleDomainEvent = convertEvent(event);
+        domainEventRepository.save(simpleDomainEvent);
+        doPublish(simpleDomainEvent.getAggregateId(), event);
     }
 
-    protected void doPublish(Object event) {
+    private SimpleDomainEvent convertEvent(Serializable event) {
+        SimpleDomainEvent simpleDomainEvent = new SimpleDomainEvent(AggregateId.generate(), event.getClass().getCanonicalName(), DateUtil.date(), true, JSONUtil.toJsonStr(event));
+        return simpleDomainEvent;
+    }
+
+    protected void doPublish(AggregateId persistEventId, Object event) {
         for (EventHandler handler : new ArrayList<EventHandler>(eventHandlers)) {
             if (handler.canHandle(event)) {
                 try {
