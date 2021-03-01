@@ -5,6 +5,8 @@ import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.annotations.domain.AggregateRoot;
 import lombok.Getter;
 
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -20,10 +22,17 @@ public class User {
         this.id = id;
     }
 
-    private Collection<AggregateId> roles;
+    private Collection<AggregateId> roles = new ArrayList<>(2);
 
     public Collection<AggregateId> ownedRoles() {
+        if (roles == null) {
+            return Collections.emptyList();
+        }
         return Collections.unmodifiableCollection(roles);
+    }
+
+    public void addRole(@NotNull AggregateId aggregateId) {
+        this.roles.add(aggregateId);
     }
 
     @Override

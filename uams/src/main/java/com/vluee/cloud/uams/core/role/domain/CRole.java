@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @AggregateRoot
@@ -41,7 +42,7 @@ public class CRole extends BaseAggregateRoot {
     /**
      * 标识该角色拥有的所有权限
      */
-    private Collection<AggregateId> ownedPermissions;
+    private Collection<AggregateId> ownedPermissions = new HashSet<>();
 
     public boolean hasPermission(@NotNull AggregateId permissionId) {
         return ownedPermissions != null && this.ownedPermissions.contains(permissionId);

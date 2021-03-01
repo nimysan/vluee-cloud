@@ -7,14 +7,13 @@ import com.vluee.cloud.uams.core.role.domain.CRole;
 import com.vluee.cloud.uams.core.role.domain.RoleRepository;
 import com.vluee.cloud.uams.core.user.domain.User;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 
 @DomainService
-@Service
 @AllArgsConstructor
 public class AccessControlService {
 
@@ -37,7 +36,7 @@ public class AccessControlService {
             checking = AccessControlChecking.deny(AggregateId.generate(), user.getId(), permission.getAggregateId());
         } else {
             //查找是否有含permission的角色
-            Optional<CRole> matchRole = aggregateIds.stream().map(roleRepository::findById).filter(Optional::isPresent).map(Optional::get).filter(t -> t.hasPermission(permission.getAggregateId())).findFirst();
+            Optional<CRole> matchRole = aggregateIds.stream().map(roleRepository::load).filter(Objects::nonNull).filter(t -> t.hasPermission(permission.getAggregateId())).findFirst();
             if (matchRole.isPresent()) {
                 //allow
                 checking = AccessControlChecking.access(AggregateId.generate(), user.getId(), permission.getAggregateId(), matchRole.get().getAggregateId());

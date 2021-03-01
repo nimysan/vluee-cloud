@@ -1,11 +1,12 @@
 package com.vluee.cloud.uams.core.role.domain;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface RoleRepository extends CrudRepository<CRole, AggregateId> {
+public interface RoleRepository {
+
+    CRole load(AggregateId roleId);
 
     Optional<CRole> loadByName(String roleName);
 

@@ -1,8 +1,6 @@
 package com.vluee.cloud.uams.application;
 
 import com.vluee.cloud.commons.ddd.annotations.application.ApplicationService;
-import com.vluee.cloud.uams.core.resource.domain.RestResourceRoleMapRepository;
-import com.vluee.cloud.uams.core.resource.service.RestResourceService;
 import com.vluee.cloud.uams.core.role.domain.CRole;
 import com.vluee.cloud.uams.core.role.domain.RoleRepository;
 import lombok.AllArgsConstructor;
@@ -21,9 +19,6 @@ import java.util.Collections;
 @ApplicationService
 public class UamsApplicationService {
 
-    private final RestResourceRoleMapRepository restResourceRoleMapRepository;
-
-    private final RestResourceService restResourceService;
 
     private final RoleRepository roleRepository;
 
