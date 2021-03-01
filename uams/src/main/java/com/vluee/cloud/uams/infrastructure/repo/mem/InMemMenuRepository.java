@@ -1,4 +1,4 @@
-package com.vluee.cloud.uams.infrastructure.mem;
+package com.vluee.cloud.uams.infrastructure.repo.mem;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.json.JSONUtil;

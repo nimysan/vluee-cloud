@@ -23,29 +23,31 @@ public class AccessControlService {
     private final AccessControlCheckingRepository accessControlCheckingRepository;
 
     /**
-     * 检查用户是否拥有给定权限
+     * 检查用户是否允许做这个操作
      *
-     * @param user
-     * @param permission
+     * @param user       用户
+     * @param permission 操作
      */
     public AccessControlChecking checkAccess(@NotNull User user, @NotNull Permission permission) {
-        AccessControlChecking rabc = null;
+
+        AccessControlChecking checking;
         Collection<AggregateId> aggregateIds = user.ownedRoles();
+
         if (aggregateIds == null) {
-            rabc = AccessControlChecking.deny(AggregateId.generate(), user.getId(), permission.getAggregateId());
+            checking = AccessControlChecking.deny(AggregateId.generate(), user.getId(), permission.getAggregateId());
         } else {
             //查找是否有含permission的角色
-            Optional<CRole> matchRole = aggregateIds.stream().map(t -> roleRepository.findById(t)).filter(t -> t.isPresent()).map(t -> t.get()).filter(t -> t.hasPermission(permission.getAggregateId())).findFirst();
+            Optional<CRole> matchRole = aggregateIds.stream().map(roleRepository::findById).filter(Optional::isPresent).map(Optional::get).filter(t -> t.hasPermission(permission.getAggregateId())).findFirst();
             if (matchRole.isPresent()) {
                 //allow
-                rabc = AccessControlChecking.access(AggregateId.generate(), user.getId(), permission.getAggregateId(), matchRole.get().getAggregateId());
+                checking = AccessControlChecking.access(AggregateId.generate(), user.getId(), permission.getAggregateId(), matchRole.get().getAggregateId());
             } else {
                 //deny
-                rabc = AccessControlChecking.deny(AggregateId.generate(), user.getId(), permission.getAggregateId());
+                checking = AccessControlChecking.deny(AggregateId.generate(), user.getId(), permission.getAggregateId());
             }
         }
 
-        accessControlCheckingRepository.save(rabc);
-        return rabc;
+        accessControlCheckingRepository.save(checking);
+        return checking;
     }
 }
