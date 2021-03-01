@@ -4,8 +4,8 @@ import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.common.data.id.LongIdGenerator;
 import com.vluee.cloud.commons.ddd.annotations.domain.AggregateRoot;
 import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
-import com.vluee.cloud.uams.core.role.domain.events.AddPermissionToRoleEvent;
-import com.vluee.cloud.uams.core.role.domain.events.RemovePermissionFromRoleEvent;
+import com.vluee.cloud.uams.core.role.domain.events.RolePermissionAddedEvent;
+import com.vluee.cloud.uams.core.role.domain.events.RolePermissionRemovedEvent;
 import com.vluee.cloud.uams.core.user.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -65,12 +65,12 @@ public class CRole extends BaseAggregateRoot {
 
     public void addPermission(@NotNull AggregateId permissionId) {
         this.ownedPermissions.add(permissionId);
-        publish(new AddPermissionToRoleEvent(this.getAggregateId(), permissionId));
+        publish(new RolePermissionAddedEvent(this.getAggregateId(), permissionId));
     }
 
     public void removePermission(@NotNull AggregateId permissionId) {
         this.ownedPermissions.remove(permissionId);
-        publish(new RemovePermissionFromRoleEvent(this.getAggregateId(), permissionId));
+        publish(new RolePermissionRemovedEvent(this.getAggregateId(), permissionId));
     }
 
 }

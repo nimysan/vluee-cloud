@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @ToString
-public class AddPermissionToRoleEvent implements Serializable {
+public class RolePermissionRemovedEvent implements Serializable {
 
     private AggregateId roleId;
 
