@@ -18,7 +18,7 @@ public class ApiPermission extends BaseAggregateRoot {
 
     @Getter
     @Embedded
-    private final Operation operation;
+    private final ResourceOperation resourceOperation;
 
     @Getter
     @Embedded
@@ -34,8 +34,8 @@ public class ApiPermission extends BaseAggregateRoot {
     @Column
     private final Date createdAt;
 
-    public ApiPermission(@NotNull AggregateId aggregateId, @NotNull Operation operation, @NotNull ApiResource resource) {
-        this.operation = operation;
+    public ApiPermission(@NotNull AggregateId aggregateId, @NotNull ResourceOperation resourceOperation, @NotNull ApiResource resource) {
+        this.resourceOperation = resourceOperation;
         this.resourceId = resource.getAggregateId();
         this.aggregateId = aggregateId;
         this.createdAt = DateUtil.date();
@@ -44,7 +44,7 @@ public class ApiPermission extends BaseAggregateRoot {
     @Override
     public String toString() {
         return "ApiPermission{" +
-                "operation=" + operation +
+                "operation=" + resourceOperation +
                 ", resourceId=" + resourceId +
                 ", disabled=" + disabled +
                 '}';

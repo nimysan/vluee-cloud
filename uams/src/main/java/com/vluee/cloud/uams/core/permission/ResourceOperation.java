@@ -15,17 +15,17 @@ import javax.persistence.Embeddable;
 @ToString
 @Embeddable
 @NoArgsConstructor
-public class Operation {
+public class ResourceOperation {
 
     @Column(name = "operator", nullable = false, length = 64)
     @Getter
     private String operator;
 
-    public Operation(String operator) {
+    public ResourceOperation(String operator) {
         this.operator = operator;
     }
 
-    public static final Operation API_EXECUTE_OPERATION = new Operation("exe");
+    public static final ResourceOperation API_EXECUTE_RESOURCE_OPERATION = new ResourceOperation("exe");
 
 
 }

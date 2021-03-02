@@ -24,12 +24,9 @@ public class ResourceDescriptor {
     @Setter
     private String description;
 
-    @Column
-    private Date createdAt;
 
     public ResourceDescriptor(String name, String description) {
         this.name = name;
         this.description = description;
-        this.createdAt = DateUtil.date();
     }
 }

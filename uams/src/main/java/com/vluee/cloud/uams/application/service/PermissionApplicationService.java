@@ -27,7 +27,7 @@ public class PermissionApplicationService {
 
     ApiPermission registerApiPermission(@NotNull RestApi restApi, @NotNull String resourceName, String description) {
         ApiResource resource = resourceFactory.createApiResource(restApi, new ResourceDescriptor(resourceName, description));
-        ApiPermission permission = new ApiPermission(AggregateId.generate(), new Operation(restApi.getVerb()), resource);
+        ApiPermission permission = new ApiPermission(AggregateId.generate(), new ResourceOperation(restApi.getVerb()), resource);
         permissionRepository.save(permission);
         return permission;
     }
