@@ -21,11 +21,13 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -39,6 +41,10 @@ import java.util.List;
         @ComponentScan("com.vluee.cloud.uams"),
         @ComponentScan("com.vluee.cloud.commons.ddd")
 })
+@EnableJpaRepositories(
+        basePackages = {"com.vluee.cloud.commons.ddd", "com.vluee.cloud.uams"}
+)
+@EntityScan(basePackages = {"com.vluee.cloud.uams", "com.vluee.cloud.commons.ddd"})
 @Import({IdConfig.class, BaseAuditConfig.class})
 @Slf4j
 public class UamsApplication implements ApplicationRunner {
