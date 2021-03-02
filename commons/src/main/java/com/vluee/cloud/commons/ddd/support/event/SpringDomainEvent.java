@@ -1,5 +1,6 @@
-package com.vluee.cloud.commons.ddd;
+package com.vluee.cloud.commons.ddd.support.event;
 
+import com.vluee.cloud.commons.ddd.support.event.DomainEvent;
 import org.springframework.context.ApplicationEvent;
 
 public class SpringDomainEvent extends ApplicationEvent implements DomainEvent {

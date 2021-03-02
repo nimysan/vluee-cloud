@@ -19,8 +19,8 @@
 package com.vluee.cloud.commons.ddd.support.domain;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
+import com.vluee.cloud.commons.ddd.support.event.DomainEventPublisherFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -52,10 +52,6 @@ public abstract class BaseAggregateRoot {
     @Enumerated(EnumType.ORDINAL)
     private AggregateStatus aggregateStatus = AggregateStatus.ACTIVE;
 
-    @Transient
-    @Autowired
-    protected DomainEventPublisher eventPublisher;
-
     public void markAsRemoved() {
         aggregateStatus = AggregateStatus.ARCHIVE;
     }
@@ -73,12 +69,8 @@ public abstract class BaseAggregateRoot {
     }
 
     protected void publish(Serializable event) {
-        log.info("Event is published {}", event);
-        if (eventPublisher != null) {
-            eventPublisher.publish(event);
-            return;
-        }
-
+        //get an elegant way
+        DomainEventPublisherFactory.getPublisher().publish(event);
     }
 
     @Override

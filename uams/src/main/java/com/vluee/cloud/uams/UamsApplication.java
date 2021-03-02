@@ -4,8 +4,9 @@ import cn.hutool.core.date.DateUtil;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.common.audit.BaseAuditConfig;
 import com.vluee.cloud.commons.common.data.id.IdConfig;
-import com.vluee.cloud.commons.ddd.support.domain.DomainEventRepository;
-import com.vluee.cloud.commons.ddd.support.domain.SimpleDomainEvent;
+import com.vluee.cloud.commons.config.DomainEventConfig;
+import com.vluee.cloud.commons.ddd.support.event.DomainEventRepository;
+import com.vluee.cloud.commons.ddd.support.event.SimpleDomainEvent;
 import com.vluee.cloud.uams.core.permission.domain.ApiPermission;
 import com.vluee.cloud.uams.core.permission.domain.ApiPermissionRepository;
 import com.vluee.cloud.uams.core.permission.domain.PermissionFactory;
@@ -45,7 +46,7 @@ import java.util.List;
         basePackages = {"com.vluee.cloud.commons.ddd", "com.vluee.cloud.uams"}
 )
 @EntityScan(basePackages = {"com.vluee.cloud.uams", "com.vluee.cloud.commons.ddd"})
-@Import({IdConfig.class, BaseAuditConfig.class})
+@Import({IdConfig.class, BaseAuditConfig.class, DomainEventConfig.class})
 @Slf4j
 public class UamsApplication implements ApplicationRunner {
 

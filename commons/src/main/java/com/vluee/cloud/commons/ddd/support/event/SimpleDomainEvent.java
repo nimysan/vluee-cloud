@@ -1,6 +1,7 @@
-package com.vluee.cloud.commons.ddd.support.domain;
+package com.vluee.cloud.commons.ddd.support.event;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
+import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
