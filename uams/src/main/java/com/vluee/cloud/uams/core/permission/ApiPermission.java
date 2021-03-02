@@ -1,11 +1,13 @@
 package com.vluee.cloud.uams.core.permission;
 
+import cn.hutool.core.date.DateUtil;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
 import lombok.Getter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
  * Operation + Resource构成Permission
@@ -16,35 +18,36 @@ public class ApiPermission extends BaseAggregateRoot {
 
     @Getter
     @Embedded
-    private Operation operation;
+    private final Operation operation;
 
     @Getter
-    @OneToOne(cascade = CascadeType.ALL)
-    private RestApiResource resource;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "aggregateId", column = @Column(name = "resourceId", nullable = false))})
+    private final AggregateId resourceId;
 
     @Getter
+    @Column
     private boolean disabled = false;
 
-    public ApiPermission(@NotNull AggregateId aggregateId, @NotNull Operation operation, @NotNull RestApiResource resource) {
+    @Getter
+    @Column
+    private final Date createdAt;
+
+    public ApiPermission(@NotNull AggregateId aggregateId, @NotNull Operation operation, @NotNull ApiResource resource) {
         this.operation = operation;
-        this.resource = resource;
+        this.resourceId = resource.getAggregateId();
         this.aggregateId = aggregateId;
+        this.createdAt = DateUtil.date();
     }
 
     @Override
     public String toString() {
-        return "Permission{" +
+        return "ApiPermission{" +
                 "operation=" + operation +
-                ", resource=" + resource +
+                ", resourceId=" + resourceId +
+                ", disabled=" + disabled +
                 '}';
-    }
-
-    public void enable() {
-        this.disabled = false;
-    }
-
-    public void disable() {
-        this.disabled = true;
     }
 
 }

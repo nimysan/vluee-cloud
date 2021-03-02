@@ -1,7 +1,6 @@
 package com.vluee.cloud.uams.application.service;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
-import com.vluee.cloud.commons.common.data.id.LongIdGenerator;
 import com.vluee.cloud.commons.ddd.annotations.application.ApplicationService;
 import com.vluee.cloud.uams.core.permission.*;
 import lombok.AllArgsConstructor;
@@ -24,10 +23,10 @@ import javax.validation.constraints.NotNull;
 public class PermissionApplicationService {
 
     private final PermissionRepository permissionRepository;
-    private final LongIdGenerator longIdGenerator;
+    private final ResourceFactory resourceFactory;
 
     ApiPermission registerApiPermission(@NotNull RestApi restApi, @NotNull String resourceName, String description) {
-        RestApiResource resource = new RestApiResource(longIdGenerator.nextId(), resourceName, restApi.getUrl(), description);
+        ApiResource resource = resourceFactory.createApiResource(restApi, new ResourceDescriptor(resourceName, description));
         ApiPermission permission = new ApiPermission(AggregateId.generate(), new Operation(restApi.getVerb()), resource);
         permissionRepository.save(permission);
         return permission;

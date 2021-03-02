@@ -11,9 +11,14 @@ public class PermissionFactory {
     @Autowired
     private LongIdGenerator longIdGenerator;
 
-    public ApiPermission createApiPermission(String verb, String url, String name, String description) {
-        RestApiResource resource = new RestApiResource(longIdGenerator.nextId(), name, url, description);
-        ApiPermission permission = new ApiPermission(AggregateId.generate(), new Operation(verb), resource);
+    /**
+     * 针对API类型的资源，只有一种 “执行” 权限
+     *
+     * @param resource
+     * @return
+     */
+    public ApiPermission createApiPermission(ApiResource resource) {
+        ApiPermission permission = new ApiPermission(AggregateId.generate(), Operation.API_EXECUTE_OPERATION, resource);
         return permission;
     }
 }

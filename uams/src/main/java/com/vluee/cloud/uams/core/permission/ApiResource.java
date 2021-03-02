@@ -1,0 +1,32 @@
+package com.vluee.cloud.uams.core.permission;
+
+import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
+import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
+import lombok.ToString;
+
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+/**
+ * REST API类型的资源
+ */
+@ToString(callSuper = true)
+@Entity
+@Table(name = "api_resources")
+public class ApiResource extends BaseAggregateRoot {
+
+    @Embedded
+    private ResourceDescriptor resourceDescriptor;
+
+    @Embedded
+    private RestApi restApi;
+
+    public ApiResource(AggregateId aggregateId, RestApi restApi, ResourceDescriptor resourceDescriptor) {
+        //validation
+        this.aggregateId = aggregateId;
+        this.restApi = restApi;
+        this.resourceDescriptor = resourceDescriptor;
+    }
+
+}

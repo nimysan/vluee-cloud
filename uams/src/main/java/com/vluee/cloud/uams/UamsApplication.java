@@ -3,11 +3,10 @@ package com.vluee.cloud.uams;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.common.audit.BaseAuditConfig;
 import com.vluee.cloud.commons.common.data.id.IdConfig;
-import com.vluee.cloud.uams.core.permission.ApiPermission;
-import com.vluee.cloud.uams.core.permission.PermissionFactory;
-import com.vluee.cloud.uams.core.permission.PermissionRepository;
+import com.vluee.cloud.uams.core.permission.*;
 import com.vluee.cloud.uams.core.role.domain.CRole;
 import com.vluee.cloud.uams.core.role.domain.CRoleRepository;
+import com.vluee.cloud.uams.readmodel.resource.ResourceFinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -46,9 +45,19 @@ public class UamsApplication implements ApplicationRunner {
     @Autowired
     private PermissionRepository permissionRepository;
 
+    @Autowired
+    private ResourceFactory resourceFactory;
+
+    @Autowired
+    private ApiResourceRepository resourceRepository;
+
+    @Autowired
+    private ResourceFinder resourceFinder;
+
     @Override
     @Transactional
     public void run(ApplicationArguments args) throws Exception {
+        initializeResources();
         List<AggregateId> aggregateIds = initializePermissions();
 //        initRoles(aggregateIds.get(0), aggregateIds.get(1));
     }
@@ -67,15 +76,21 @@ public class UamsApplication implements ApplicationRunner {
     }
 
     @Transactional
+    public void initializeResources() {
+        resourceRepository.save(resourceFactory.createApiResource(new RestApi("GET", "/hotels"), null));
+        resourceRepository.save(resourceFactory.createApiResource(new RestApi("POST", "/hotels"), null));
+        resourceRepository.save(resourceFactory.createApiResource(new RestApi("PUT", "/hotels"), null));
+        resourceRepository.save(resourceFactory.createApiResource(new RestApi("DELETE", "/hotels"), null));
+    }
+
+    @Transactional
     public List<AggregateId> initializePermissions() {
         List<AggregateId> pids = new ArrayList<>(2);
-        ApiPermission apiPermission = permissionFactory.createApiPermission("POST", "/hotels", "创建酒店", "新建一个酒店");
-        permissionRepository.save(apiPermission);
-        ApiPermission apiPermission2 = permissionFactory.createApiPermission("GET", "/hotels", "列出酒店", "新建一个酒店");
-        permissionRepository.save(apiPermission2);
-
-        pids.add(apiPermission.getAggregateId());
-        pids.add(apiPermission2.getAggregateId());
+        resourceFinder.findAll().stream().forEach(t -> {
+            ApiPermission apiPermission = permissionFactory.createApiPermission(t);
+            permissionRepository.save(apiPermission);
+            pids.add(apiPermission.getAggregateId());
+        });
 
         return pids;
     }

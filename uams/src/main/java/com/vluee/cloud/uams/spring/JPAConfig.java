@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = {"com.vluee.cloud.commons.ddd.support.infrastructure.repository.jpa", "com.vluee.cloud.uams.infrastructure.repo.jpa"})
+@EnableJpaRepositories(basePackages = {"com.vluee.cloud.commons.ddd.support.infrastructure.repository.jpa", "com.vluee.cloud.uams.infrastructure.repo.jpa", "com.vluee.cloud.uams.readmodel.jpa"})
 @Slf4j
 public class JPAConfig {
 

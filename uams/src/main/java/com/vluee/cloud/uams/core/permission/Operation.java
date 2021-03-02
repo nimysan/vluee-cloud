@@ -17,12 +17,15 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor
 public class Operation {
 
-    @Column(name = "operation_verb", nullable = false, length = 124)
+    @Column(name = "operator", nullable = false, length = 64)
     @Getter
-    private String verb;
+    private String operator;
 
-    public Operation(String verb) {
-        this.verb = verb;
+    public Operation(String operator) {
+        this.operator = operator;
     }
+
+    public static final Operation API_EXECUTE_OPERATION = new Operation("exe");
+
 
 }
