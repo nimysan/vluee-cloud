@@ -1,14 +1,8 @@
 package com.vluee.cloud.uams.application.service;
 
-import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
-import com.vluee.cloud.uams.application.command.GrantPermissionToRoleCommand;
-import com.vluee.cloud.uams.core.permission.ApiPermission;
-import com.vluee.cloud.uams.core.permission.PermissionFactory;
-import com.vluee.cloud.uams.core.permission.PermissionRepository;
-import com.vluee.cloud.uams.core.role.domain.CRole;
+import com.vluee.cloud.uams.core.permission.domain.PermissionFactory;
+import com.vluee.cloud.uams.core.permission.domain.ApiPermissionRepository;
 import com.vluee.cloud.uams.core.role.domain.CRoleRepository;
-import com.vluee.cloud.uams.core.user.domain.User;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,7 +12,7 @@ class GrantServiceTest {
     private GrantService grantService;
 
     private CRoleRepository roleRepository;
-    private PermissionRepository permissionRepository;
+    private ApiPermissionRepository apiPermissionRepository;
 
     private PermissionFactory permissionFactory = new PermissionFactory();
 
@@ -26,7 +20,7 @@ class GrantServiceTest {
     @BeforeEach
     public void setup() {
         roleRepository = Mockito.mock(CRoleRepository.class);
-        grantService = new GrantService(roleRepository);
+//        grantService = new GrantService(roleRepository);
     }
 
     @Test

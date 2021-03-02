@@ -2,7 +2,7 @@ package com.vluee.cloud.uams.core.rbac.domain;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.annotations.domain.DomainService;
-import com.vluee.cloud.uams.core.permission.ApiPermission;
+import com.vluee.cloud.uams.core.permission.domain.ApiPermission;
 import com.vluee.cloud.uams.core.role.domain.CRole;
 import com.vluee.cloud.uams.core.role.domain.CRoleRepository;
 import com.vluee.cloud.uams.core.user.domain.User;

@@ -1,4 +1,4 @@
-package com.vluee.cloud.uams.core.permission;
+package com.vluee.cloud.uams.core.resources.domain;
 
 import com.vluee.cloud.commons.ddd.annotations.domain.ValueObject;
 import lombok.Getter;

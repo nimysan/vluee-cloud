@@ -3,7 +3,12 @@ package com.vluee.cloud.uams;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.common.audit.BaseAuditConfig;
 import com.vluee.cloud.commons.common.data.id.IdConfig;
-import com.vluee.cloud.uams.core.permission.*;
+import com.vluee.cloud.uams.core.permission.domain.ApiPermission;
+import com.vluee.cloud.uams.core.permission.domain.ApiPermissionRepository;
+import com.vluee.cloud.uams.core.permission.domain.PermissionFactory;
+import com.vluee.cloud.uams.core.resources.domain.ApiResourceRepository;
+import com.vluee.cloud.uams.core.resources.domain.ResourceFactory;
+import com.vluee.cloud.uams.core.resources.domain.RestApi;
 import com.vluee.cloud.uams.core.role.domain.CRole;
 import com.vluee.cloud.uams.core.role.domain.CRoleRepository;
 import com.vluee.cloud.uams.readmodel.resource.ResourceFinder;
@@ -43,7 +48,7 @@ public class UamsApplication implements ApplicationRunner {
     private PermissionFactory permissionFactory;
 
     @Autowired
-    private PermissionRepository permissionRepository;
+    private ApiPermissionRepository apiPermissionRepository;
 
     @Autowired
     private ResourceFactory resourceFactory;
@@ -58,22 +63,19 @@ public class UamsApplication implements ApplicationRunner {
     @Transactional
     public void run(ApplicationArguments args) throws Exception {
         initializeResources();
-        List<AggregateId> aggregateIds = initializePermissions();
-//        initRoles(aggregateIds.get(0), aggregateIds.get(1));
+        List<ApiPermission> aggregateIds = initializePermissions();
+        initRoles(aggregateIds);
     }
 
     @Transactional
-    public void initRoles(AggregateId p1, AggregateId p2) {
+    private void initRoles(List<ApiPermission> aggregateIds) {
         CRole role = new CRole(AggregateId.generate(), "test1");
         cRoleRepository.save(role);
 
-        role = new CRole(AggregateId.generate(), "super");
-        cRoleRepository.save(role);
-
-        role.addPermission(p1);
-        role.addPermission(p2);
+        role.grantApiPermission(aggregateIds.get(0));
         cRoleRepository.save(role);
     }
+
 
     @Transactional
     public void initializeResources() {
@@ -84,14 +86,13 @@ public class UamsApplication implements ApplicationRunner {
     }
 
     @Transactional
-    public List<AggregateId> initializePermissions() {
-        List<AggregateId> pids = new ArrayList<>(2);
+    public List<ApiPermission> initializePermissions() {
+        List<ApiPermission> pids = new ArrayList<>(2);
         resourceFinder.findAll().stream().forEach(t -> {
             ApiPermission apiPermission = permissionFactory.createApiPermission(t);
-            permissionRepository.save(apiPermission);
-            pids.add(apiPermission.getAggregateId());
+            apiPermissionRepository.save(apiPermission);
+            pids.add(apiPermission);
         });
-
         return pids;
     }
 }

@@ -14,17 +14,17 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class GrantService {
 
-    private final CRoleRepository cRoleRepository;
-
-    public void grantPermissionToRole(GrantPermissionToRoleCommand command) {
-        CRole load = cRoleRepository.load(command.getRoleId());
-        load.addPermission(command.getPermissionId());
-        cRoleRepository.save(load);
-    }
-
-    public void removePermissionFromRole(RemoveRolePermissionCommand command) {
-        CRole load = cRoleRepository.load(command.getRoleId());
-        load.removePermission(command.getPermissionId());
-        cRoleRepository.save(load);
-    }
+//    private final CRoleRepository cRoleRepository;
+//
+//    public void grantPermissionToRole(GrantPermissionToRoleCommand command) {
+//        CRole load = cRoleRepository.load(command.getRoleId());
+//        load.grantApiPermission(command.getPermissionId());
+//        cRoleRepository.save(load);
+//    }
+//
+//    public void removePermissionFromRole(RemoveRolePermissionCommand command) {
+//        CRole load = cRoleRepository.load(command.getRoleId());
+//        load.cancelApiPermissionGrant(command.getPermissionId());
+//        cRoleRepository.save(load);
+//    }
 }

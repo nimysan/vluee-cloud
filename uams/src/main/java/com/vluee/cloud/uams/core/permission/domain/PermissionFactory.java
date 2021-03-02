@@ -1,6 +1,8 @@
-package com.vluee.cloud.uams.core.permission;
+package com.vluee.cloud.uams.core.permission.domain;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
+import com.vluee.cloud.uams.core.resources.domain.ApiResource;
+import com.vluee.cloud.uams.core.resources.domain.ResourceOperation;
 import org.springframework.stereotype.Component;
 
 @Component

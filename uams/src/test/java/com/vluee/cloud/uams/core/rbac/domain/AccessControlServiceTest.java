@@ -1,6 +1,6 @@
 package com.vluee.cloud.uams.core.rbac.domain;
 
-import com.vluee.cloud.uams.core.permission.PermissionFactory;
+import com.vluee.cloud.uams.core.permission.domain.PermissionFactory;
 import com.vluee.cloud.uams.core.role.domain.CRoleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

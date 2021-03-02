@@ -1,7 +1,7 @@
 package com.vluee.cloud.uams.readmodel.jpa;
 
 import com.vluee.cloud.commons.ddd.support.domain.FinderImpl;
-import com.vluee.cloud.uams.core.permission.ApiResource;
+import com.vluee.cloud.uams.core.resources.domain.ApiResource;
 import com.vluee.cloud.uams.readmodel.resource.ResourceFinder;
 
 import javax.persistence.EntityManager;

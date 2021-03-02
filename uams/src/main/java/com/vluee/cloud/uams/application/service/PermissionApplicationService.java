@@ -2,7 +2,9 @@ package com.vluee.cloud.uams.application.service;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.annotations.application.ApplicationService;
-import com.vluee.cloud.uams.core.permission.*;
+import com.vluee.cloud.uams.core.permission.domain.ApiPermission;
+import com.vluee.cloud.uams.core.permission.domain.ApiPermissionRepository;
+import com.vluee.cloud.uams.core.resources.domain.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +24,13 @@ import javax.validation.constraints.NotNull;
 @Service
 public class PermissionApplicationService {
 
-    private final PermissionRepository permissionRepository;
+    private final ApiPermissionRepository apiPermissionRepository;
     private final ResourceFactory resourceFactory;
 
     ApiPermission registerApiPermission(@NotNull RestApi restApi, @NotNull String resourceName, String description) {
         ApiResource resource = resourceFactory.createApiResource(restApi, new ResourceDescriptor(resourceName, description));
         ApiPermission permission = new ApiPermission(AggregateId.generate(), new ResourceOperation(restApi.getVerb()), resource);
-        permissionRepository.save(permission);
+        apiPermissionRepository.save(permission);
         return permission;
     }
 }

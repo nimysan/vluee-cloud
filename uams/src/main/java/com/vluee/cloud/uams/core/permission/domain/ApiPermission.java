@@ -1,8 +1,10 @@
-package com.vluee.cloud.uams.core.permission;
+package com.vluee.cloud.uams.core.permission.domain;
 
 import cn.hutool.core.date.DateUtil;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
+import com.vluee.cloud.uams.core.resources.domain.ApiResource;
+import com.vluee.cloud.uams.core.resources.domain.ResourceOperation;
 import lombok.Getter;
 
 import javax.persistence.*;
