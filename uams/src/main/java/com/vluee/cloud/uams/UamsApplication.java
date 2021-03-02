@@ -5,6 +5,8 @@ import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.common.audit.BaseAuditConfig;
 import com.vluee.cloud.commons.common.data.id.IdConfig;
 import com.vluee.cloud.commons.config.DomainEventConfig;
+import com.vluee.cloud.commons.ddd.annotations.event.EventListener;
+import com.vluee.cloud.commons.ddd.annotations.event.EventListeners;
 import com.vluee.cloud.commons.ddd.support.event.DomainEventRepository;
 import com.vluee.cloud.commons.ddd.support.event.SimpleDomainEvent;
 import com.vluee.cloud.uams.core.permission.domain.ApiPermission;
@@ -31,6 +33,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +51,7 @@ import java.util.List;
 @EntityScan(basePackages = {"com.vluee.cloud.uams", "com.vluee.cloud.commons.ddd"})
 @Import({IdConfig.class, BaseAuditConfig.class, DomainEventConfig.class})
 @Slf4j
+@EventListeners
 public class UamsApplication implements ApplicationRunner {
 
     public static void main(String[] args) {
@@ -114,5 +118,10 @@ public class UamsApplication implements ApplicationRunner {
             pids.add(apiPermission);
         });
         return pids;
+    }
+
+    @EventListener
+    public void test(Serializable event){
+        log.info("####XXXX#### {}", event);
     }
 }

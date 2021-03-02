@@ -15,8 +15,13 @@
  */
 package com.vluee.cloud.commons.ddd.support.event;
 
+import com.vluee.cloud.commons.ddd.support.infrastructure.events.handler.EventHandler;
+
 import java.io.Serializable;
 
 public interface DomainEventPublisher {
+
     void publish(Serializable event);
+
+    void registerEventHandler(EventHandler handler);
 }

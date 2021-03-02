@@ -16,7 +16,7 @@
 /**
  * 
  */
-package com.vluee.cloud.uams.infrastructure.events.impl.handlers;
+package com.vluee.cloud.commons.ddd.support.infrastructure.events.handler;
 
 import org.springframework.beans.factory.BeanFactory;
 
@@ -28,7 +28,7 @@ import java.lang.reflect.Method;
  * @author Slawek
  *
  */
-public class AsynchronousEventHandler extends SpringEventHandler{
+public class AsynchronousEventHandler extends SpringEventHandler {
 
 	/**
 	 * @param eventType

@@ -30,6 +30,10 @@ public class SimpleDomainEvent extends BaseAggregateRoot {
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = " content", columnDefinition = "BLOB NOT NULL", nullable = true)
+    @Column(name = "content", columnDefinition = "BLOB NOT NULL", nullable = true)
     private String content;
+
+    public void markAsPublished() {
+        this.published = true;
+    }
 }

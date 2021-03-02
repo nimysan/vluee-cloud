@@ -13,17 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.vluee.cloud.uams.infrastructure.events.impl;
+package com.vluee.cloud.commons.ddd.support.infrastructure.events;
 
 import com.vluee.cloud.commons.ddd.annotations.event.EventListener;
-import com.vluee.cloud.uams.infrastructure.events.impl.handlers.AsynchronousEventHandler;
-import com.vluee.cloud.uams.infrastructure.events.impl.handlers.EventHandler;
-import com.vluee.cloud.uams.infrastructure.events.impl.handlers.SpringEventHandler;
+import com.vluee.cloud.commons.ddd.support.event.DomainEventPublisher;
+import com.vluee.cloud.commons.ddd.support.infrastructure.events.handler.AsynchronousEventHandler;
+import com.vluee.cloud.commons.ddd.support.infrastructure.events.handler.EventHandler;
+import com.vluee.cloud.commons.ddd.support.infrastructure.events.handler.SpringEventHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
@@ -31,14 +32,19 @@ import java.lang.reflect.Method;
  * Registers spring beans methods as event handlers in spring event publisher
  * (if needed).
  */
-@Component
+@Slf4j
 public class EventListenerBeanPostProcessor implements BeanPostProcessor, BeanFactoryAware {
 
     private BeanFactory beanFactory;
-    private SimpleEventPublisher eventPublisher;
+    private DomainEventPublisher eventPublisher;
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+
+        boolean b = bean.getClass().toString().contains("com.vluee.cloud.uams");
+        if (b) {
+            log.info("Handle -- {}", bean.getClass());
+        }
         for (Method method : bean.getClass().getMethods()) {
             EventListener listenerAnnotation = method.getAnnotation(EventListener.class);
 
@@ -47,7 +53,6 @@ public class EventListenerBeanPostProcessor implements BeanPostProcessor, BeanFa
             }
 
             Class<?> eventType = method.getParameterTypes()[0];
-
             if (listenerAnnotation.asynchronous()) {
                 //TODO just a temporary fake impl
                 EventHandler handler = new AsynchronousEventHandler(eventType, beanName, method, beanFactory);
@@ -70,6 +75,6 @@ public class EventListenerBeanPostProcessor implements BeanPostProcessor, BeanFa
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         this.beanFactory = beanFactory;
-        eventPublisher = beanFactory.getBean(SimpleEventPublisher.class);
+        eventPublisher = beanFactory.getBean(DomainEventPublisher.class);
     }
 }

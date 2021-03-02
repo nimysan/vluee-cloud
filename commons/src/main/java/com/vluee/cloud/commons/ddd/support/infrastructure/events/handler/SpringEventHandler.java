@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.vluee.cloud.uams.infrastructure.events.impl.handlers;
+package com.vluee.cloud.commons.ddd.support.infrastructure.events.handler;
 
 import org.springframework.beans.factory.BeanFactory;
 
