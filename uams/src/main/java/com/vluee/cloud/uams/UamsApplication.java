@@ -1,8 +1,11 @@
 package com.vluee.cloud.uams;
 
+import cn.hutool.core.date.DateUtil;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.common.audit.BaseAuditConfig;
 import com.vluee.cloud.commons.common.data.id.IdConfig;
+import com.vluee.cloud.commons.ddd.support.domain.DomainEventRepository;
+import com.vluee.cloud.commons.ddd.support.domain.SimpleDomainEvent;
 import com.vluee.cloud.uams.core.permission.domain.ApiPermission;
 import com.vluee.cloud.uams.core.permission.domain.ApiPermissionRepository;
 import com.vluee.cloud.uams.core.permission.domain.PermissionFactory;
@@ -12,6 +15,7 @@ import com.vluee.cloud.uams.core.resources.domain.RestApi;
 import com.vluee.cloud.uams.core.role.domain.CRole;
 import com.vluee.cloud.uams.core.role.domain.CRoleRepository;
 import com.vluee.cloud.uams.readmodel.resource.ResourceFinder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -32,9 +36,11 @@ import java.util.List;
 @SpringBootApplication
 @ComponentScans({
         @ComponentScan("cn.hutool.extra.spring"),
-        @ComponentScan("com.vluee.cloud.uams")
+        @ComponentScan("com.vluee.cloud.uams"),
+        @ComponentScan("com.vluee.cloud.commons.ddd")
 })
 @Import({IdConfig.class, BaseAuditConfig.class})
+@Slf4j
 public class UamsApplication implements ApplicationRunner {
 
     public static void main(String[] args) {
@@ -59,12 +65,19 @@ public class UamsApplication implements ApplicationRunner {
     @Autowired
     private ResourceFinder resourceFinder;
 
+    @Autowired
+    private DomainEventRepository domainEventRepository;
+
     @Override
     @Transactional
     public void run(ApplicationArguments args) throws Exception {
         initializeResources();
         List<ApiPermission> aggregateIds = initializePermissions();
         initRoles(aggregateIds);
+
+        log.info("---{}---", domainEventRepository);
+        //AggregateId aggregateId, String eventName, Date eventTime, boolean isPublished, String jsonContent
+        domainEventRepository.save(new SimpleDomainEvent(AggregateId.generate(), "test", DateUtil.date(), true, "hello content"));
     }
 
     @Transactional
