@@ -6,8 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
+@EnableTransactionManagement
 @EnableJpaRepositories(basePackages = {"com.vluee.cloud.commons.ddd.support.infrastructure.repository.jpa", "com.vluee.cloud.uams.infrastructure.repo.jpa"})
 @Slf4j
 public class JPAConfig {

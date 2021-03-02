@@ -2,28 +2,30 @@ package com.vluee.cloud.uams.core.permission;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
-import com.vluee.cloud.uams.core.role.domain.CRole;
 import lombok.Getter;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
  * Operation + Resource构成Permission
  */
-//@Entity
-//@Table(name = "permissions")
-public class Permission extends BaseAggregateRoot {
+@Entity
+@Table(name = "api_permissions")
+public class ApiPermission extends BaseAggregateRoot {
 
     @Getter
+    @Embedded
     private Operation operation;
 
     @Getter
-    private Resource resource;
+    @OneToOne(cascade = CascadeType.ALL)
+    private RestApiResource resource;
 
     @Getter
     private boolean disabled = false;
 
-    public Permission(@NotNull AggregateId aggregateId, @NotNull Operation operation, @NotNull Resource resource) {
+    public ApiPermission(@NotNull AggregateId aggregateId, @NotNull Operation operation, @NotNull RestApiResource resource) {
         this.operation = operation;
         this.resource = resource;
         this.aggregateId = aggregateId;
@@ -45,7 +47,4 @@ public class Permission extends BaseAggregateRoot {
         this.disabled = true;
     }
 
-    public boolean isGrantToRole(CRole role) {
-        return true;
-    }
 }

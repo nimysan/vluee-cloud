@@ -2,7 +2,7 @@ package com.vluee.cloud.uams.core.rbac.domain;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.annotations.domain.DomainService;
-import com.vluee.cloud.uams.core.permission.Permission;
+import com.vluee.cloud.uams.core.permission.ApiPermission;
 import com.vluee.cloud.uams.core.role.domain.CRole;
 import com.vluee.cloud.uams.core.role.domain.CRoleRepository;
 import com.vluee.cloud.uams.core.user.domain.User;
@@ -30,7 +30,7 @@ public class AccessControlService {
      * @param user       用户
      * @param permission 操作
      */
-    public AccessControlChecking checkAccess(@NotNull User user, @NotNull Permission permission) {
+    public AccessControlChecking checkAccess(@NotNull User user, @NotNull ApiPermission permission) {
 
         AccessControlChecking checking;
         Collection<AggregateId> aggregateIds = user.ownedRoles();

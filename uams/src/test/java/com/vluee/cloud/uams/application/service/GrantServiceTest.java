@@ -2,7 +2,7 @@ package com.vluee.cloud.uams.application.service;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.uams.application.command.GrantPermissionToRoleCommand;
-import com.vluee.cloud.uams.core.permission.Permission;
+import com.vluee.cloud.uams.core.permission.ApiPermission;
 import com.vluee.cloud.uams.core.permission.PermissionFactory;
 import com.vluee.cloud.uams.core.permission.PermissionRepository;
 import com.vluee.cloud.uams.core.role.domain.CRole;
@@ -39,7 +39,7 @@ class GrantServiceTest {
         AggregateId roleId1 = AggregateId.generate();
         CRole role = new CRole(roleId1, "super");
 
-        Permission apiPermission = permissionFactory.createApiPermission("GET", "/hotels", "酒店", "获取酒店列表");
+        ApiPermission apiPermission = permissionFactory.createApiPermission("GET", "/hotels", "酒店", "获取酒店列表");
 
         Mockito.when(roleRepository.load(roleId1)).thenReturn(role);
 

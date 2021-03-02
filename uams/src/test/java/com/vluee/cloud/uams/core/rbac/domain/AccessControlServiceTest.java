@@ -1,7 +1,7 @@
 package com.vluee.cloud.uams.core.rbac.domain;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
-import com.vluee.cloud.uams.core.permission.Permission;
+import com.vluee.cloud.uams.core.permission.ApiPermission;
 import com.vluee.cloud.uams.core.permission.PermissionFactory;
 import com.vluee.cloud.uams.core.role.domain.CRole;
 import com.vluee.cloud.uams.core.role.domain.CRoleRepository;
@@ -38,7 +38,7 @@ class AccessControlServiceTest {
         AggregateId roleId1 = AggregateId.generate();
         CRole role = new CRole(roleId1, "super");
 
-        Permission apiPermission = permissionFactory.createApiPermission("GET", "/hotels", "酒店", "获取酒店列表");
+        ApiPermission apiPermission = permissionFactory.createApiPermission("GET", "/hotels", "酒店", "获取酒店列表");
         role.addPermission(apiPermission.getAggregateId());
         user.addRole(roleId1);
         Mockito.when(roleRepository.load(roleId1)).thenReturn(role);
@@ -65,7 +65,7 @@ class AccessControlServiceTest {
         AggregateId roleId1 = AggregateId.generate();
         CRole role = new CRole(roleId1, "super");
 
-        Permission apiPermission = permissionFactory.createApiPermission("GET", "/hotels", "酒店", "获取酒店列表");
+        ApiPermission apiPermission = permissionFactory.createApiPermission("GET", "/hotels", "酒店", "获取酒店列表");
         role.addPermission(apiPermission.getAggregateId());
         user.addRole(roleId1);
         Mockito.when(roleRepository.load(roleId1)).thenReturn(null);
@@ -92,7 +92,7 @@ class AccessControlServiceTest {
         AggregateId roleId1 = AggregateId.generate();
         CRole role = new CRole(roleId1, "super");
 
-        Permission apiPermission = permissionFactory.createApiPermission("GET", "/hotels", "酒店", "获取酒店列表");
+        ApiPermission apiPermission = permissionFactory.createApiPermission("GET", "/hotels", "酒店", "获取酒店列表");
 //        role.grantPermission(apiPermission);
         user.addRole(roleId1);
         Mockito.when(roleRepository.load(roleId1)).thenReturn(role);
