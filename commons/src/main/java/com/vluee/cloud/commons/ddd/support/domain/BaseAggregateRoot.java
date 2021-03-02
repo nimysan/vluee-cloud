@@ -49,7 +49,7 @@ public abstract class BaseAggregateRoot {
     @Version
     private Long version;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private AggregateStatus aggregateStatus = AggregateStatus.ACTIVE;
 
     public void markAsRemoved() {
