@@ -20,20 +20,19 @@ package com.vluee.cloud.commons.cqrs.command.impl;
 
 import com.vluee.cloud.commons.cqrs.annotations.Command;
 import com.vluee.cloud.commons.cqrs.command.Gate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 
-@Component
 public class StandardGate implements Gate {
 
-    @Autowired
-    private RunEnvironment runEnvironment;
+    public StandardGate(RunEnvironment runEnvironment) {
+        this.runEnvironment = runEnvironment;
+    }
+
+    private final RunEnvironment runEnvironment;
 
     private GateHistory gateHistory = new GateHistory();
 
     /* (non-Javadoc)
-     * @see pl.com.bottega.cqrs.command.impl.Gate#dispatch(java.lang.Object)
      */
     @Override
     public Object dispatch(Object command) {

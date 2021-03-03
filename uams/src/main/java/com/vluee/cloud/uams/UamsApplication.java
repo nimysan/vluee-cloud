@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.common.audit.BaseAuditConfig;
 import com.vluee.cloud.commons.common.data.id.IdConfig;
+import com.vluee.cloud.commons.config.CQRSCommandConfig;
 import com.vluee.cloud.commons.config.DomainEventConfig;
 import com.vluee.cloud.commons.ddd.annotations.event.EventListener;
 import com.vluee.cloud.commons.ddd.annotations.event.EventListeners;
@@ -50,7 +51,7 @@ import java.util.List;
         basePackages = {"com.vluee.cloud.commons.ddd", "com.vluee.cloud.uams"}
 )
 @EntityScan(basePackages = {"com.vluee.cloud.uams", "com.vluee.cloud.commons.ddd"})
-@Import({IdConfig.class, BaseAuditConfig.class, DomainEventConfig.class})
+@Import({IdConfig.class, BaseAuditConfig.class, DomainEventConfig.class, CQRSCommandConfig.class})
 @Slf4j
 @EventListeners
 public class UamsApplication implements ApplicationRunner {

@@ -29,7 +29,6 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
 public class SpringHandlersProvider implements RunEnvironment.HandlersProvider, ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired

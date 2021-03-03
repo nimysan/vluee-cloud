@@ -19,21 +19,19 @@
 package com.vluee.cloud.commons.cqrs.command.impl;
 
 import com.vluee.cloud.commons.cqrs.command.handler.CommandHandler;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.AllArgsConstructor;
 
 /**
  * @author Slawek
  */
-@Component
+@AllArgsConstructor
 public class RunEnvironment {
 
     public interface HandlersProvider {
         CommandHandler<Object, Object> getHandler(Object command);
     }
 
-    @Autowired
-    private HandlersProvider handlersProvider;
+    private final HandlersProvider handlersProvider;
 
     public Object run(Object command) {
         CommandHandler<Object, Object> handler = handlersProvider.getHandler(command);
