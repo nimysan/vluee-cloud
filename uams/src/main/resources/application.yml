@@ -13,3 +13,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL55Dialect
     hibernate:
       ddl-auto: create-drop
+
+logging:
+  level:
+    org.springframework.transaction: DEBUG

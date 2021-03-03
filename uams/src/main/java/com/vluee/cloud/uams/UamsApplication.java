@@ -9,6 +9,7 @@ import com.vluee.cloud.commons.ddd.annotations.event.EventListener;
 import com.vluee.cloud.commons.ddd.annotations.event.EventListeners;
 import com.vluee.cloud.commons.ddd.support.event.DomainEventRepository;
 import com.vluee.cloud.commons.ddd.support.event.SimpleDomainEvent;
+import com.vluee.cloud.commons.ddd.support.infrastructure.events.SimpleDomainEventPublisher;
 import com.vluee.cloud.uams.core.permission.domain.ApiPermission;
 import com.vluee.cloud.uams.core.permission.domain.ApiPermissionRepository;
 import com.vluee.cloud.uams.core.permission.domain.PermissionFactory;
@@ -79,6 +80,9 @@ public class UamsApplication implements ApplicationRunner {
     @Autowired
     private DomainEventRepository domainEventRepository;
 
+    @Autowired
+    private SimpleDomainEventPublisher simpleDomainEventPublisher;
+
     @Override
     @Transactional
     public void run(ApplicationArguments args) throws Exception {
@@ -88,7 +92,12 @@ public class UamsApplication implements ApplicationRunner {
 
         log.info("---{}---", domainEventRepository);
         //AggregateId aggregateId, String eventName, Date eventTime, boolean isPublished, String jsonContent
-        domainEventRepository.save(new SimpleDomainEvent(AggregateId.generate(), "test", DateUtil.date(), true, "hello content"));
+
+        domainEventRepository.save(new SimpleDomainEvent(AggregateId.generate(), DateUtil.date(), true, "hello content"));
+//        Collection<SimpleDomainEvent> simpleDomainEvents = domainEventRepository.fetchNonPublishEvents();
+//        simpleDomainEvents.forEach(t->simpleDomainEventPublisher.eventualConsistencyRemedyAction());
+
+//        simpleDomainEventPublisher.handle();
     }
 
     @Transactional
@@ -121,7 +130,7 @@ public class UamsApplication implements ApplicationRunner {
     }
 
     @EventListener
-    public void test(Serializable event){
+    public void test(Serializable event) {
         log.info("####XXXX#### {}", event);
     }
 }
