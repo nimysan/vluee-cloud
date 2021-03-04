@@ -1,7 +1,7 @@
 package com.vluee.cloud.commons.ddd.support.event;
 
 import cn.hutool.extra.spring.SpringUtil;
-import com.vluee.cloud.commons.common.spring.SpringContextUtils;
+import com.vluee.cloud.commons.ddd.support.event.publisher.DomainEventPublisher;
 
 /**
  * 构造domain event publisher的工厂

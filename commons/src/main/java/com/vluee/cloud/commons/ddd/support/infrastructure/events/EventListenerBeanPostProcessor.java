@@ -16,7 +16,7 @@
 package com.vluee.cloud.commons.ddd.support.infrastructure.events;
 
 import com.vluee.cloud.commons.ddd.annotations.event.EventListener;
-import com.vluee.cloud.commons.ddd.support.event.DomainEventPublisher;
+import com.vluee.cloud.commons.ddd.support.event.publisher.DomainEventPublisher;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.handler.AsynchronousEventHandler;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.handler.EventHandler;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.handler.SpringEventHandler;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.vluee.cloud.commons.ddd.support.event;
+package com.vluee.cloud.commons.ddd.support.event.publisher;
 
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.handler.EventHandler;
 
@@ -24,4 +24,6 @@ public interface DomainEventPublisher {
     void publish(Serializable event);
 
     void registerEventHandler(EventHandler handler);
+
+    String serializeEvent(Serializable event);
 }

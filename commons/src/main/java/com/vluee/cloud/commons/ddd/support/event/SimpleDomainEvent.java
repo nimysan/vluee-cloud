@@ -3,6 +3,7 @@ package com.vluee.cloud.commons.ddd.support.event;
 import cn.hutool.json.JSONUtil;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
+import com.vluee.cloud.commons.ddd.support.event.exception.DomainEventDefinitionException;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
@@ -20,6 +21,7 @@ public class SimpleDomainEvent extends BaseAggregateRoot implements Serializable
         this.eventName = event.getClass().getCanonicalName();
         this.eventTime = eventTime;
         this.published = isPublished;
+        this.sourceEvent = event;
         this.content = JSONUtil.toJsonStr(event);
     }
 

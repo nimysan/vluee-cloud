@@ -3,8 +3,9 @@ package com.vluee.cloud.commons.ddd.support.infrastructure.events;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.thread.ThreadUtil;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
-import com.vluee.cloud.commons.ddd.support.event.DomainEventPublisher;
+import com.vluee.cloud.commons.ddd.support.event.publisher.DomainEventPublisher;
 import com.vluee.cloud.commons.ddd.support.event.DomainEventRepository;
+import com.vluee.cloud.commons.ddd.support.event.serialize.DomainEventSerializer;
 import com.vluee.cloud.commons.ddd.support.event.SimpleDomainEvent;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.handler.EventHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.context.ContextLoader;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,8 +30,12 @@ import java.util.Set;
 @Slf4j
 public class SimpleDomainEventPublisher implements DomainEventPublisher, ApplicationContextAware {
 
-    public SimpleDomainEventPublisher(DomainEventRepository domainEventRepository) {
+    private final DomainEventRepository domainEventRepository;
+    private final DomainEventSerializer domainEventSerializer;
+
+    public SimpleDomainEventPublisher(@NotNull DomainEventRepository domainEventRepository,@NotNull final DomainEventSerializer domainEventSerializer) {
         this.domainEventRepository = domainEventRepository;
+        this.domainEventSerializer = domainEventSerializer;
         //新启动一个线程补偿
         log.info("Trigger events remedy action at Thread {}", Thread.currentThread().getName());
         //TODO 如何实现补偿，因为事务问题，暂时没有很好的办法
@@ -62,7 +68,10 @@ public class SimpleDomainEventPublisher implements DomainEventPublisher, Applica
         eventHandlers.add(handler);
     }
 
-    private final DomainEventRepository domainEventRepository;
+    @Override
+    public String serializeEvent(Serializable event) {
+        return this.domainEventSerializer.serialize(event);
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -81,28 +90,34 @@ public class SimpleDomainEventPublisher implements DomainEventPublisher, Applica
         domainEventRepository.save(simpleDomainEvent);
         try {
             //任何实际分发的异常，都不回导致当前事务回滚，确保 "事件保存是成功的"
-            internalDoPublish(simpleDomainEvent);
+            //internalDoPublish(simpleDomainEvent);
         } catch (Throwable e) {
             //
+            log.error("Failed to handle event", e);
         }
 
     }
 
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void internalDoPublish(SimpleDomainEvent eventEntity) {
+        boolean publishDone = true;
         final Serializable sourceEvent = eventEntity.getSourceEvent();
         for (EventHandler handler : new ArrayList<EventHandler>(eventHandlers)) {
             if (handler.canHandle(sourceEvent)) {
                 try {
                     handler.handle(sourceEvent);
-                } catch (Exception e) {
+                } catch (Throwable e) {
                     log.error("event handling error", e);
+                    publishDone = false;
                 }
             }
         }
-        eventEntity.markAsPublished();
-        domainEventRepository.save(eventEntity);
+
+        if (publishDone) {
+            eventEntity.markAsPublished();
+            domainEventRepository.save(eventEntity);
+        }
     }
 
 

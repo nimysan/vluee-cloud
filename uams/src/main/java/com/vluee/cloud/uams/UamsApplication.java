@@ -1,6 +1,5 @@
 package com.vluee.cloud.uams;
 
-import cn.hutool.core.date.DateUtil;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.common.audit.BaseAuditConfig;
 import com.vluee.cloud.commons.common.data.id.IdConfig;
@@ -9,7 +8,6 @@ import com.vluee.cloud.commons.config.DomainEventConfig;
 import com.vluee.cloud.commons.ddd.annotations.event.EventListener;
 import com.vluee.cloud.commons.ddd.annotations.event.EventListeners;
 import com.vluee.cloud.commons.ddd.support.event.DomainEventRepository;
-import com.vluee.cloud.commons.ddd.support.event.SimpleDomainEvent;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.SimpleDomainEventPublisher;
 import com.vluee.cloud.uams.core.permission.domain.ApiPermission;
 import com.vluee.cloud.uams.core.permission.domain.ApiPermissionRepository;
@@ -87,14 +85,14 @@ public class UamsApplication implements ApplicationRunner {
     @Override
     @Transactional
     public void run(ApplicationArguments args) throws Exception {
-        initializeResources();
-        List<ApiPermission> aggregateIds = initializePermissions();
-        initRoles(aggregateIds);
-
-        log.info("---{}---", domainEventRepository);
-        //AggregateId aggregateId, String eventName, Date eventTime, boolean isPublished, String jsonContent
-
-        domainEventRepository.save(new SimpleDomainEvent(AggregateId.generate(), DateUtil.date(), true, "hello content"));
+//        initializeResources();
+//        List<ApiPermission> aggregateIds = initializePermissions();
+//        initRoles(aggregateIds);
+//
+//        log.info("---{}---", domainEventRepository);
+//        //AggregateId aggregateId, String eventName, Date eventTime, boolean isPublished, String jsonContent
+//
+//        domainEventRepository.save(new SimpleDomainEvent(AggregateId.generate(), DateUtil.date(), true, "hello content"));
 //        Collection<SimpleDomainEvent> simpleDomainEvents = domainEventRepository.fetchNonPublishEvents();
 //        simpleDomainEvents.forEach(t->simpleDomainEventPublisher.eventualConsistencyRemedyAction());
 
