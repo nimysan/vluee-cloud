@@ -70,10 +70,11 @@ public class SimpleDomainEventPublisher implements DomainEventPublisher, Applica
                         //确保任何异常都能够被catch, 否则会导致无法将connection资源返回来池子
                         delegateDomainEventSender.sendEvent(simpleDomainEvent);
                     } catch (Throwable e) {
-                        log.error("Failed to handle event", e);
+                        log.error("Fail to [real] send the event to subscriber", e);
                     }
                 }
             });
         }
     }
+
 }
