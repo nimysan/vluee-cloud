@@ -1,71 +1,43 @@
 package com.vluee.cloud.commons.ddd.support.infrastructure.events;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.thread.ThreadUtil;
-import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
-import com.vluee.cloud.commons.ddd.support.event.publisher.DomainEventPublisher;
+import com.vluee.cloud.commons.ddd.support.event.DelegateDomainEventSender;
+import com.vluee.cloud.commons.ddd.support.event.DomainEventFactory;
 import com.vluee.cloud.commons.ddd.support.event.DomainEventRepository;
-import com.vluee.cloud.commons.ddd.support.event.serialize.DomainEventSerializer;
 import com.vluee.cloud.commons.ddd.support.event.SimpleDomainEvent;
+import com.vluee.cloud.commons.ddd.support.event.publisher.DomainEventPublisher;
+import com.vluee.cloud.commons.ddd.support.event.serialize.DomainEventSerializer;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.handler.EventHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
-import org.springframework.web.context.ContextLoader;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 @Slf4j
 public class SimpleDomainEventPublisher implements DomainEventPublisher, ApplicationContextAware {
 
     private final DomainEventRepository domainEventRepository;
     private final DomainEventSerializer domainEventSerializer;
+    private final DomainEventFactory domainEventFactory;
+    private final DelegateDomainEventSender delegateDomainEventSender;
 
-    public SimpleDomainEventPublisher(@NotNull DomainEventRepository domainEventRepository,@NotNull final DomainEventSerializer domainEventSerializer) {
+    public SimpleDomainEventPublisher(@NotNull DomainEventRepository domainEventRepository, @NotNull final DomainEventSerializer domainEventSerializer, @NotNull final DomainEventFactory domainEventFactory, final DelegateDomainEventSender delegateDomainEventSender) {
         this.domainEventRepository = domainEventRepository;
         this.domainEventSerializer = domainEventSerializer;
-        //新启动一个线程补偿
-        log.info("Trigger events remedy action at Thread {}", Thread.currentThread().getName());
-        //TODO 如何实现补偿，因为事务问题，暂时没有很好的办法
-        ThreadUtil.execAsync(new Runnable() {
-            @Override
-            public void run() {
-                //事务在多线程下不工作 详细： https://blog.51cto.com/13175304/1952201 和代码：TransactionSynchronizationManager
-
-                DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-                def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-                PlatformTransactionManager txManager = ContextLoader.getCurrentWebApplicationContext().getBean(PlatformTransactionManager.class);
-                TransactionStatus status = txManager.getTransaction(def);
-
-                try {
-                    SimpleDomainEventPublisher.this.eventualConsistencyRemedyAction();
-                    txManager.commit(status); // 提交事务
-                } catch (Exception e) {
-                    log.info("异常信息：" + e.toString());
-                    txManager.rollback(status); // 回滚事务
-                }
-            }
-        }, true);
+        this.domainEventFactory = domainEventFactory;
+        this.delegateDomainEventSender = delegateDomainEventSender;
     }
 
     private ApplicationContext applicationContext;
 
-    private Set<EventHandler> eventHandlers = new HashSet<EventHandler>();
-
     public void registerEventHandler(EventHandler handler) {
-        eventHandlers.add(handler);
+        delegateDomainEventSender.add(handler);
     }
 
     @Override
@@ -79,81 +51,29 @@ public class SimpleDomainEventPublisher implements DomainEventPublisher, Applica
     }
 
     /**
-     * 事件处理必须保持与外部事务一起工作
+     * 将领域事件保存下来，并由 DelegateDomainEventSender 去真实发布事件
      *
      * @param event
      */
     @Override
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional(propagation = Propagation.MANDATORY) //领域事件的存储须与领域在一个事务内存储，确保强一致性。
     public void publish(Serializable event) {
-        SimpleDomainEvent simpleDomainEvent = new SimpleDomainEvent(AggregateId.generate(), DateUtil.date(), false, event);
+        final SimpleDomainEvent simpleDomainEvent = domainEventFactory.createFrom(event);
         domainEventRepository.save(simpleDomainEvent);
-        try {
-            //任何实际分发的异常，都不回导致当前事务回滚，确保 "事件保存是成功的"
-            //internalDoPublish(simpleDomainEvent);
-        } catch (Throwable e) {
-            //
-            log.error("Failed to handle event", e);
-        }
 
-    }
-
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void internalDoPublish(SimpleDomainEvent eventEntity) {
-        boolean publishDone = true;
-        final Serializable sourceEvent = eventEntity.getSourceEvent();
-        for (EventHandler handler : new ArrayList<EventHandler>(eventHandlers)) {
-            if (handler.canHandle(sourceEvent)) {
-                try {
-                    handler.handle(sourceEvent);
-                } catch (Throwable e) {
-                    log.error("event handling error", e);
-                    publishDone = false;
+        //事件存储完成的回调 - 真实发布
+        if (TransactionSynchronizationManager.isActualTransactionActive()) {
+            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
+                @Override
+                public void afterCommit() {
+                    try {
+                        //确保任何异常都能够被catch, 否则会导致无法将connection资源返回来池子
+                        delegateDomainEventSender.sendEvent(simpleDomainEvent);
+                    } catch (Throwable e) {
+                        log.error("Failed to handle event", e);
+                    }
                 }
-            }
-        }
-
-        if (publishDone) {
-            eventEntity.markAsPublished();
-            domainEventRepository.save(eventEntity);
-        }
-    }
-
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void handle() {
-        log.info("Start events remedy action at Thread {}", Thread.currentThread().getName());
-        Collection<SimpleDomainEvent> simpleDomainEvents = domainEventRepository.fetchNonPublishEvents();
-        try {
-            simpleDomainEvents.stream().forEach(this::internalDoPublish);
-            log.info("### READ EVENTS AND PUBLISHED ### {}", Thread.currentThread().getName());
-            //TODO 如何忽略无法处理和读取的事件
-        } catch (Exception e) {
-            log.error("补偿事件", e);
-        }
-    }
-
-    /**
-     * 循环读取未发布事件并再次发出
-     */
-    @Transactional
-    public void eventualConsistencyRemedyAction() {
-        log.info("Start events remedy action at Thread {}", Thread.currentThread().getName());
-        while (true) {
-            Collection<SimpleDomainEvent> simpleDomainEvents = domainEventRepository.fetchNonPublishEvents();
-            try {
-                simpleDomainEvents.stream().forEach(this::internalDoPublish);
-                log.info("### READ EVENTS AND PUBLISHED ### {}", Thread.currentThread().getName());
-                //TODO 如何忽略无法处理和读取的事件
-            } catch (Exception e) {
-                log.error("补偿事件", e);
-            }
-
-            //没有事件，暂停三秒
-            if (simpleDomainEvents == null || simpleDomainEvents.isEmpty()) {
-                ThreadUtil.safeSleep(3 * 1000);
-            }
+            });
         }
     }
 }

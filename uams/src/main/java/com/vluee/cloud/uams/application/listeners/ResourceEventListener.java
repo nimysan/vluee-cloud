@@ -10,6 +10,7 @@ import com.vluee.cloud.uams.core.resources.domain.ApiResourceRepository;
 import com.vluee.cloud.uams.core.resources.domain.ResourceType;
 import com.vluee.cloud.uams.core.resources.domain.events.ResourceCreatedEvent;
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
 @EventListeners
@@ -25,6 +26,7 @@ public class ResourceEventListener {
      * @param resourceCreatedEvent
      */
     @EventListener
+    @Transactional
     public void handle(ResourceCreatedEvent resourceCreatedEvent) {
         //permission created
         if (ResourceType.API.equals(resourceCreatedEvent.getResourceType())) {

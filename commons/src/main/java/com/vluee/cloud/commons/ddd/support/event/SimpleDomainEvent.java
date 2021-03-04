@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
 import com.vluee.cloud.commons.ddd.support.event.exception.DomainEventDefinitionException;
+import com.vluee.cloud.commons.ddd.support.event.serialize.DomainEventSerializer;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
@@ -16,13 +17,13 @@ import java.util.Date;
 @NoArgsConstructor
 public class SimpleDomainEvent extends BaseAggregateRoot implements Serializable {
 
-    public SimpleDomainEvent(AggregateId aggregateId, Date eventTime, boolean isPublished, @NotNull Serializable event) {
+    public SimpleDomainEvent(AggregateId aggregateId, Date eventTime, boolean isPublished, @NotNull Serializable event, DomainEventSerializer domainEventSerializer) {
         this.aggregateId = aggregateId;
         this.eventName = event.getClass().getCanonicalName();
         this.eventTime = eventTime;
         this.published = isPublished;
         this.sourceEvent = event;
-        this.content = JSONUtil.toJsonStr(event);
+        this.content = domainEventSerializer.serialize(event);
     }
 
     @Column(name = "event_name")
@@ -64,4 +65,6 @@ public class SimpleDomainEvent extends BaseAggregateRoot implements Serializable
     public void markAsPublished() {
         this.published = true;
     }
+
+
 }

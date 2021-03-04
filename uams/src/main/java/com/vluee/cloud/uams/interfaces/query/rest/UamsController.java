@@ -14,8 +14,8 @@ public class UamsController {
     private final SimpleDomainEventPublisher simpleDomainEventPublisher;
 
     @GetMapping("final")
-    public void test(){
-        simpleDomainEventPublisher.handle();
+    public void test() {
+//        simpleDomainEventPublisher.handle();
     }
 
 }

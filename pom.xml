@@ -28,6 +28,8 @@
         <vertx.mysql.client.version>3.9.4</vertx.mysql.client.version>
         <axon.version>4.4.5</axon.version>
 
+        <p6spy.version>1.6.3</p6spy.version>
+
 
         <!-- doc -->
         <knife4j.version>3.0.2</knife4j.version>
@@ -110,6 +112,12 @@
                 <groupId>org.axonframework</groupId>
                 <artifactId>axon-spring-boot-starter</artifactId>
                 <version>${axon.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.gavlyukovskiy</groupId>
+                <artifactId>p6spy-spring-boot-starter</artifactId>
+                <version>${p6spy.version}</version>
             </dependency>
 
             <!--Knife4j API文档生产工具-->

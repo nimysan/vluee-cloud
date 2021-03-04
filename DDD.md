@@ -30,3 +30,4 @@
 
 1. @Transactional必须在public method [see](https://blog.csdn.net/qq_34382367/article/details/108072918)
 2. 多线程下事务的问题。 事务在多线程下不工作 详细： https://blog.51cto.com/13175304/1952201 和代码：TransactionSynchronizationManager
+3. Spring声明式事务, 同一个类的方法互相调用会导致事务声明失效。 大致原理： https://blog.csdn.net/aya19880214/article/details/50640596

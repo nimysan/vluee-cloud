@@ -47,4 +47,13 @@ public class SpringEventHandler implements EventHandler {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public String toString() {
+        return "SpringEventHandler{" +
+                "eventType=" + eventType +
+                ", beanName='" + beanName + '\'' +
+                ", method=" + method +
+                '}';
+    }
 }

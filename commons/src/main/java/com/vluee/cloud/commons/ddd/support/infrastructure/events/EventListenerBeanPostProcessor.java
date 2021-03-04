@@ -40,28 +40,21 @@ public class EventListenerBeanPostProcessor implements BeanPostProcessor, BeanFa
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-
-        boolean b = bean.getClass().toString().contains("com.vluee.cloud.uams");
-        if (b) {
-            log.info("Handle -- {}", bean.getClass());
-        }
         for (Method method : bean.getClass().getMethods()) {
             EventListener listenerAnnotation = method.getAnnotation(EventListener.class);
-
             if (listenerAnnotation == null) {
                 continue;
             }
-
             Class<?> eventType = method.getParameterTypes()[0];
+            EventHandler handler;
             if (listenerAnnotation.asynchronous()) {
                 //TODO just a temporary fake impl
-                EventHandler handler = new AsynchronousEventHandler(eventType, beanName, method, beanFactory);
+                handler = new AsynchronousEventHandler(eventType, beanName, method, beanFactory);
                 //TODO add to some queue
-                eventPublisher.registerEventHandler(handler);
             } else {
-                EventHandler handler = new SpringEventHandler(eventType, beanName, method, beanFactory);
-                eventPublisher.registerEventHandler(handler);
+                handler = new SpringEventHandler(eventType, beanName, method, beanFactory);
             }
+            eventPublisher.registerEventHandler(handler);
         }
         return bean;
     }

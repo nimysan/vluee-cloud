@@ -22,3 +22,6 @@ spring:
         server-addr: localhost:8848
         file-extension: properties
 
+logging:
+  level:
+    org.springframework.transaction: DEBUG
