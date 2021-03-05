@@ -1,6 +1,7 @@
 package com.vluee.cloud.commons.distributedlock;
 
 import cn.hutool.core.thread.ThreadUtil;
+import com.vluee.cloud.commons.common.data.id.SnowflakeIdGenerator;
 import com.vluee.cloud.commons.distributedlock.mem.InMemMutexLockRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,13 +54,14 @@ class MutexLockFactoryTest {
     @Test
     public void testLockResources() throws InterruptedException {
         final KeyResource keyResource = new KeyResource();
-        final MutexLockFactory mutexLockByDB = new MutexLockFactory(new InMemMutexLockRepository());
+        final MutexLockFactory mutexLockFactory = new MutexLockFactory(new InMemMutexLockRepository(), new SnowflakeIdGenerator());
         //模拟多线程
         ExecutorService executorService = Executors.newFixedThreadPool(10);
         for (int i = 0; i < 10; i++) {
-            executorService.submit(new MockResourceTask(keyResource, mutexLockByDB));
+            executorService.submit(new MockResourceTask(keyResource, mutexLockFactory));
         }
         executorService.awaitTermination(5, TimeUnit.SECONDS);
+        Assertions.assertTrue(keyResource.history.size() > 10, "所有进程都无法获取锁，导致无法处理资源");
         validation(keyResource);
     }
 
@@ -92,7 +94,7 @@ class MutexLockFactoryTest {
             long start = System.nanoTime();
             for (; ; ) {
                 try {
-                    lock.workWithLock("mockresource-id", TimeUnit.MILLISECONDS, 150, new OperationWithinLock() {
+                    lock.workWithLock("mockresource-id", TimeUnit.MILLISECONDS, 0, new OperationWithinLock() {
                         @Override
                         public void execute() {
                             keyResource.process();
@@ -100,9 +102,12 @@ class MutexLockFactoryTest {
                         }
                     });
                 } catch (MutexLockLockException e) {
-                    e.printStackTrace();
+                    log.error("无法获取锁", e);
+                } catch (Throwable e) {
+                    log.info("Again again and again");
+                } finally {
+                    ThreadUtil.safeSleep(300);//暂停300ms不工作
                 }
-                log.info("Again again and again");
             }
         }
     }

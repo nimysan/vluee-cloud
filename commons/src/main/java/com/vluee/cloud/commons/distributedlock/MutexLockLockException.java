@@ -7,4 +7,8 @@ public class MutexLockLockException extends Exception {
     public MutexLockLockException(String message) {
         super(message);
     }
+
+    public MutexLockLockException(String message, Throwable e) {
+        super(message, e);
+    }
 }

@@ -1,6 +1,6 @@
 package com.vluee.cloud.commons.distributedlock;
 
-import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
+import com.vluee.cloud.commons.common.data.id.LongIdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class MutexLockFactory {
 
     private final MutexLockRepository mutexLockRepository;
+    private final LongIdGenerator longIdGenerator;
 
     public synchronized MutexLock lock(String resource, TimeUnit timeUnit, long duration) throws MutexLockLockException {
         long maxWaiting = timeUnit.toNanos(duration);
@@ -24,7 +25,7 @@ public class MutexLockFactory {
         }
         //自旋等待
         final long at = System.nanoTime();
-        for (; ; ) {
+        for (; ; ) { //spin
             try {
                 //lock lock lock until forever
                 Optional<MutexLock> lockResource = mutexLockRepository.findResourceLock(resource);
@@ -33,8 +34,6 @@ public class MutexLockFactory {
                     if (theMutexLock.guessDeadLock()) {
                         mutexLockRepository.delete(theMutexLock);//假设真有操作执行了超过30s， 则有可能带来意外的风险
                         return newLockResource(resource);
-                    } else {
-                        pause(TimeUnit.MILLISECONDS, 100); //每次等待100ms
                     }
                 } else {
                     return newLockResource(resource);
@@ -42,9 +41,14 @@ public class MutexLockFactory {
             } catch (Throwable e) {
                 log.error("Failed to lock " + resource, e);
                 throw new MutexLockLockException("Can't lock due to " + e.getMessage());
+            } finally {
+                pause(TimeUnit.MILLISECONDS, 100); //每次等待100ms
             }
 
-            if (System.nanoTime() - at >= maxWaiting) {
+            if ((System.nanoTime() - at) >= maxWaiting) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Wait timeunit {} and duration {} and max waiting {}", timeUnit, duration, maxWaiting);
+                }
                 throw new MutexLockLockException("Lock timeout(Can't lock)"); //指定时间内获取锁异常
             }
         }
@@ -73,13 +77,14 @@ public class MutexLockFactory {
         try {
             mutexLock = lock(resource, timeUnit, timeout);
             if (log.isDebugEnabled()) {
-                log.info("Success get lock {}", mutexLock);
+                log.debug("Success get lock {}", mutexLock);
             }
             operationWithinLock.execute();//business logic
         } catch (MutexLockLockException lockException) {
             throw lockException;
         } catch (Throwable e) {
             log.info("error {}", e.getMessage());
+            throw new MutexLockLockException("Fail to lock", e);
         } finally {
             if (mutexLock != null) {
                 mutexLock.unlock();
@@ -89,7 +94,7 @@ public class MutexLockFactory {
     }
 
     private MutexLock newLockResource(String resource) {
-        MutexLock mutexLock = new MutexLock(AggregateId.generate(), resource, "Thread" + Thread.currentThread().getName());
+        MutexLock mutexLock = new MutexLock(longIdGenerator.nextId(), resource, "Thread" + Thread.currentThread().getName());
         mutexLockRepository.save(mutexLock);
         return mutexLock;
     }

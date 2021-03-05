@@ -26,29 +26,25 @@ public class DomainEventCompensationHandler {
     private final MutexLockFactory mutexLockFactory;
 
     public void startCompensate(String resourceIdentifier) {
-        ThreadUtil.execAsync(new Runnable() {
-
-            @Override
-            public void run() {
-                for (; ; ) {
-                    try {
-                        mutexLockFactory.workWithLock("domain-events-" + resourceIdentifier, TimeUnit.MILLISECONDS, 400, () -> {
-                            //distributeLock.lock(5 * 1000);
-                            log.info("Fetch unpublished events and resend them");
-                            Collection<SimpleDomainEvent> domainEvents = fetchUnPublishedEvents();
-                            if (domainEvents == null || domainEvents.isEmpty()) {
-                                ThreadUtil.safeSleep(10 * 1000);//暂停10s不处理
-                            } else {
-                                for (SimpleDomainEvent domainEvent : domainEvents) {
-                                    sendEvent(domainEvent);
-                                }
+        ThreadUtil.execAsync(() -> {
+            for (; ; ) {
+                try {
+                    mutexLockFactory.workWithLock("domain-events-" + resourceIdentifier, TimeUnit.MILLISECONDS, 400, () -> {
+                        //distributeLock.lock(5 * 1000);
+                        log.info("Fetch unpublished events and resend them");
+                        Collection<SimpleDomainEvent> domainEvents = fetchUnPublishedEvents();
+                        if (domainEvents == null || domainEvents.isEmpty()) {
+                            ThreadUtil.safeSleep(10 * 1000);//暂停10s不处理
+                        } else {
+                            for (SimpleDomainEvent domainEvent : domainEvents) {
+                                sendEvent(domainEvent);
                             }
-                        });
+                        }
+                    });
 
-                    } catch (MutexLockLockException e) {
-                        ThreadUtil.safeSleep(TimeUnit.SECONDS.toMillis(10));//暂停10s不做任何事情
-                        log.warn("Failed to send events with exception.", e);
-                    }
+                } catch (MutexLockLockException e) {
+                    ThreadUtil.safeSleep(TimeUnit.SECONDS.toMillis(10));//暂停10s不做任何事情
+                    log.warn("Failed to send events with exception.", e);
                 }
             }
         }, true);

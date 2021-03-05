@@ -23,6 +23,9 @@ public class InMemMutexLockRepository implements MutexLockRepository {
 
     @Override
     public synchronized void save(MutexLock mutexLock) {
+        if (resources.contains(mutexLock)) {
+            resources.remove(mutexLock);
+        }
         resources.add(mutexLock);
     }
 }

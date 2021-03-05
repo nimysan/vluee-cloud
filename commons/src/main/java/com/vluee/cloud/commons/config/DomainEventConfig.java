@@ -1,5 +1,6 @@
 package com.vluee.cloud.commons.config;
 
+import com.vluee.cloud.commons.common.data.id.LongIdGenerator;
 import com.vluee.cloud.commons.ddd.support.event.DelegateDomainEventSender;
 import com.vluee.cloud.commons.ddd.support.event.DomainEventFactory;
 import com.vluee.cloud.commons.ddd.support.event.DomainEventRepository;
@@ -13,6 +14,7 @@ import com.vluee.cloud.commons.ddd.support.infrastructure.events.SimpleDomainEve
 import com.vluee.cloud.commons.distributedlock.MutexLockFactory;
 import com.vluee.cloud.commons.distributedlock.MutexLockRepository;
 import com.vluee.cloud.commons.distributedlock.mem.InMemMutexLockRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -23,6 +25,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
+@Slf4j
 @Configuration
 public class DomainEventConfig implements ApplicationRunner, ApplicationContextAware {
 
@@ -64,8 +67,11 @@ public class DomainEventConfig implements ApplicationRunner, ApplicationContextA
 
     @Bean
     @ConditionalOnMissingBean
-    public MutexLockFactory mutexLockFactory(MutexLockRepository mutexLockRepository) {
-        return new MutexLockFactory(mutexLockRepository);
+    public MutexLockFactory mutexLockFactory(MutexLockRepository mutexLockRepository, LongIdGenerator longIdGenerator) {
+        if (mutexLockRepository instanceof InMemMutexLockRepository) {
+            log.warn("!!!!!!-----InMemMutexLockRepository----only for testing purpose. Can't be used in PROD environments");
+        }
+        return new MutexLockFactory(mutexLockRepository, longIdGenerator);
     }
 
     @Bean
