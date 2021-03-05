@@ -10,6 +10,9 @@ import com.vluee.cloud.commons.ddd.support.infrastructure.events.DefaultDomainEv
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.EventListenerBeanPostProcessor;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.JacksonDomainEventSerializer;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.SimpleDomainEventPublisher;
+import com.vluee.cloud.commons.distributedlock.MutexLockFactory;
+import com.vluee.cloud.commons.distributedlock.MutexLockRepository;
+import com.vluee.cloud.commons.distributedlock.mem.InMemMutexLockRepository;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -55,14 +58,26 @@ public class DomainEventConfig implements ApplicationRunner, ApplicationContextA
 
     @Bean
     @ConditionalOnMissingBean
-    public DomainEventCompensationHandler domainEventCompensationHandler(DomainEventRepository domainEventRepository, DelegateDomainEventSender delegateDomainEventSender) {
-        return new DomainEventCompensationHandler(delegateDomainEventSender, domainEventRepository);
+    public DomainEventCompensationHandler domainEventCompensationHandler(MutexLockFactory mutexLockFactory, DomainEventRepository domainEventRepository, DelegateDomainEventSender delegateDomainEventSender) {
+        return new DomainEventCompensationHandler(delegateDomainEventSender, domainEventRepository, mutexLockFactory);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public MutexLockFactory mutexLockFactory(MutexLockRepository mutexLockRepository) {
+        return new MutexLockFactory(mutexLockRepository);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public MutexLockRepository mutexLockRepository() {
+        return new InMemMutexLockRepository();
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         DomainEventCompensationHandler bean = applicationContext.getBean(DomainEventCompensationHandler.class);
-        bean.startCompensate();
+        bean.startCompensate(eventLockIdentifier());
     }
 
     private ApplicationContext applicationContext;
@@ -70,5 +85,9 @@ public class DomainEventConfig implements ApplicationRunner, ApplicationContextA
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
+    }
+
+    protected String eventLockIdentifier() {
+        return "sass";
     }
 }
