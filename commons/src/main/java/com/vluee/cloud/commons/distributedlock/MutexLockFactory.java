@@ -1,5 +1,6 @@
 package com.vluee.cloud.commons.distributedlock;
 
+import cn.hutool.core.net.NetUtil;
 import com.vluee.cloud.commons.common.data.id.LongIdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -94,7 +95,7 @@ public class MutexLockFactory {
     }
 
     private MutexLock newLockResource(String resource) {
-        MutexLock mutexLock = new MutexLock(longIdGenerator.nextId(), resource, "Thread" + Thread.currentThread().getName());
+        MutexLock mutexLock = new MutexLock(longIdGenerator.nextId(), resource, NetUtil.getLocalhostStr() + " - " + Thread.currentThread().getName());
         mutexLockRepository.save(mutexLock);
         return mutexLock;
     }

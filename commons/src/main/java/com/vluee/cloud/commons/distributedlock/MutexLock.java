@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import com.google.common.base.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
@@ -11,8 +12,26 @@ import java.util.Date;
 
 /**
  * table_name: mutex_locks
+ *
+ * <pre>
+ * <code>
+ CREATE TABLE `mutex_locks` (
+ `id` BIGINT(20) NOT NULL,
+ `resource_identifier` VARCHAR(128) NOT NULL COLLATE 'utf8_general_ci',
+ `locked_at` DATETIME NOT NULL,
+ `lock_owner` VARCHAR(128) NOT NULL COLLATE 'utf8_general_ci',
+ `removed` TINYINT(1) NOT NULL,
+ PRIMARY KEY (`id`) USING BTREE,
+ UNIQUE INDEX `ri_unique` (`resource_identifier`)
+ )
+ COLLATE='utf8_general_ci'
+ ENGINE=InnoDB
+ ;
+
+ *
+ * </code>
+ * </pre>
  */
-@NoArgsConstructor
 @ToString
 public class MutexLock {
 
@@ -43,6 +62,7 @@ public class MutexLock {
     private String resourceIdentifier;
 
     @Getter
+    @Setter
     private Date lockedTime;
 
     private boolean removed = false;
