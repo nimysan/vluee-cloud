@@ -16,6 +16,7 @@
 package com.vluee.cloud.commons.ddd.support.infrastructure.events;
 
 import com.vluee.cloud.commons.ddd.annotations.event.EventListener;
+import com.vluee.cloud.commons.ddd.annotations.event.EventListeners;
 import com.vluee.cloud.commons.ddd.support.event.publisher.DomainEventPublisher;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.handler.AsynchronousEventHandler;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.handler.EventHandler;
@@ -25,6 +26,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.util.ClassUtils;
 
 import java.lang.reflect.Method;
 
@@ -40,21 +42,29 @@ public class EventListenerBeanPostProcessor implements BeanPostProcessor, BeanFa
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        for (Method method : bean.getClass().getMethods()) {
-            EventListener listenerAnnotation = method.getAnnotation(EventListener.class);
-            if (listenerAnnotation == null) {
-                continue;
+        if (beanName.contains("grantEventListener")) {
+            log.info("---- {} --- ", bean);
+        }
+        Class<?> userClass = ClassUtils.getUserClass(bean.getClass());
+        // bean.getClass().isAnnotationPresent(EventListeners.class) 这个判断会失效， 因为spring transaction 代理会导致类定义丢失, 采用： ClassUtils.getUserClass(bean.getClass())
+        if (userClass.isAnnotationPresent(EventListeners.class)) {
+            log.info("Bean class {} with bean name", userClass, beanName);
+            for (Method method : userClass.getMethods()) {
+                EventListener listenerAnnotation = method.getAnnotation(EventListener.class);
+                if (listenerAnnotation == null) {
+                    continue;
+                }
+                Class<?> eventType = method.getParameterTypes()[0];
+                EventHandler handler;
+                if (listenerAnnotation.asynchronous()) {
+                    //TODO just a temporary fake impl
+                    handler = new AsynchronousEventHandler(eventType, beanName, method, beanFactory);
+                    //TODO add to some queue
+                } else {
+                    handler = new SpringEventHandler(eventType, beanName, method, beanFactory);
+                }
+                eventPublisher.registerEventHandler(handler);
             }
-            Class<?> eventType = method.getParameterTypes()[0];
-            EventHandler handler;
-            if (listenerAnnotation.asynchronous()) {
-                //TODO just a temporary fake impl
-                handler = new AsynchronousEventHandler(eventType, beanName, method, beanFactory);
-                //TODO add to some queue
-            } else {
-                handler = new SpringEventHandler(eventType, beanName, method, beanFactory);
-            }
-            eventPublisher.registerEventHandler(handler);
         }
         return bean;
     }
