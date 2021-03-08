@@ -2,7 +2,6 @@ package com.vluee.cloud.uams.application.service;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.cqrs.annotations.CommandHandlerAnnotation;
-import com.vluee.cloud.commons.cqrs.command.handler.CommandHandler;
 import com.vluee.cloud.commons.ddd.annotations.application.ApplicationService;
 import com.vluee.cloud.uams.application.command.AddRoleCommand;
 import com.vluee.cloud.uams.core.role.domain.CRole;
@@ -18,10 +17,11 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @ApplicationService
 @CommandHandlerAnnotation
-public class UamsCommandHandler implements CommandHandler<AddRoleCommand, Void> {
+public class AddRoleCommandHandler {
 
     private final CRoleRepository cRoleRepository;
 
+    @com.vluee.cloud.commons.cqrs.annotations.CommandHandler
     public Void handle(AddRoleCommand addRoleCommand) {
         CRole cRole = new CRole(AggregateId.generate(), addRoleCommand.getRoleName());
         cRoleRepository.save(cRole);

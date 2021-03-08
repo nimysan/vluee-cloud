@@ -44,20 +44,20 @@ public class CRole extends BaseAggregateRoot {
     @Fetch(FetchMode.JOIN)
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id")
-    private Collection<RolePermissionGrant> apiPermissionGrants = new HashSet<>();
+    private Collection<RoleApiPermissionGrant> apiPermissionGrants = new HashSet<>();
 
-    public boolean hasPermission(@NotNull AggregateId permissionId) {
-        return apiPermissionGrants != null && this.apiPermissionGrants.contains(permissionId);
+    public boolean hasApiPermissions(@NotNull ApiPermission apiPermission) {
+        return apiPermissionGrants != null && this.apiPermissionGrants.contains(apiPermission);
     }
 
     public void grantApiPermission(@NotNull ApiPermission apiPermission) {
-        RolePermissionGrant rolePermissionGrant = new RolePermissionGrant(this, apiPermission);
-        apiPermissionGrants.add(rolePermissionGrant);
+        RoleApiPermissionGrant roleApiPermissionGrant = new RoleApiPermissionGrant(this, apiPermission);
+        apiPermissionGrants.add(roleApiPermissionGrant);
         publish(new RolePermissionAddedEvent(this.getAggregateId(), apiPermission.getAggregateId()));
     }
 
     public void cancelApiPermissionGrant(@NotNull AggregateId permissionId) {
-        List<RolePermissionGrant> collect = apiPermissionGrants.stream().filter(t -> t.getApiPermission().equals(permissionId)).collect(Collectors.toList());
+        List<RoleApiPermissionGrant> collect = apiPermissionGrants.stream().filter(t -> t.getApiPermission().equals(permissionId)).collect(Collectors.toList());
         apiPermissionGrants.removeAll(collect);
         publish(new RolePermissionRemovedEvent(this.getAggregateId(), permissionId));
     }

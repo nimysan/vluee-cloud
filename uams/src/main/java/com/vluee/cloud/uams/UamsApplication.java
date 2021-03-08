@@ -3,7 +3,6 @@ package com.vluee.cloud.uams;
 import com.vluee.cloud.commons.common.audit.BaseAuditConfig;
 import com.vluee.cloud.commons.common.data.id.IdConfig;
 import com.vluee.cloud.commons.config.CQRSCommandConfig;
-import com.vluee.cloud.commons.ddd.annotations.event.EventListeners;
 import com.vluee.cloud.commons.distributedlock.MutexLockRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 @EntityScan(basePackages = {"com.vluee.cloud.uams", "com.vluee.cloud.commons.ddd"})
 @Import({IdConfig.class, BaseAuditConfig.class, CQRSCommandConfig.class})
 @Slf4j
-@EventListeners
 public class UamsApplication implements ApplicationRunner {
 
     public static void main(String[] args) {

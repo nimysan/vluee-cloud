@@ -1,8 +1,10 @@
 package com.vluee.cloud.uams.interfaces.write;
 
+import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.cqrs.command.Gate;
 import com.vluee.cloud.uams.application.command.AddApiCommand;
 import com.vluee.cloud.uams.application.command.AddRoleCommand;
+import com.vluee.cloud.uams.application.command.GrantPermissionToRoleCommand;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +22,11 @@ public class UamsCommandController {
     public void addRole(@RequestParam String roleName) {
         AddRoleCommand addRoleCommand = AddRoleCommand.builder().roleName(roleName).build();
         commandGate.dispatch(addRoleCommand);
+    }
+
+    public void roleApiGrant(@RequestParam String roleId, @RequestParam String apiPermissionId) {
+        GrantPermissionToRoleCommand grantPermissionToRoleCommand = new GrantPermissionToRoleCommand(new AggregateId(roleId), new AggregateId(apiPermissionId));
+        commandGate.dispatch(grantPermissionToRoleCommand);
     }
 
     //REST 命名规则如何？

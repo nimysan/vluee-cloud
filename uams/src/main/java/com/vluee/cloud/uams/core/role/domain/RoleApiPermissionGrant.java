@@ -12,9 +12,9 @@ import java.util.Date;
 @Entity
 @Table(name = "role_api_grants")
 @NoArgsConstructor
-public class RolePermissionGrant {
+public class RoleApiPermissionGrant {
 
-    public RolePermissionGrant(CRole role, ApiPermission apiPermission) {
+    public RoleApiPermissionGrant(CRole role, ApiPermission apiPermission) {
         this.apiPermission = apiPermission.getAggregateId();
         this.roleId = role.getAggregateId();
         this.grantedAt = DateUtil.date();

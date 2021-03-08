@@ -39,7 +39,7 @@ public class AccessControlService {
             checking = AccessControlChecking.deny(AggregateId.generate(), user.getId(), permission.getAggregateId());
         } else {
             //查找是否有含permission的角色
-            Optional<CRole> matchRole = aggregateIds.stream().map(roleRepository::load).filter(Objects::nonNull).filter(t -> t.hasPermission(permission.getAggregateId())).findFirst();
+            Optional<CRole> matchRole = aggregateIds.stream().map(roleRepository::load).filter(Objects::nonNull).filter(t -> t.hasApiPermissions(permission)).findFirst();
             if (matchRole.isPresent()) {
                 //allow
                 checking = AccessControlChecking.access(AggregateId.generate(), user.getId(), permission.getAggregateId(), matchRole.get().getAggregateId());
