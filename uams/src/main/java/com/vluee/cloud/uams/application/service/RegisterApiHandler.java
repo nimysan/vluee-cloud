@@ -23,7 +23,6 @@ public class RegisterApiHandler implements CommandHandler<AddApiCommand, Void> {
     private final ApiResourceRepository apiResourceRepository;
     private final ResourceFactory resourceFactory;
 
-    @com.vluee.cloud.commons.cqrs.annotations.CommandHandler
     public Void handle(AddApiCommand registerApiCommand) {
         apiResourceRepository.save(resourceFactory.createApiResource(new RestApi(registerApiCommand.getVerb(), registerApiCommand.getUrl()), null));
         return null;

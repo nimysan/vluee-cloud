@@ -21,7 +21,6 @@ public class AddRoleCommandHandler {
 
     private final CRoleRepository cRoleRepository;
 
-    @com.vluee.cloud.commons.cqrs.annotations.CommandHandler
     public Void handle(AddRoleCommand addRoleCommand) {
         CRole cRole = new CRole(AggregateId.generate(), addRoleCommand.getRoleName());
         cRoleRepository.save(cRole);
