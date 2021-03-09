@@ -21,4 +21,8 @@ public class ServerWebExchangeDelegate implements RestResourceRequest {
     public String getUrl() {
         return webExchange.getRequest().getURI().getPath();
     }
+
+    public String getApiKey() {
+        return new StringBuilder().append(getMethod()).append(" ").append(getUrl()).toString();
+    }
 }

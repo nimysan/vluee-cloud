@@ -30,7 +30,7 @@ import java.util.List;
 @Slf4j
 @Component
 @AllArgsConstructor
-public class RestResourceAuthorizationManager implements ReactiveAuthorizationManager<AuthorizationContext> {
+public class ApiAuthorizationManager implements ReactiveAuthorizationManager<AuthorizationContext> {
 
     private final IgnoreUrlsConfig ignoreUrlsConfig;
 
@@ -55,6 +55,7 @@ public class RestResourceAuthorizationManager implements ReactiveAuthorizationMa
         }
 
         //如果匹配， 则成功
+
         RestGrantRule effectiveRule = restGrantRuleService.findRule(ServerWebExchangeDelegate.builder().webExchange(authorizationContext.getExchange()).build());
         //如果没有任何匹配规则， 直接拒绝请求
         if (effectiveRule == null) {

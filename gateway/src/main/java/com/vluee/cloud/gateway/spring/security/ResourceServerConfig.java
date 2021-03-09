@@ -2,7 +2,7 @@ package com.vluee.cloud.gateway.spring.security;
 
 import com.vluee.cloud.commons.common.rest.AuthConstant;
 import com.vluee.cloud.gateway.core.filter.IgnoreUrlsRemoveJwtFilter;
-import com.vluee.cloud.gateway.spring.security.authorization.RestResourceAuthorizationManager;
+import com.vluee.cloud.gateway.spring.security.authorization.ApiVersion2AuthorizationManager;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class ResourceServerConfig {
 
-    private final RestResourceAuthorizationManager authorizationManager;
+    private final ApiVersion2AuthorizationManager authorizationManager;
 
     private final AccessDeniedHandler _403Handler;
     private final UnauthenticatedHandler _401Handler;

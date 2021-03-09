@@ -29,7 +29,6 @@ secure:
       - "/sample/**"
       - "/saas-demo/**"
       - "/saas-users/users"
-      - "/saas-uams/**"
       - "/saas-gateway/**"
       - "/resources/**"
 
