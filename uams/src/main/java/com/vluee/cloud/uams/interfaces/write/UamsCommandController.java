@@ -30,6 +30,16 @@ public class UamsCommandController {
         commandGate.dispatch(grantPermissionToRoleCommand);
     }
 
+    @PostMapping("/grants/users/{userId}/roles/{roleId}")
+    public void grantUserRole(@PathVariable String userId, @PathVariable String roleId) {
+        commandGate.dispatch(new GrantRoleToUserCommand(new AggregateId(userId), new AggregateId(roleId)));
+    }
+
+    @PostMapping("/grants/usergroups/{userGroupId}/roles/{roleId}")
+    public void grantUserGroupRole(@PathVariable String userGroupId, @PathVariable String roleId) {
+        commandGate.dispatch(new GrantRoleToUserGroupCommand(new AggregateId(userGroupId), new AggregateId(roleId)));
+    }
+
     //REST 命名规则如何？
     @PostMapping("/resources/apis")
     public void registerApi(@RequestParam String verb, @RequestParam String url) {

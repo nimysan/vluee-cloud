@@ -3,10 +3,12 @@ package com.vluee.cloud.uams.core.user.domain;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.annotations.domain.AggregateRoot;
 import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
+import com.vluee.cloud.uams.core.role.domain.CRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -47,6 +49,30 @@ public class User extends BaseAggregateRoot {
 //            @JoinColumn(name = "user_id")
 //    })
     private Set<UserGroupJoin> joinGroups;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userRoleGrantID.userId")
+    private Set<UserRoleGrant> userRoleGrants;
+
+    /**
+     * TODO how to get roles from group
+     *
+     * @return
+     */
+    public Collection<AggregateId> belongRoles() {
+        Collection<AggregateId> directRoles = userRoleGrants.stream().map(t -> t.getRoleId()).collect(Collectors.toList());
+//        joinGroups.stream().flatMap(new Function<UserGroupJoin, Stream<?>>() {
+//            @Override
+//            public Stream<?> apply(UserGroupJoin userGroupJoin) {
+//                return userGroupJoin.getGroupId();
+//            }
+//        });
+        return directRoles;
+    }
+
+    public void grantRole(CRole role) {
+        UserRoleGrant userGroupGrant = new UserRoleGrant(this, role);
+        userRoleGrants.add(userGroupGrant);
+    }
 
     public void joinGroup(UserGroup group) {
         UserGroupJoin join = new UserGroupJoin(this, group);
