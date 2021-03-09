@@ -1,6 +1,5 @@
 package com.vluee.cloud.commons.ddd.support.event;
 
-import cn.hutool.json.JSONUtil;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
 import com.vluee.cloud.commons.ddd.support.event.exception.DomainEventDefinitionException;
@@ -43,23 +42,19 @@ public class SimpleDomainEvent extends BaseAggregateRoot implements Serializable
     @Transient
     private Serializable sourceEvent;
 
-    public synchronized Serializable getSourceEvent() {
+    public synchronized Serializable getSourceEvent(DomainEventFactory domainEventFactory) {
         try {
             if (sourceEvent == null && StringUtils.isNotBlank(this.content)) {
-                sourceEvent = restoreEvent();
+                sourceEvent = (Serializable) domainEventFactory.restoreEvent(this.content, Class.forName(this.eventName));
             }
         } catch (ClassNotFoundException exception) {
-            throw new DomainEventDefinitionException(String.format("事件名称不是一个存在的类，导致无法恢复事件。ID %s", this.getAggregateId()), exception);
+            throw new DomainEventDefinitionException(String.format("事件无法恢复", this.getAggregateId()), exception);
         }
 
         if (sourceEvent == null) {
             throw new DomainEventDefinitionException(String.format("无法恢复事件。ID %s", this.getAggregateId()));
         }
         return sourceEvent;
-    }
-
-    private Serializable restoreEvent() throws ClassNotFoundException {
-        return (Serializable) JSONUtil.toBean(this.content, Class.forName(this.eventName));
     }
 
     public void markAsPublished() {

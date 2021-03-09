@@ -49,8 +49,8 @@ public class DomainEventConfig implements ApplicationRunner, ApplicationContextA
 
     @Bean
     @ConditionalOnMissingBean
-    public DelegateDomainEventSender domainEventSender(DomainEventRepository domainEventRepository) {
-        return new DefaultDomainEventSender(domainEventRepository);
+    public DelegateDomainEventSender domainEventSender(DomainEventRepository domainEventRepository, DomainEventFactory domainEventFactory) {
+        return new DefaultDomainEventSender(domainEventRepository, domainEventFactory);
     }
 
     @Bean

@@ -1,6 +1,7 @@
 package com.vluee.cloud.commons.ddd.support.infrastructure.events;
 
 import com.vluee.cloud.commons.ddd.support.event.DelegateDomainEventSender;
+import com.vluee.cloud.commons.ddd.support.event.DomainEventFactory;
 import com.vluee.cloud.commons.ddd.support.event.DomainEventRepository;
 import com.vluee.cloud.commons.ddd.support.event.SimpleDomainEvent;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.handler.EventHandler;
@@ -17,9 +18,11 @@ import java.util.Set;
 public class DefaultDomainEventSender implements DelegateDomainEventSender {
 
     private final DomainEventRepository domainEventRepository;
+    private final DomainEventFactory domainEventFactory;
 
-    public DefaultDomainEventSender(DomainEventRepository domainEventRepository) {
+    public DefaultDomainEventSender(DomainEventRepository domainEventRepository, DomainEventFactory domainEventFactory) {
         this.domainEventRepository = domainEventRepository;
+        this.domainEventFactory = domainEventFactory;
     }
 
     private Set<EventHandler> eventHandlers = new HashSet<EventHandler>();
@@ -29,7 +32,7 @@ public class DefaultDomainEventSender implements DelegateDomainEventSender {
     public void sendEvent(SimpleDomainEvent eventEntity) {
         {
             boolean publishDone = true;
-            final Serializable sourceEvent = eventEntity.getSourceEvent();
+            final Serializable sourceEvent = eventEntity.getSourceEvent(domainEventFactory);
             for (EventHandler handler : new ArrayList<EventHandler>(eventHandlers)) {
                 if (handler.canHandle(sourceEvent)) {
                     try {

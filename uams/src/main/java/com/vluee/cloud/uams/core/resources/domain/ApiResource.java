@@ -3,6 +3,7 @@ package com.vluee.cloud.uams.core.resources.domain;
 import cn.hutool.core.date.DateUtil;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Embedded;
@@ -16,6 +17,7 @@ import java.util.Date;
 @ToString(callSuper = true)
 @Entity
 @Table(name = "api_resources")
+@NoArgsConstructor //for jpa
 public class ApiResource extends BaseAggregateRoot {
 
     @Embedded

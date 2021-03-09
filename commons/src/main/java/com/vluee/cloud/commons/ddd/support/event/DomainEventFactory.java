@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import java.io.Serializable;
 
 @AllArgsConstructor
-public class DomainEventFactory {
+public class DomainEventFactory<T> {
 
     private final DomainEventSerializer domainEventSerializer;
 
@@ -21,5 +21,10 @@ public class DomainEventFactory {
     public SimpleDomainEvent createFrom(Serializable sourceEvent) {
         SimpleDomainEvent simpleDomainEvent = new SimpleDomainEvent(AggregateId.generate(), DateUtil.date(), false, sourceEvent, domainEventSerializer);
         return simpleDomainEvent;
+    }
+
+
+    public T restoreEvent(String json, Class<T> klass) {
+        return (T) domainEventSerializer.read(json, klass);
     }
 }
