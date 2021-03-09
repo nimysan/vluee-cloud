@@ -18,6 +18,13 @@ import java.util.Date;
 @Table(name = "api_permissions")
 public class ApiPermission extends BaseAggregateRoot {
 
+    //for jpa only
+    public ApiPermission() {
+        this.resourceOperation = null;
+        this.resourceId = null;
+        this.createdAt = null;
+    }
+
     @Getter
     @Embedded
     private final ResourceOperation resourceOperation;

@@ -1,7 +1,7 @@
 package com.vluee.cloud.uams.application;
 
 import com.vluee.cloud.uams.application.service.PermissionApplicationService;
-import com.vluee.cloud.uams.application.service.AddRoleCommandHandler;
+import com.vluee.cloud.uams.application.command.handler.AddRoleCommandHandler;
 import org.junit.jupiter.api.Test;
 
 class UamsApplicationServiceTest {

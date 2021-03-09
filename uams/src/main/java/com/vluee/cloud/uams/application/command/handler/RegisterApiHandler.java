@@ -1,4 +1,4 @@
-package com.vluee.cloud.uams.application.service;
+package com.vluee.cloud.uams.application.command.handler;
 
 import com.vluee.cloud.commons.cqrs.annotations.CommandHandlerAnnotation;
 import com.vluee.cloud.commons.cqrs.command.handler.CommandHandler;

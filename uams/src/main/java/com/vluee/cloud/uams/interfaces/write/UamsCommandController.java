@@ -5,8 +5,10 @@ import com.vluee.cloud.commons.cqrs.command.Gate;
 import com.vluee.cloud.uams.application.command.AddApiCommand;
 import com.vluee.cloud.uams.application.command.AddRoleCommand;
 import com.vluee.cloud.uams.application.command.GrantPermissionToRoleCommand;
+import com.vluee.cloud.uams.core.permission.domain.PermissionType;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,8 +26,9 @@ public class UamsCommandController {
         commandGate.dispatch(addRoleCommand);
     }
 
-    public void roleApiGrant(@RequestParam String roleId, @RequestParam String apiPermissionId) {
-        GrantPermissionToRoleCommand grantPermissionToRoleCommand = new GrantPermissionToRoleCommand(new AggregateId(roleId), new AggregateId(apiPermissionId));
+    @PostMapping("/grants/roles/{roleId}/apipermissions/{apiPermissionId}")
+    public void roleApiGrant(@PathVariable String roleId, @PathVariable String apiPermissionId) {
+        GrantPermissionToRoleCommand grantPermissionToRoleCommand = new GrantPermissionToRoleCommand(new AggregateId(roleId), new AggregateId(apiPermissionId), PermissionType.API);
         commandGate.dispatch(grantPermissionToRoleCommand);
     }
 
