@@ -1,50 +1,61 @@
 package com.vluee.cloud.uams.core.user.domain;
 
-import com.google.common.base.Objects;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.annotations.domain.AggregateRoot;
+import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
- * 聚合之间通过id引用
+ * 系统用户， 用户类型分三种
+ * <p>
+ * <ul>
+ *  <li>1. 系统级别的用户，比如saas管理人员</li>
+ *  <li>2. 租户级别的用户</li>
+ * </ul>
  */
 @AggregateRoot
-public class User {
+@Entity
+@NoArgsConstructor // for jpa
+public class User extends BaseAggregateRoot {
+
+    public User(AggregateId userId, String username) {
+        this.username = username;
+        this.aggregateId = userId;
+    }
+
+    /**
+     * 用户profile
+     */
+    @Embedded
+    private UserProfile userProfile;
+
+    /**
+     * 系统级别的唯一用户名
+     */
+    @Column(length = 255)
     @Getter
-    private AggregateId id;
+    private String username;
 
-    public User(AggregateId id) {
-        this.id = id;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userGroupJoinID.userId")
+//    @JoinTable(name = "user_group_joins", joinColumns = {
+//            @JoinColumn(name = "user_id")
+//    })
+    private Set<UserGroupJoin> joinGroups;
+
+    public void joinGroup(UserGroup group) {
+        UserGroupJoin join = new UserGroupJoin(this, group);
+        joinGroups.add(join);
     }
 
-    private Collection<AggregateId> roles = new ArrayList<>(2);
-
-    public Collection<AggregateId> ownedRoles() {
-        if (roles == null) {
-            return Collections.emptyList();
-        }
-        return Collections.unmodifiableCollection(roles);
+    public void leaveGroup(UserGroup group) {
+        List<UserGroupJoin> collect = joinGroups.stream().filter(t -> t.getGroupId().equals(group.getAggregateId())).collect(Collectors.toList());
+        joinGroups.removeAll(collect);
     }
 
-    public void addRole(@NotNull AggregateId aggregateId) {
-        this.roles.add(aggregateId);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equal(id, user.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
 }

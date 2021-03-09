@@ -2,9 +2,7 @@ package com.vluee.cloud.uams.interfaces.write;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.cqrs.command.Gate;
-import com.vluee.cloud.uams.application.command.AddApiCommand;
-import com.vluee.cloud.uams.application.command.AddRoleCommand;
-import com.vluee.cloud.uams.application.command.GrantPermissionToRoleCommand;
+import com.vluee.cloud.uams.application.command.*;
 import com.vluee.cloud.uams.core.permission.domain.PermissionType;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,5 +35,24 @@ public class UamsCommandController {
     public void registerApi(@RequestParam String verb, @RequestParam String url) {
         AddApiCommand command = AddApiCommand.builder().verb(verb).url(url).build();
         commandGate.dispatch(command);
+    }
+
+
+    @PostMapping("/users")
+    public void registerUser(@RequestParam String username) {
+        RegisterUserCommand registerUserCommand = new RegisterUserCommand(username);
+        commandGate.dispatch(registerUserCommand);
+    }
+
+    @PostMapping("/usergroups")
+    public void createUserGroup(@RequestParam String groupName) {
+        CreateUserGroupCommand createUserGroupCommand = new CreateUserGroupCommand(groupName);
+        commandGate.dispatch(createUserGroupCommand);
+    }
+
+    @PostMapping("/users/{userId}/usergroups/{groupId}")
+    public void userJoinGroup(@PathVariable String userId, @PathVariable String groupId) {
+        UserJoinGroupCommand userJoinGroupCommand = new UserJoinGroupCommand(new AggregateId(userId), new AggregateId(groupId));
+        commandGate.dispatch(userJoinGroupCommand);
     }
 }
