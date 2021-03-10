@@ -4,6 +4,7 @@ import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.annotations.domain.AggregateRoot;
 import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
 import com.vluee.cloud.uams.core.role.domain.CRole;
+import com.vluee.cloud.uams.core.user.domain.events.UserRoleGrantedEvent;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -72,6 +73,7 @@ public class User extends BaseAggregateRoot {
     public void grantRole(CRole role) {
         UserRoleGrant userGroupGrant = new UserRoleGrant(this, role);
         userRoleGrants.add(userGroupGrant);
+        publish(new UserRoleGrantedEvent(this.getAggregateId(), role.getAggregateId()));
     }
 
     public void joinGroup(UserGroup group) {

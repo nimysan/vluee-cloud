@@ -4,10 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import com.google.common.base.Objects;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.uams.core.role.domain.CRole;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -43,6 +40,7 @@ public class UserGroupRoleGrant {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     @ToString
     @Embeddable
     class UserGroupRoleGrantID implements Serializable {

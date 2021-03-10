@@ -58,5 +58,4 @@ public class ApiPermission extends BaseAggregateRoot {
                 ", disabled=" + disabled +
                 '}';
     }
-
 }

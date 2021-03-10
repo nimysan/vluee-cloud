@@ -1,14 +1,67 @@
 package com.vluee.cloud.uams.application.listeners;
 
+import com.vluee.cloud.commons.common.rest.AuthConstant;
+import com.vluee.cloud.commons.common.string.StringUtils;
+import com.vluee.cloud.commons.ddd.annotations.event.EventListener;
 import com.vluee.cloud.commons.ddd.annotations.event.EventListeners;
+import com.vluee.cloud.uams.core.permission.domain.ApiPermission;
+import com.vluee.cloud.uams.core.permission.domain.ApiPermissionRepository;
+import com.vluee.cloud.uams.core.resources.domain.ApiResource;
+import com.vluee.cloud.uams.core.resources.domain.ApiResourceRepository;
+import com.vluee.cloud.uams.core.role.domain.events.RolePermissionAddedEvent;
+import com.vluee.cloud.uams.core.user.domain.events.UserRoleGrantedEvent;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
+
+import java.util.Arrays;
+import java.util.List;
 
 @EventListeners
 @AllArgsConstructor
+@Slf4j
 public class ApiPermissionRedisCacheListener {
 
+    private final RedisTemplate redisTemplate;
+    private final ApiPermissionRepository apiPermissionRepository;
+    private final ApiResourceRepository apiResourceRepository;
 
-    public void refresh() {
+    /**
+     * 刷新redis缓存
+     *
+     * @param userRoleGrantedEvent
+     */
+    @EventListener
+    public void userRole(UserRoleGrantedEvent userRoleGrantedEvent) {
+        String roleId = userRoleGrantedEvent.getRoleId().getId();
+        String userId = userRoleGrantedEvent.getUserId().getId();
+        String valueString = (String) redisTemplate.opsForHash().get(AuthConstant.USER_ROLES_MAP_KEY, userId);
+        redisTemplate.opsForHash().put(AuthConstant.USER_ROLES_MAP_KEY, userId, appendWithComma(valueString, roleId));
+    }
+
+    @EventListener
+    public void rolePermission(RolePermissionAddedEvent rolePermissionAddedEvent) {
+        String roleId = rolePermissionAddedEvent.getRoleId().getId();
+        String permissionId = rolePermissionAddedEvent.getPermissionId().getId();
+
+        ApiPermission apiPermission = apiPermissionRepository.load(rolePermissionAddedEvent.getPermissionId());
+        ApiResource apiResource = apiResourceRepository.load(apiPermission.getResourceId());
+        String apiKey = AuthConstant.apiCacheKey(apiResource.getRestApi().getVerb(), apiResource.getRestApi().getVerb());
+
+        String valueString = (String) redisTemplate.opsForHash().get(AuthConstant.API_ROLES_MAP_KEY, apiKey);
+        redisTemplate.opsForHash().put(AuthConstant.API_ROLES_MAP_KEY, apiKey, appendWithComma(valueString, roleId));
+    }
+
+    private String appendWithComma(String source, String appendix) {
+        if (StringUtils.isNotEmpty(source)) {
+            List<String> strings = Arrays.asList(source.split(","));
+            if (!strings.contains(appendix)) {
+                return new StringBuilder().append(source).append(",").append(appendix).toString();
+            }
+            return source;
+        } else {
+            return appendix;
+        }
     }
 
     //for testing

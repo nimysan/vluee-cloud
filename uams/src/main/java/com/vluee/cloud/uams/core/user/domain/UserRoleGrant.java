@@ -4,10 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import com.google.common.base.Objects;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.uams.core.role.domain.CRole;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,6 +12,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "user_role_grants")
+@NoArgsConstructor
 public class UserRoleGrant {
 
     public UserRoleGrant(User user, CRole role) {
@@ -49,6 +47,7 @@ public class UserRoleGrant {
     @AllArgsConstructor
     @ToString
     @Embeddable
+    @NoArgsConstructor
     static
     class UserRoleGrantID implements Serializable {
         @Embedded

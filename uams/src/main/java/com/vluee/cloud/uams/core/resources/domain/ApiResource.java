@@ -3,6 +3,7 @@ package com.vluee.cloud.uams.core.resources.domain;
 import cn.hutool.core.date.DateUtil;
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -24,6 +25,7 @@ public class ApiResource extends BaseAggregateRoot {
     private ResourceDescriptor resourceDescriptor;
 
     @Embedded
+    @Getter
     private RestApi restApi;
 
     @Embedded

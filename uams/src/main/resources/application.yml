@@ -1,7 +1,7 @@
 spring:
   redis:
     host: localhost
-    port: 6379
+    port: 6380
   datasource:
     #    url: jdbc:mysql://localhost:3306/uams?useSSL=false
     url: jdbc:p6spy:mysql://localhost:3306/uams?useSSL=false
@@ -14,4 +14,4 @@ spring:
     show-sql: false
     database-platform: org.hibernate.dialect.MySQL55Dialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update #// create-drop
