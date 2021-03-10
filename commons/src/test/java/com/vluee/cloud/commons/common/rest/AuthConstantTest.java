@@ -33,7 +33,7 @@ class AuthConstantTest {
     @Test
     public void testRoleKey() {
         Mono<String> origin = Mono.just("123");
-        origin.map(t -> "t-xxx").then(origin).map(t -> "XXX-ppp " + t).subscribe(System.out::println);
+        log.info("--- " + origin.block());
     }
 
     @Test

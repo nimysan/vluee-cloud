@@ -24,7 +24,7 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.StreamSupport;
+import java.util.function.Consumer;
 
 /**
  * 读取UAMS模块写入REDIS的缓存数据
@@ -61,25 +61,15 @@ public class ApiVersion2AuthorizationManager implements ReactiveAuthorizationMan
         //认证通过且角色匹配的用户可访问当前路径
         ServerWebExchangeDelegate realRequest = ServerWebExchangeDelegate.builder().webExchange(authorizationContext.getExchange()).build();
         AuthorizationObject authorizationObject = new AuthorizationObject();
-        return authentication.map(this::debug).then(authentication)
+        return authentication
                 .filter(Authentication::isAuthenticated)
-                .map(t -> authorizationObject.setUsername(this.username(t)))//.map(this::authorizationObject)
+                .map(t -> authorizationObject.initializeWithUsername(this.username(t)))//.map(this::authorizationObject)
                 .thenMany(apiSetups).filter(t -> AuthConstant.isMatched(t, realRequest.getMethod(), realRequest.getUrl(), pathMatcher))
                 .next()
                 .flatMapMany(this::apiRoles)
-                .any(t -> StreamSupport.stream(this.getUserRoles(authorizationObject).spliterator(), false).anyMatch(p -> t.equals(p)))
+                .any(t -> authorizationObject.getRoles().contains(t))
                 .map(AuthorizationDecision::new)
                 .defaultIfEmpty(new AuthorizationDecision(false));
-    }
-
-
-    private Iterable<String> getUserRoles(AuthorizationObject authorizationObject) {
-        log.info("---- log user uane --- ", authorizationObject.username);
-        String s = (String) redisTemplate.opsForHash().get(AuthConstant.USER_ROLES_MAP_KEY, authorizationObject.username).block();
-        if (StringUtils.isNotEmpty(s)) {
-            return Arrays.asList(s.split(","));
-        }
-        return Collections.emptyList();
     }
 
 
@@ -99,23 +89,29 @@ public class ApiVersion2AuthorizationManager implements ReactiveAuthorizationMan
         return principal.getClaim("user_name").toString();
     }
 
-    private Mono<Void> debug(Authentication authentication) {
-        log.info("----- Authentication ----- {} with authorities: {} ", authentication.getPrincipal(), authentication.getAuthorities());
-        return Mono.empty();
-    }
-
     class AuthorizationObject {
 
         private String username;
+        private List<String> roles;
 
-        public AuthorizationObject setUsername(String username) {
-            this.username = username;
-            return this;
+        public List<String> getRoles() {
+            return this.roles;
         }
 
-
-        private void getRoles() {
-            redisTemplate.opsForHash().get(AuthConstant.USER_ROLES_MAP_KEY, username);
+        public AuthorizationObject initializeWithUsername(String username) {
+            this.username = username;
+            redisTemplate.opsForHash().get(AuthConstant.USER_ROLES_MAP_KEY, username).subscribe(new Consumer() {
+                @Override
+                public void accept(Object o) {
+                    String s = (String) o;
+                    if (StringUtils.isNotEmpty(s)) {
+                        roles = Arrays.asList(s.split(","));
+                    } else {
+                        roles = Collections.emptyList();
+                    }
+                }
+            });
+            return this;
         }
     }
 }
