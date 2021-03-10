@@ -67,7 +67,7 @@ public class ApiVersion2AuthorizationManager implements ReactiveAuthorizationMan
                 .thenMany(apiSetups).filter(t -> AuthConstant.isMatched(t, realRequest.getMethod(), realRequest.getUrl(), pathMatcher))
                 .next()
                 .flatMapMany(this::apiRoles)
-                .any(t -> authorizationObject.getRoles().contains(t))
+                .any(authorizationObject::hasRole)
                 .map(AuthorizationDecision::new)
                 .defaultIfEmpty(new AuthorizationDecision(false));
     }
@@ -94,8 +94,11 @@ public class ApiVersion2AuthorizationManager implements ReactiveAuthorizationMan
         private String username;
         private List<String> roles;
 
-        public List<String> getRoles() {
-            return this.roles;
+        public boolean hasRole(String roleName) {
+            if (this.roles != null) {
+                return this.roles.contains(roleName);
+            }
+            return false;
         }
 
         public AuthorizationObject initializeWithUsername(String username) {
@@ -106,8 +109,6 @@ public class ApiVersion2AuthorizationManager implements ReactiveAuthorizationMan
                     String s = (String) o;
                     if (StringUtils.isNotEmpty(s)) {
                         roles = Arrays.asList(s.split(","));
-                    } else {
-                        roles = Collections.emptyList();
                     }
                 }
             });
