@@ -3,6 +3,7 @@ package com.vluee.cloud.gateway.core.filter;
 import cn.hutool.json.JSONUtil;
 import com.vluee.cloud.gateway.interfaces.common.CommonResult;
 import com.vluee.cloud.gateway.spring.controller.CustomExceptionHandlerConfiguration;
+import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -70,6 +71,7 @@ public class WrapperResponseGlobalFilter implements GlobalFilter, Ordered {
                         dataBuffer.read(content);
                         //释放掉内存
                         DataBufferUtils.release(dataBuffer);
+                        //ReferenceCountUtil.release(dataBuffer);
                         String s = new String(content, Charset.forName("UTF-8"));
                         //尽量返回直接json格式， 如果无法正常解析的， 则返回直接字符串
                         Object data = null;

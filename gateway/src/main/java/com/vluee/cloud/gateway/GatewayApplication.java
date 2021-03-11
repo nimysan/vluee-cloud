@@ -2,6 +2,7 @@ package com.vluee.cloud.gateway;
 
 import com.vluee.cloud.commons.common.audit.BaseAuditConfig;
 import com.vluee.cloud.commons.common.data.id.IdConfig;
+import io.netty.util.ResourceLeakDetector;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,6 +26,7 @@ public class GatewayApplication {
 
     public static void main(String[] args) {
         Hooks.onOperatorDebug();
+        ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.ADVANCED);
         SpringApplication.run(GatewayApplication.class, args);
     }
 

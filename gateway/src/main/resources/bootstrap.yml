@@ -29,3 +29,7 @@ spring:
       discovery:
         locator:
           enabled: true
+
+logging:
+  level:
+    reactor.netty.channel: WARN
