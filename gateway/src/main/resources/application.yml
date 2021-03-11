@@ -30,6 +30,7 @@ secure:
       - "/saas-demo/**"
       - "/saas-users/users"
       - "/saas-gateway/**"
+      - "/saas-uams/**"
       - "/resources/**"
 
 logging:
