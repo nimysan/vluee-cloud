@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  nginx:
+    restart: always
+    image: nginx
+    ports:
+      - 7780:80
+      - 7443:443
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+      - ./log:/var/log/nginx
+      - ./www:/var/www
+      - /etc/letsencrypt:/etc/letsencrypt
