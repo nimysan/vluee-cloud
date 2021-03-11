@@ -1,5 +1,6 @@
-package com.vluee.cloud.gateway.core;
+package com.vluee.cloud.gateway.infrastructure;
 
+import com.vluee.cloud.gateway.filter.trace.TraceIdService;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;

@@ -1,7 +1,7 @@
 package com.vluee.cloud.gateway.spring.security;
 
 import com.vluee.cloud.commons.common.rest.AuthConstant;
-import com.vluee.cloud.gateway.core.filter.IgnoreUrlsRemoveJwtFilter;
+import com.vluee.cloud.gateway.filter.IgnoreUrlsRemoveJwtFilter;
 import com.vluee.cloud.gateway.spring.security.authorization.ApiVersion2AuthorizationManager;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

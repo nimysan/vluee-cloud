@@ -1,4 +1,4 @@
-package com.vluee.cloud.gateway.core.rbac;
+package com.vluee.cloud.gateway.interfaces.query.rest;
 
 import org.springframework.http.HttpMethod;
 

@@ -1,4 +1,4 @@
-package com.vluee.cloud.gateway.core.rbac;
+package com.vluee.cloud.gateway.interfaces.query.rest;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,7 +40,7 @@ public class SimpleRestResource {
         return forGrants;
     }
 
-    String translatePattern(String input) {
+    public String translatePattern(String input) {
         return Arrays.stream(input.split("/")).map(t -> {
             if (t.startsWith("{") && t.endsWith("}")) {
                 return "*";

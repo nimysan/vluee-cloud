@@ -1,4 +1,4 @@
-package com.vluee.cloud.gateway.core.rbac;
+package com.vluee.cloud.gateway.interfaces.query.rest;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
 package com.vluee.cloud.gateway.spring.security.authorization;
 
-import com.vluee.cloud.gateway.core.rbac.RestResourceRequest;
+import com.vluee.cloud.gateway.interfaces.query.rest.RestResourceRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.springframework.http.HttpMethod;

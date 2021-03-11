@@ -1,4 +1,4 @@
-package com.vluee.cloud.gateway.core.filter;
+package com.vluee.cloud.gateway.filter;
 
 import cn.hutool.core.util.StrUtil;
 import com.nimbusds.jose.JWSObject;

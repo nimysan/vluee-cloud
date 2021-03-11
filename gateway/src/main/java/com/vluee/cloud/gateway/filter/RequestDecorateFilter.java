@@ -1,6 +1,6 @@
-package com.vluee.cloud.gateway.core.filter;
+package com.vluee.cloud.gateway.filter;
 
-import com.vluee.cloud.gateway.core.TraceIdService;
+import com.vluee.cloud.gateway.filter.trace.TraceIdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.server.reactive.ServerHttpRequest;

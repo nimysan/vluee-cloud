@@ -1,4 +1,4 @@
-package com.vluee.cloud.gateway.core.filter;
+package com.vluee.cloud.gateway.filter;
 
 import com.vluee.cloud.commons.common.rest.AuthConstant;
 import com.vluee.cloud.gateway.spring.security.IgnoreUrlsConfig;

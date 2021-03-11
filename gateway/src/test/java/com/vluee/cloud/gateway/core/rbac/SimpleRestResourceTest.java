@@ -1,5 +1,6 @@
 package com.vluee.cloud.gateway.core.rbac;
 
+import com.vluee.cloud.gateway.interfaces.query.rest.SimpleRestResource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
