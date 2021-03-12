@@ -46,7 +46,6 @@ public class ClientManageService {
         return client;
     }
 
-
     private String commenceSecret() {
         return passwordEncoder.encode(randomSecret());
     }
@@ -54,7 +53,7 @@ public class ClientManageService {
     private String randomSecret() {
         String secret = RandomStringUtils.randomAlphanumeric(12);
         log.info("-----------######## {} ########--------------", secret);
-        return secret;
+        return "8NPgEEuhuve1";//for testing secret;
     }
 
     @Transactional

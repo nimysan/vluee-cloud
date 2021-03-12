@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(ServiceConstants.Services.UAMS)
-public interface UamsServiceProxy {
+public interface UamsFacade {
 
     @GetMapping("/users/{username}/clients/{clientId}/roles")
     public String getUserRoles(@PathVariable String username, @PathVariable String clientId);

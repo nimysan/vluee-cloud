@@ -36,3 +36,4 @@ build/
 **/target/
 **/*.iml
 /deploy/swarm/standalone-logs/
+/deploy/swarm/nginx/log/error.log
