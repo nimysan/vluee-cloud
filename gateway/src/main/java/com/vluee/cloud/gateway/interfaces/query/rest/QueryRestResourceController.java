@@ -35,9 +35,9 @@ public class QueryRestResourceController {
         return routeLocator.getRoutes().map(t -> t.getUri().getHost()).filter(t -> t.equalsIgnoreCase("saas-uams")).flatMap(route -> fetchWebEndpoints(route)).filter(Objects::nonNull).flatMapIterable(t -> t.convertForGrants());
     }
 
-    private Flux<SimpleRestResource> fetchWebEndpoints(String ex) {
-        String url = "http://localhost:8080/" + ex + "/actuator/mappings";
-        log.info("Fetch ex {}", url);
+    private Flux<SimpleRestResource> fetchWebEndpoints(String serviceInstanceName) {
+        String url = "http://localhost:8080/" + serviceInstanceName + "/actuator/mappings";
+        log.info("Fetch serviceInstanceName {}", url);
         return webClient.get().uri(url).accept(MediaType.APPLICATION_JSON).exchange().flatMapMany(t -> parseBody(t));
     }
 

@@ -1,4 +1,4 @@
-package com.vluee.cloud.gateway.filter;
+package com.vluee.cloud.gateway.filter.trace;
 
 import com.vluee.cloud.gateway.filter.trace.TraceIdService;
 import org.springframework.beans.factory.annotation.Autowired;

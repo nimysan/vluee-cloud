@@ -40,7 +40,7 @@ import java.util.List;
 @Slf4j
 public class WrapperResponseGlobalFilter implements GlobalFilter, Ordered {
 
-    private final static List<String> IGNORE_LIST = Arrays.asList("/v2/api-docs", "/**/actuator/**");
+    private final static List<String> IGNORE_LIST = Arrays.asList("/**/v2/api-docs", "/**/actuator/**");
 
     @Override
     public int getOrder() {

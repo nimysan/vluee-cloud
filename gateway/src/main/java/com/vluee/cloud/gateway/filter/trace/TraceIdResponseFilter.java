@@ -1,6 +1,5 @@
 package com.vluee.cloud.gateway.filter.trace;
 
-import com.vluee.cloud.gateway.filter.RequestDecorateFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;

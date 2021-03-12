@@ -15,3 +15,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL55Dialect
     hibernate:
       ddl-auto: update #// create-drop
+
+saas:
+  gateway:
+    url: http://localhost:8080/
