@@ -7,4 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class RegisterUserCommand {
     private String username;
+    private String password;
 }

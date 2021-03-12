@@ -48,6 +48,9 @@ public class DefaultDomainEventSender implements DelegateDomainEventSender {
             if (publishDone) {
                 SimpleDomainEvent managedEvent = domainEventRepository.load(eventEntity.getAggregateId());
                 managedEvent.markAsPublished(); //标记后， JPA会自动save修改进数据库
+            } else {
+                SimpleDomainEvent managedEvent = domainEventRepository.load(eventEntity.getAggregateId());
+                managedEvent.incrementRetries();
             }
         }
     }

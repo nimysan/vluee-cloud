@@ -23,10 +23,14 @@ public class SimpleDomainEvent extends BaseAggregateRoot implements Serializable
         this.published = isPublished;
         this.sourceEvent = event;
         this.content = domainEventSerializer.serialize(event);
+        this.retries = 0;
     }
 
     @Column(name = "event_name")
     private String eventName;
+
+    @Column
+    private int retries = 0;
 
     @Column(name = "event_time")
     private Date eventTime;
@@ -59,6 +63,10 @@ public class SimpleDomainEvent extends BaseAggregateRoot implements Serializable
 
     public void markAsPublished() {
         this.published = true;
+    }
+
+    public void incrementRetries(){
+        this.retries = this.retries +1;
     }
 
 

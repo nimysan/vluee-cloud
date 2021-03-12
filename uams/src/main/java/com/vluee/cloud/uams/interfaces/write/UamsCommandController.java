@@ -49,8 +49,8 @@ public class UamsCommandController {
 
 
     @PostMapping("/users")
-    public void registerUser(@RequestParam String username) {
-        RegisterUserCommand registerUserCommand = new RegisterUserCommand(username);
+    public void registerUser(@RequestParam String username, @RequestParam String password) {//如何防止明文密码传输?
+        RegisterUserCommand registerUserCommand = new RegisterUserCommand(username, password);
         commandGate.dispatch(registerUserCommand);
     }
 

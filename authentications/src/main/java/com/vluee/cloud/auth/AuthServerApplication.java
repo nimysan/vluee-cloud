@@ -1,9 +1,10 @@
 package com.vluee.cloud.auth;
 
-import com.vluee.cloud.auth.applications.services.UserRegisterService;
+import com.vluee.cloud.auth.applications.service.UserRegisterService;
 import com.vluee.cloud.auth.core.client.service.ClientManageService;
 import com.vluee.cloud.commons.common.audit.BaseAuditConfig;
 import com.vluee.cloud.commons.common.data.id.IdConfig;
+import com.vluee.cloud.commons.config.CQRSCommandConfig;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -24,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
         @ComponentScan("cn.hutool.extra.spring"),
         @ComponentScan("com.vluee.cloud.auth")
 })
-@Import({IdConfig.class, BaseAuditConfig.class})
+@Import({IdConfig.class, BaseAuditConfig.class, CQRSCommandConfig.class})
 @AllArgsConstructor
 public class AuthServerApplication implements ApplicationRunner {
 

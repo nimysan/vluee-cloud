@@ -11,6 +11,6 @@ public class JpaDomainEventRepository extends GenericJpaRepository<SimpleDomainE
 
     @Override
     public Collection<SimpleDomainEvent> fetchNonPublishEvents() {
-        return entityManager.createQuery("from SimpleDomainEvent as events where events.published=false").getResultList();
+        return entityManager.createQuery("from SimpleDomainEvent as events where events.published=false and events.retries<=3").getResultList();
     }
 }

@@ -1,4 +1,4 @@
-package com.vluee.cloud.auth.applications.services;
+package com.vluee.cloud.auth.applications.service;
 
 import com.vluee.cloud.auth.core.user.domain.UserAccount;
 import com.vluee.cloud.auth.core.user.domain.UserAccountFactory;
