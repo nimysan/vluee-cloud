@@ -1,7 +1,12 @@
 package com.vluee.cloud.commons.common.rest;
 
+import com.google.common.base.Joiner;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.PathMatcher;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * 权限相关常量定义
@@ -57,12 +62,21 @@ public final class AuthConstant {
         }
     }
 
+    /**
+     * 组装支持多个方法的缓存key
+     **/
+    public static String composeVerbsKey(List<String> verbs) {
+        verbs.sort(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.compareToIgnoreCase(o2);
+            }
+        });
+        return Joiner.on(",").join(verbs);
+    }
+
     private static boolean isVerbMatch(String keyVerb, HttpMethod method) {
-        if (keyVerb.equalsIgnoreCase("*")) {
-            return true;
-        } else {
-            return keyVerb.equalsIgnoreCase(method.name());
-        }
+        return Arrays.stream(keyVerb.split(",")).anyMatch(t -> t.equalsIgnoreCase(method.name()));
     }
 
     private static boolean isMatch(String keyUrl, String requestUrl, PathMatcher pathMatcher) {

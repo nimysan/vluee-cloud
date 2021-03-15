@@ -6,5 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class AddApiCommand {
-    public String verb, url;
+    private String url;
+    private String verbKey;
 }

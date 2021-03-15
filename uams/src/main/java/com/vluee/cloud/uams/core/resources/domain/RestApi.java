@@ -3,6 +3,7 @@ package com.vluee.cloud.uams.core.resources.domain;
 import com.google.common.base.Objects;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,6 +16,7 @@ public class RestApi {
     public static final String ALL_VERB = "*";
 
     @Getter
+    @Setter
     private String verb;
 
     @Getter

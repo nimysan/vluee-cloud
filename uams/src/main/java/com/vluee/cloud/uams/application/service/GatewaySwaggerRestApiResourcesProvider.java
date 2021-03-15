@@ -1,7 +1,8 @@
-package com.vluee.cloud.uams.core.permission.domain;
+package com.vluee.cloud.uams.application.service;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.vluee.cloud.commons.common.rest.AuthConstant;
 import com.vluee.cloud.commons.ddd.annotations.domain.DomainService;
 import com.vluee.cloud.uams.core.resources.domain.RestApi;
 import lombok.extern.slf4j.Slf4j;
@@ -39,10 +40,10 @@ public class GatewaySwaggerRestApiResourcesProvider implements RestApiResourcesP
             JSONObject docDesc = JSONUtil.parseObj(v2ApiDocString);
             JSONObject paths = docDesc.getJSONObject("paths");
             for (String path : paths.keySet()) {
-                log.info("Path --- {}", path);
                 JSONObject detail = paths.getJSONObject(path);
                 Set<String> strings = detail.keySet();// only fetch the first one
-                RestApi restApi = new RestApi(strings.iterator().next(), "/" + serviceName + translatePattern(path));
+                String verbKey = AuthConstant.composeVerbsKey(strings.stream().collect(Collectors.toList()));
+                RestApi restApi = new RestApi(verbKey, "/" + serviceName + translatePattern(path));
                 restApis.add(restApi);
                 log.info("The final REST API is: {}", restApi);
             }

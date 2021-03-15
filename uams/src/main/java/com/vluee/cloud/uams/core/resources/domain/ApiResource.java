@@ -44,4 +44,8 @@ public class ApiResource extends BaseAggregateRoot {
         this.createdAt = DateUtil.date();
     }
 
+    public void updateVerb(String verb) {
+        this.restApi.setVerb(verb);
+    }
+
 }
