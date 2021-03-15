@@ -21,13 +21,14 @@ File | Settings | Build, Execution, Deployment | Compiler | Build process VM opt
 ### 模块说明
 
 ``` lua
-aistore-insfracture
-├── aistore-gateway -- 基于Spring cloud gateway的网关，依赖eureka服务发现sss
-├── aistore-monitor -- 基于Spring-Boot-Admin的管理程序，依赖eureka服务发现
-├── aistore-user --  用户中心，提供用户信息管理
-├── aistore-uams --  统一授权管理中心
-├── aistore-common -- 非服务，提供常量，名词，工具方法等
-├── aistore-tenant-- 租户服务，提供租户管理，租户品牌管理服务
+vluee-cloud
+├── gateway -- 基于Spring cloud gateway的网关，依赖nacos做服务发现
+├── monitor -- 基于Spring-Boot-Admin的管理程序，依赖nacos做服务发现
+├── aistore-user -- （废弃中，预计并入uams服务）用户中心，提供用户信息管理
+├── uams --  统一授权管理中心 用户/角色/资源/权限统一管理
+├── common -- 非服务，提供常量，名词，工具方法等
+├── tenant-- 租户服务，提供租户管理，租户品牌管理服务
+├── authentications -- 基于Spring Security and OAuth2实现的独立用户认证中心
 ```
 
 ### spring boot admin 
