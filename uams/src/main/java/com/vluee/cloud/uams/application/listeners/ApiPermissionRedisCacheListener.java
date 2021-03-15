@@ -75,10 +75,4 @@ public class ApiPermissionRedisCacheListener {
             return appendix;
         }
     }
-
-    //for testing
-    public boolean checkApiPermission(String username, String verb, String urlPattern) {
-        //从缓存中读取状态
-        return false;
-    }
 }

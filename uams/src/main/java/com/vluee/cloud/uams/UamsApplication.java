@@ -13,9 +13,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableFeignClients
 @EnableDiscoveryClient
+@EnableScheduling
 @SpringBootApplication
 @ComponentScans({
         @ComponentScan("cn.hutool.extra.spring"),

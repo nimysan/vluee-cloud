@@ -61,5 +61,10 @@ public class GatewaySwaggerRestApiResourcesProvider implements RestApiResourcesP
         }).collect(Collectors.joining("/"));
     }
 
-
+    @Override
+    public String toString() {
+        return "GatewaySwaggerRestApiResourcesProvider{" +
+                "gatewayUrl='" + gatewayUrl + '\'' +
+                '}';
+    }
 }
