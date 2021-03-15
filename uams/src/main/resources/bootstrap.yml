@@ -12,6 +12,9 @@ management:
 spring:
   application:
     name: saas-uams
+  output:
+    ansi:
+      enabled: ALWAYS
 
   cloud:
     nacos:
