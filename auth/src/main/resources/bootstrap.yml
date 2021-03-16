@@ -11,7 +11,7 @@ management:
 
 spring:
   application:
-    name: saas-auth-server
+    name: saas-auth
 
   cloud:
     nacos:

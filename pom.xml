@@ -47,7 +47,7 @@
         <module>tenants</module>
         <module>demo</module>
         <module>users</module>
-        <module>authentications</module>
+        <module>auth</module>
         <module>uams</module>
         <!--
         <module>vluee-docker-maven-plugin</module>

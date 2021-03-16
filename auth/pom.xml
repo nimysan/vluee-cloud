@@ -8,7 +8,7 @@
         <version>1.0.0</version>
     </parent>
     <groupId>com.vluee.cloud</groupId>
-    <artifactId>authentications</artifactId>
+    <artifactId>auth</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>authentications</name>
     <description>统一认证中心(不含授权)</description>
