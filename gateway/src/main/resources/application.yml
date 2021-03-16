@@ -34,6 +34,7 @@ secure:
       # - "/saas-uams/**"
       - "/resources/**"
       - "saas-auth-server/**"
+      - "/saas-tenants/**"
 
 logging:
   level:

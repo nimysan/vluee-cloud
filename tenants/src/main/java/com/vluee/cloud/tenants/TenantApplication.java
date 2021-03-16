@@ -2,6 +2,7 @@ package com.vluee.cloud.tenants;
 
 import com.vluee.cloud.commons.common.audit.BaseAuditConfig;
 import com.vluee.cloud.commons.common.data.id.IdConfig;
+import com.vluee.cloud.commons.config.CQRSCommandConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -17,7 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
         @ComponentScan("com.vluee.cloud.tenants")
 })
 @EnableSwagger2
-@Import({BaseAuditConfig.class, IdConfig.class})
+@Import({BaseAuditConfig.class, IdConfig.class, CQRSCommandConfig.class})
 public class TenantApplication {
 
     public static void main(String[] args) {

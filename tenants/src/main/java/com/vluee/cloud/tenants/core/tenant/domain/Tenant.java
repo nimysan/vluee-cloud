@@ -1,39 +1,26 @@
 package com.vluee.cloud.tenants.core.tenant.domain;
 
-import com.vluee.cloud.commons.common.data.AuditAware;
-import com.vluee.cloud.commons.common.data.id.LongIdGenerator;
+import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
+import com.vluee.cloud.commons.ddd.annotations.domain.AggregateRoot;
+import com.vluee.cloud.commons.ddd.support.domain.BaseAggregateRoot;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
 
 @Entity
-@GenericGenerator(name = LongIdGenerator.ID_GENERATOR_NAME, strategy = LongIdGenerator.DISTRIBUTED_ID_GENERATOR_CLASS_NAME)
-@NoArgsConstructor
-public class Tenant extends AuditAware {
+@AggregateRoot
+@NoArgsConstructor // for jpa
+public class Tenant extends BaseAggregateRoot {
 
-    @Id
-    @GeneratedValue(generator = LongIdGenerator.ID_GENERATOR_NAME)
-    private Long id;
-
-    public Tenant(@NotBlank String tenantName) {
-        this.tenantName = tenantName;
-    }
-
+    @Getter
+    @Column
     private String tenantName;
 
-    public String getTenantName() {
-        return tenantName;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setTenantName(String tenantName) {
+    public Tenant(AggregateId aggregateId, String tenantName) {
+        this.aggregateId = aggregateId;
         this.tenantName = tenantName;
     }
+
 }
