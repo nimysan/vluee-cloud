@@ -5,8 +5,9 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class AddBrandCommand {
+public class AddChildBrandCommand {
     private String tenantId;
+    private String parentBrandId;
     private String brandName;
     private String brandCode; //品牌编码
 }

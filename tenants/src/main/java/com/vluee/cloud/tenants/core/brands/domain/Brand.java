@@ -22,6 +22,11 @@ public class Brand extends BaseAggregateRoot {
         this.createdAt = DateUtil.date();
     }
 
+    public Brand(AggregateId aggregateId, AggregateId tenantId, Brand parentBrand, String brandName) {
+        this(aggregateId, tenantId, brandName);
+        this.parentBrand = parentBrand;
+    }
+
     /**
      * 所属租户
      */
@@ -55,13 +60,17 @@ public class Brand extends BaseAggregateRoot {
     /**
      * 父品牌
      */
-    @Transient
+    @OneToOne(optional = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "parent_id", referencedColumnName = "aggregateId", nullable = true)
     private Brand parentBrand;
 
     /**
      * 子品牌列表
      */
-    @Transient
+    @OneToMany(mappedBy = "parentBrand")
     private List<Brand> childBrands;
 
+    public void addChildBrand(Brand brand) {
+        childBrands.add(brand);
+    }
 }
