@@ -4,8 +4,8 @@ import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
 import com.vluee.cloud.commons.cqrs.command.handler.CommandHandler;
 import com.vluee.cloud.commons.ddd.annotations.application.ApplicationService;
 import com.vluee.cloud.tenants.application.commands.AddTenantCommand;
-import com.vluee.cloud.tenants.core.tenant.domain.Tenant;
-import com.vluee.cloud.tenants.core.tenant.domain.TenantRepository;
+import com.vluee.cloud.tenants.core.tenants.domain.Tenant;
+import com.vluee.cloud.tenants.core.tenants.domain.TenantRepository;
 import lombok.AllArgsConstructor;
 
 @ApplicationService

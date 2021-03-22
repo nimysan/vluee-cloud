@@ -1,7 +1,7 @@
 package com.vluee.cloud.tenants.application;
 
 
-import com.vluee.cloud.tenants.core.tenant.domain.Tenant;
+import com.vluee.cloud.tenants.core.tenants.domain.Tenant;
 
 import javax.validation.constraints.NotBlank;
 
