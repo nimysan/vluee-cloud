@@ -13,6 +13,9 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>uams</name>
     <description>统一授权中心</description>
+    <properties>
+        <main.application>com.vluee.cloud.uams.UamsApplication</main.application>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -55,18 +58,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>com.github.wvengen</groupId>
-                <artifactId>proguard-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>
