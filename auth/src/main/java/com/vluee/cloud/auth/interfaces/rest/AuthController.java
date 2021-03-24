@@ -14,9 +14,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -37,16 +37,16 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     @ApiOperation("Oauth2获取token")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "grant_type", value = "授权模式", required = true),
-            @ApiImplicitParam(name = "client_id", value = "Oauth2客户端ID", required = true),
-            @ApiImplicitParam(name = "client_secret", value = "Oauth2客户端秘钥", required = true),
-            @ApiImplicitParam(name = "refresh_token", value = "刷新token"),
-            @ApiImplicitParam(name = "username", value = "登录用户名"),
-            @ApiImplicitParam(name = "password", value = "登录密码")
-    })
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "grant_type", value = "授权模式", required = true),
+//            @ApiImplicitParam(name = "client_id", value = "Oauth2客户端ID", required = true),
+//            @ApiImplicitParam(name = "client_secret", value = "Oauth2客户端秘钥", required = true),
+//            @ApiImplicitParam(name = "refresh_token", value = "刷新token"),
+//            @ApiImplicitParam(name = "username", value = "登录用户名"),
+//            @ApiImplicitParam(name = "password", value = "登录密码")
+//    })
     @RequestMapping(value = "/rest_token", method = RequestMethod.POST)
-    public CommonResult<Oauth2TokenDto> postAccessToken(@ApiIgnore Principal principal, @ApiIgnore @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
+    public CommonResult<Oauth2TokenDto> postAccessToken(@ApiIgnore Principal principal, @ApiParam @RequestBody Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
         if (principal == null) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(parameters.get("client_id"),

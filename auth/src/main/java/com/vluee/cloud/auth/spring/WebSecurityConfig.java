@@ -1,5 +1,6 @@
 package com.vluee.cloud.auth.spring;
 
+import com.vluee.cloud.auth.spring.security.filter.SmsCodeAuthenticationFilter;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -26,6 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers(HttpMethod.POST, "/user-accounts/**").permitAll()//用户注册
                 .antMatchers("/v3/api-docs").permitAll()
+                .antMatchers("/sms/*").permitAll()
                 .anyRequest().authenticated();
     }
 
@@ -38,5 +40,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SmsCodeAuthenticationFilter smsCodeAuthenticationFilter(AuthenticationManager authenticationManager) {
+        SmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new SmsCodeAuthenticationFilter();
+        smsCodeAuthenticationFilter.setAuthenticationManager(authenticationManager);
+        return smsCodeAuthenticationFilter;
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,7 +43,7 @@ public final class ClaimAuthorityJwtGrantedAuthoritiesConverter implements Conve
      * @return The {@link GrantedAuthority authorities} read from the token authorities
      */
     @Override
-    public Collection<GrantedAuthority> convert(Jwt jwt) {
+    public Collection<GrantedAuthority> convert(@NotNull Jwt jwt) {
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (String role : getRoles(jwt)) {
             grantedAuthorities.add(new SimpleGrantedAuthority(this.authorityPrefix + role));

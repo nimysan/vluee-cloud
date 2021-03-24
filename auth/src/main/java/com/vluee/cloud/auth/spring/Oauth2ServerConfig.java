@@ -1,7 +1,9 @@
 package com.vluee.cloud.auth.spring;
 
 import com.vluee.cloud.auth.spring.security.JwtTokenEnhancer;
+import com.vluee.cloud.auth.spring.security.filter.SmsCodeAuthenticationFilter;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -26,8 +28,10 @@ import java.util.List;
 @Configuration
 @EnableAuthorizationServer
 @AllArgsConstructor
+@Slf4j
 public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
 
+    private final SmsCodeAuthenticationFilter smsCodeAuthenticationFilter;
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
     private final AuthenticationManager authenticationManager;
@@ -42,6 +46,8 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.allowFormAuthenticationForClients();
+        log.info("Integrated with SMSCode Authentication filter {}" + smsCodeAuthenticationFilter);
+        security.addTokenEndpointAuthenticationFilter(smsCodeAuthenticationFilter);
     }
 
     @Override
