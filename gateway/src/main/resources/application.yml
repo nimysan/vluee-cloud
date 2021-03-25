@@ -33,7 +33,7 @@ secure:
       - "/saas-gateway/**"
       # - "/saas-uams/**"
       - "/resources/**"
-      - "saas-auth-server/**"
+      - "/saas-auth/**"
       - "/saas-tenants/**"
 
 logging:

@@ -1,6 +1,6 @@
 package com.vluee.cloud.auth.spring;
 
-import com.vluee.cloud.auth.spring.security.filter.SmsCodeAuthenticationFilter;
+import com.vluee.cloud.auth.spring.security.filter.IntegrationAuthenticationProcessingFilter;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,9 +43,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public SmsCodeAuthenticationFilter smsCodeAuthenticationFilter(AuthenticationManager authenticationManager) {
-        SmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new SmsCodeAuthenticationFilter();
-        smsCodeAuthenticationFilter.setAuthenticationManager(authenticationManager);
-        return smsCodeAuthenticationFilter;
+    public IntegrationAuthenticationProcessingFilter integrationAuthenticationProcessingFilter(AuthenticationManager authenticationManager) {
+        IntegrationAuthenticationProcessingFilter integrationAuthenticationProcessingFilter = new IntegrationAuthenticationProcessingFilter();
+//        integrationAuthenticationProcessingFilter.setAuthenticationManager(authenticationManager);
+        return integrationAuthenticationProcessingFilter;
     }
 }
