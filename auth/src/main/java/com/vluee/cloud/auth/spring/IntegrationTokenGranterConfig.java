@@ -9,12 +9,10 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.security.oauth2.provider.password.ResourceOwnerPasswordTokenGranter;
-import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -28,8 +26,6 @@ import java.util.List;
 public class IntegrationTokenGranterConfig implements ApplicationRunner {
 
     private final TokenEndpoint tokenEndpoint;
-    private final AuthorizationServerTokenServices tokenServices;
-    private final ClientDetailsService clientDetailsService;
     private final UserDetailsService userDetailsService;
 
     @Override
