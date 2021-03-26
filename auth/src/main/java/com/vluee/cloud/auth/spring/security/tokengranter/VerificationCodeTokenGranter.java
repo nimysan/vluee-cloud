@@ -1,6 +1,7 @@
-package com.vluee.cloud.auth.spring.security.filter;
+package com.vluee.cloud.auth.spring.security.tokengranter;
 
 import cn.hutool.core.bean.BeanUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
@@ -24,9 +25,7 @@ public class VerificationCodeTokenGranter extends AbstractTokenGranter {
     private final AuthenticationManager authenticationManager;
 
     public VerificationCodeTokenGranter(AuthenticationManager authenticationManager, ResourceOwnerPasswordTokenGranter resourceOwnerPasswordTokenGranter) {
-//        Object tokenServices = BeanUtil.getFieldValue(resourceOwnerPasswordTokenGranter, "tokenServices");
-//        Object clientDetailsService = BeanUtil.getFieldValue(resourceOwnerPasswordTokenGranter, "clientDetailsService");
-//        Object requestFactory = BeanUtil.getFieldValue(resourceOwnerPasswordTokenGranter, "requestFactory");
+        //将这些重要的组件从 ResourceOwnerPasswordTokenGranter copy到新的granter中
         super(
                 (AuthorizationServerTokenServices) BeanUtil.getFieldValue(resourceOwnerPasswordTokenGranter, "tokenServices"),
                 (ClientDetailsService) BeanUtil.getFieldValue(resourceOwnerPasswordTokenGranter, "clientDetailsService"),
@@ -40,6 +39,9 @@ public class VerificationCodeTokenGranter extends AbstractTokenGranter {
         //here retrieve the parameters
         Map<String, String> parameters = new LinkedHashMap<String, String>(tokenRequest.getRequestParameters());
 
+        if (StringUtils.isBlank(parameters.get("userClientId"))) {
+            throw new InvalidGrantException("参数中没有userClientId");
+        }
 
         //定制部分
         Authentication userAuth = retrieveAuthentication(tokenRequest);

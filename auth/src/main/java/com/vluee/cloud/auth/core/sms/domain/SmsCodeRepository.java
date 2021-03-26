@@ -6,4 +6,6 @@ public interface SmsCodeRepository {
 
     public Optional<SmsCode> loadByUserClientId(final String userClientId);
 
+    void save(SmsCode smsCode);
+
 }

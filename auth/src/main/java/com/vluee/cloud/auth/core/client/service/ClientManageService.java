@@ -3,7 +3,7 @@ package com.vluee.cloud.auth.core.client.service;
 import com.vluee.cloud.auth.core.client.domain.OauthClientDetails;
 import com.vluee.cloud.auth.core.client.domain.OauthClientDetailsRepository;
 import com.vluee.cloud.auth.core.client.exception.ClientNotExistException;
-import com.vluee.cloud.auth.spring.security.filter.ExtGrantType;
+import com.vluee.cloud.auth.spring.security.tokengranter.ExtGrantType;
 import com.vluee.cloud.commons.common.audit.AuditContext;
 import com.vluee.cloud.commons.common.ddd.exception.EntityAlreadyExistException;
 import lombok.AllArgsConstructor;

@@ -1,7 +1,6 @@
 package com.vluee.cloud.auth.core.sms.domain;
 
 import cn.hutool.core.util.RandomUtil;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,5 +26,9 @@ public class SmsCode {
     public void send() {
         log.info("Send sms code {}", codeValue);
         //TODO 正式发送出去
+    }
+
+    public boolean isNotExpired() {
+        return true; //
     }
 }

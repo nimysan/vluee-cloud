@@ -1,8 +1,9 @@
 package com.vluee.cloud.auth.spring;
 
 import cn.hutool.core.util.ReflectUtil;
-import com.vluee.cloud.auth.spring.security.filter.VerificationCodeTokenGranter;
-import com.vluee.cloud.auth.spring.security.filter.intergrationauth.VerificationCodeAuthenticationManager;
+import com.vluee.cloud.auth.core.sms.domain.SmsCodeRepository;
+import com.vluee.cloud.auth.spring.security.tokengranter.VerificationCodeAuthenticationManager;
+import com.vluee.cloud.auth.spring.security.tokengranter.VerificationCodeTokenGranter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -27,6 +28,7 @@ public class IntegrationTokenGranterConfig implements ApplicationRunner {
 
     private final TokenEndpoint tokenEndpoint;
     private final UserDetailsService userDetailsService;
+    private final SmsCodeRepository smsCodeRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -48,6 +50,6 @@ public class IntegrationTokenGranterConfig implements ApplicationRunner {
     }
 
     private VerificationCodeAuthenticationManager verificationCodeAuthenticationManager(UserDetailsService userDetailsService) {
-        return new VerificationCodeAuthenticationManager(userDetailsService);
+        return new VerificationCodeAuthenticationManager(userDetailsService, smsCodeRepository);
     }
 }
