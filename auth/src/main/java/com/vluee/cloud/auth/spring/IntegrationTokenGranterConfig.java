@@ -13,8 +13,9 @@ import org.springframework.security.oauth2.provider.token.AuthorizationServerTok
  */
 @Configuration
 public class IntegrationTokenGranterConfig {
-    @Bean
-    public VerificationCodeTokenGranter verificationCodeTokenGranter(AuthenticationManager authenticationManager, AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService, OAuth2RequestFactory requestFactory) {
-        return new VerificationCodeTokenGranter(authenticationManager, tokenServices, clientDetailsService, requestFactory);
-    }
+
+//    @Bean
+//    public VerificationCodeTokenGranter verificationCodeTokenGranter(AuthenticationManager authenticationManager, AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService, OAuth2RequestFactory requestFactory) {
+//        return new VerificationCodeTokenGranter(authenticationManager, tokenServices, clientDetailsService, requestFactory);
+//    }
 }

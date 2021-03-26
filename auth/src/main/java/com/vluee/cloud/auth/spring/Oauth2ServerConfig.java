@@ -44,7 +44,7 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter imp
     private final JwtTokenEnhancer jwtTokenEnhancer;
     private final DataSource dataSource;
 
-    private final VerificationCodeTokenGranter verificationCodeTokenGranter;
+//    private final VerificationCodeTokenGranter verificationCodeTokenGranter;
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -72,11 +72,11 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter imp
 
         // -- 整个扩展的关键部分
         // -- 增加除  password/implicit/client credentials/authorization code 之外的类型
-        TokenGranter tokenGranter = endpoints.getTokenGranter();
-        if (tokenGranter instanceof CompositeTokenGranter) {
-            CompositeTokenGranter granter = (CompositeTokenGranter) tokenGranter;
-            granter.addTokenGranter(verificationCodeTokenGranter);
-        }
+//        TokenGranter tokenGranter = endpoints.getTokenGranter();
+//        if (tokenGranter instanceof CompositeTokenGranter) {
+//            CompositeTokenGranter granter = (CompositeTokenGranter) tokenGranter;
+//            granter.addTokenGranter(verificationCodeTokenGranter);
+//        }
     }
 
     @Bean
