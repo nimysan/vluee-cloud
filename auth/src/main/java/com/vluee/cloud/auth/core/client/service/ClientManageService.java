@@ -3,6 +3,7 @@ package com.vluee.cloud.auth.core.client.service;
 import com.vluee.cloud.auth.core.client.domain.OauthClientDetails;
 import com.vluee.cloud.auth.core.client.domain.OauthClientDetailsRepository;
 import com.vluee.cloud.auth.core.client.exception.ClientNotExistException;
+import com.vluee.cloud.auth.spring.security.filter.ExtGrantType;
 import com.vluee.cloud.commons.common.audit.AuditContext;
 import com.vluee.cloud.commons.common.ddd.exception.EntityAlreadyExistException;
 import lombok.AllArgsConstructor;
@@ -40,7 +41,7 @@ public class ClientManageService {
             throw new EntityAlreadyExistException();
         }
         OauthClientDetails client = OauthClientDetails.builder().clientId(clientId).clientName(clientName).clientSecret(commenceSecret()).scope("all")
-                .authorizedGrantTypes("password,refresh_token").accessTokenValidity(3600 * 24).refreshTokenValidity(3600 * 24 * 7).build();
+                .authorizedGrantTypes("password,refresh_token,"+ ExtGrantType.verification_code.name()).accessTokenValidity(3600 * 24).refreshTokenValidity(3600 * 24 * 7).build();
         auditContext.audit(client);
         clientRepository.save(client);
         return client;

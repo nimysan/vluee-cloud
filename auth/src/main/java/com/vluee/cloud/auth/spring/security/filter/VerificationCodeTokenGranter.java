@@ -1,10 +1,12 @@
 package com.vluee.cloud.auth.spring.security.filter;
 
+import cn.hutool.core.bean.BeanUtil;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.provider.*;
+import org.springframework.security.oauth2.provider.password.ResourceOwnerPasswordTokenGranter;
 import org.springframework.security.oauth2.provider.token.AbstractTokenGranter;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 
@@ -21,8 +23,15 @@ public class VerificationCodeTokenGranter extends AbstractTokenGranter {
 
     private final AuthenticationManager authenticationManager;
 
-    public VerificationCodeTokenGranter(AuthenticationManager authenticationManager, AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService, OAuth2RequestFactory requestFactory) {
-        super(tokenServices, clientDetailsService, requestFactory, ExtGrantType.verification_code.name());
+    public VerificationCodeTokenGranter(AuthenticationManager authenticationManager, ResourceOwnerPasswordTokenGranter resourceOwnerPasswordTokenGranter) {
+//        Object tokenServices = BeanUtil.getFieldValue(resourceOwnerPasswordTokenGranter, "tokenServices");
+//        Object clientDetailsService = BeanUtil.getFieldValue(resourceOwnerPasswordTokenGranter, "clientDetailsService");
+//        Object requestFactory = BeanUtil.getFieldValue(resourceOwnerPasswordTokenGranter, "requestFactory");
+        super(
+                (AuthorizationServerTokenServices) BeanUtil.getFieldValue(resourceOwnerPasswordTokenGranter, "tokenServices"),
+                (ClientDetailsService) BeanUtil.getFieldValue(resourceOwnerPasswordTokenGranter, "clientDetailsService"),
+                (OAuth2RequestFactory) BeanUtil.getFieldValue(resourceOwnerPasswordTokenGranter, "requestFactory"),
+                ExtGrantType.verification_code.name());
         this.authenticationManager = authenticationManager;
     }
 
@@ -30,11 +39,13 @@ public class VerificationCodeTokenGranter extends AbstractTokenGranter {
     protected OAuth2Authentication getOAuth2Authentication(ClientDetails client, TokenRequest tokenRequest) {
         //here retrieve the parameters
         Map<String, String> parameters = new LinkedHashMap<String, String>(tokenRequest.getRequestParameters());
-        String username = parameters.get("username");
+
 
         //定制部分
         Authentication userAuth = retrieveAuthentication(tokenRequest);
         //定制部分
+
+        String username = (String) userAuth.getPrincipal();
 
         ((AbstractAuthenticationToken) userAuth).setDetails(parameters);
         try {
@@ -56,11 +67,12 @@ public class VerificationCodeTokenGranter extends AbstractTokenGranter {
 
     protected Authentication retrieveAuthentication(TokenRequest tokenRequest) {
         Map<String, String> parameters = new LinkedHashMap<String, String>(tokenRequest.getRequestParameters());
+        String codeKey = "verification_code";
         String username = parameters.get("username");
-        String password = parameters.get("password");
-        // Protect from downstream leaks of password
-        parameters.remove("password");
 
+        String password = parameters.get(codeKey);
+        // Protect from downstream leaks of password
+        parameters.remove(codeKey);
         Authentication userAuth = new UsernamePasswordAuthenticationToken(username, password);
         return userAuth;
     }

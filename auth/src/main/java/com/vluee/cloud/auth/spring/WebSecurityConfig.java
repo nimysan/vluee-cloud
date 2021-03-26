@@ -1,6 +1,5 @@
 package com.vluee.cloud.auth.spring;
 
-import com.vluee.cloud.auth.spring.security.filter.IntegrationAuthenticationProcessingFilter;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -40,12 +39,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public IntegrationAuthenticationProcessingFilter integrationAuthenticationProcessingFilter(AuthenticationManager authenticationManager) {
-        IntegrationAuthenticationProcessingFilter integrationAuthenticationProcessingFilter = new IntegrationAuthenticationProcessingFilter();
-//        integrationAuthenticationProcessingFilter.setAuthenticationManager(authenticationManager);
-        return integrationAuthenticationProcessingFilter;
     }
 }

@@ -46,13 +46,14 @@ public class UserTokenController {
     @PostMapping("/auth/token/gateway")
     @ApiOperation(value = "通用用户名和密码获取网关认证token", response = CommonResult.class)
     public Mono<CommonResult> gatewayProxyToken(@RequestBody Map<String, String> params) {
-        java.util.Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         map.putAll(params);
 //        map.put("username", username);
 //        map.put("password", password);
         map.put("client_id", "gateway");
         map.put("client_secret", "8NPgEEuhuve1");
-        map.put("grant_type", "password");
         return Mono.just(CommonResult.success(oAuth2Feign.fetchToken(map)));
     }
+
+
 }
