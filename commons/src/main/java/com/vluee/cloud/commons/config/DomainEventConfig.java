@@ -7,14 +7,15 @@ import com.vluee.cloud.commons.ddd.support.event.DomainEventRepository;
 import com.vluee.cloud.commons.ddd.support.event.publisher.DomainEventCompensationHandler;
 import com.vluee.cloud.commons.ddd.support.event.publisher.DomainEventPublisher;
 import com.vluee.cloud.commons.ddd.support.event.serialize.DomainEventSerializer;
-import com.vluee.cloud.commons.ddd.support.infrastructure.events.DefaultDomainEventSender;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.EventListenerBeanPostProcessor;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.JacksonDomainEventSerializer;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.SimpleDomainEventPublisher;
+import com.vluee.cloud.commons.ddd.support.infrastructure.events.kafka.KafkaDomainEventSender;
 import com.vluee.cloud.commons.distributedlock.MutexLockFactory;
 import com.vluee.cloud.commons.distributedlock.MutexLockRepository;
 import com.vluee.cloud.commons.distributedlock.mem.InMemMutexLockRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.Producer;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -49,8 +50,8 @@ public class DomainEventConfig implements ApplicationRunner, ApplicationContextA
 
     @Bean
     @ConditionalOnMissingBean
-    public DelegateDomainEventSender domainEventSender(DomainEventRepository domainEventRepository, DomainEventFactory domainEventFactory) {
-        return new DefaultDomainEventSender(domainEventRepository, domainEventFactory);
+    public DelegateDomainEventSender domainEventSender(DomainEventRepository domainEventRepository, DomainEventFactory domainEventFactory, Producer<Integer, Object> kafkaProducer, DomainEventSerializer domainEventSerializer) {
+        return new KafkaDomainEventSender(domainEventRepository, domainEventFactory, kafkaProducer, domainEventSerializer);
     }
 
     @Bean

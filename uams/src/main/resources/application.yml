@@ -15,7 +15,9 @@ spring:
     database-platform: org.hibernate.dialect.MySQL55Dialect
     hibernate:
       ddl-auto: update #// create-drop
-
+kafka:
+  broker:
+    list: localhost:9092
 saas:
   gateway:
     url: http://localhost:8080/

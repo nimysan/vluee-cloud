@@ -33,17 +33,7 @@ public class DefaultDomainEventSender implements DelegateDomainEventSender {
         {
             boolean publishDone = true;
             final Serializable sourceEvent = eventEntity.getSourceEvent(domainEventFactory);
-            for (EventHandler handler : new ArrayList<EventHandler>(eventHandlers)) {
-                if (handler.canHandle(sourceEvent)) {
-                    try {
-                        log.info("Handler event {} by handler {}", sourceEvent, handler);
-                        handler.handle(sourceEvent);
-                    } catch (Throwable e) {
-                        log.error("event handling error", e);
-                        publishDone = false;
-                    }
-                }
-            }
+            publishDone = realSendEventOut(sourceEvent);
 
             if (publishDone) {
                 SimpleDomainEvent managedEvent = domainEventRepository.load(eventEntity.getAggregateId());
@@ -53,6 +43,21 @@ public class DefaultDomainEventSender implements DelegateDomainEventSender {
                 managedEvent.incrementRetries();
             }
         }
+    }
+
+    protected boolean realSendEventOut(Serializable sourceEvent) {
+        for (EventHandler handler : new ArrayList<EventHandler>(eventHandlers)) {
+            if (handler.canHandle(sourceEvent)) {
+                try {
+                    log.info("Handler event {} by handler {}", sourceEvent, handler);
+                    handler.handle(sourceEvent);
+                } catch (Throwable e) {
+                    log.error("event handling error", e);
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @Override
