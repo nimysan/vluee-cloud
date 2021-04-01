@@ -16,6 +16,7 @@
 
         <!-- spring related version -->
         <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
+        <spring-kafka.version>2.3.13.RELEASE</spring-kafka.version>
         <spring.cloud.alibaba.version>2.1.3.RELEASE</spring.cloud.alibaba.version>
         <admin-starter-server.version>2.2.3</admin-starter-server.version>
         <eureka.version>2.2.4.RELEASE</eureka.version>
@@ -49,6 +50,7 @@
         <module>organizations</module>
         <module>auth</module>
         <module>uams</module>
+		<module>statistics</module>
         <!--
         <module>vluee-docker-maven-plugin</module>
         -->
@@ -113,7 +115,6 @@
                 <artifactId>axon-spring-boot-starter</artifactId>
                 <version>${axon.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.github.gavlyukovskiy</groupId>
                 <artifactId>p6spy-spring-boot-starter</artifactId>
