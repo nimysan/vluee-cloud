@@ -9,6 +9,11 @@
 
 ### 技术基础
 1. 时序数据库 InfluxDB
+2. 创建库
+
+```
+curl -i -XPOST http://localhost:8086/query --data-urlencode "q=CREATE DATABASE mydb"
+```
 
 InfluxDB特征：
 

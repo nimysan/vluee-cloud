@@ -61,3 +61,6 @@ docker run -d -p 8701:8080 --name aistore-gateway --link nacos-standalone --netw
 docker run -d -p 8702:8080 --name aistore-monitor --link nacos-standalone --network aistore-network aistore/monitor:latest
 
 ```
+
+### 前端界面集成
+https://www.erupt.xyz/#!/

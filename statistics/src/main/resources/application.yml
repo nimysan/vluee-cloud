@@ -1,4 +1,6 @@
 spring:
+  influx:
+    url: http://localhost:8086
   datasource:
     url: jdbc:mysql://localhost:3306/tenants?useSSL=false
     username: root
