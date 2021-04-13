@@ -31,7 +31,7 @@ secure:
       - "/saas-demo/**"
       - "/saas-users/users"
       - "/saas-gateway/**"
-      # - "/saas-uams/**"
+      - "/saas-uams/**"
       - "/resources/**"
       - "/saas-auth/**"
       - "/saas-tenants/**"
