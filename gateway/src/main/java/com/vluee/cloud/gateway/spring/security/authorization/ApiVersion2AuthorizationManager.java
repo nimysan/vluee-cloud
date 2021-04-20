@@ -75,12 +75,12 @@ public class ApiVersion2AuthorizationManager implements ReactiveAuthorizationMan
 
     private Flux<String> apiRoles(String apiKey) {
         Mono<String> mono = redisTemplate.opsForHash().get(AuthConstant.API_ROLES_MAP_KEY, apiKey);
-        return (Flux<String>) mono.map(s -> {
+        return mono.map(s -> {
             if (StringUtils.isNotEmpty(s)) {
                 return Arrays.asList(s.split(","));
             }
             return Collections.emptyList();
-        }).flatMapMany(Flux::fromIterable);
+        }).flatMapMany(Flux::fromIterable).map(Object::toString);
     }
 
     private String username(Authentication authentication) {
