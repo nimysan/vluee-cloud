@@ -1,11 +1,10 @@
-## 模块说明 
+## 模块说明
 
 > 本项目不含酒店业务逻辑，仅包含 用户/授权/网关等管理工具和服务
 
 > [lombok与IDEA不兼容问题](https://youtrack.jetbrains.com/issue/IDEA-250718#focus=Comments-27-4418347.0-0)
 
 ### 技术栈
-
 
 [Spring cloud alibaba](https://spring-cloud-alibaba-group.github.io/github-pages/hoxton/en-us/index.html#_introduction)
 
@@ -31,7 +30,8 @@ vluee-cloud
 ├── authentications -- 基于Spring Security and OAuth2实现的独立用户认证中心
 ```
 
-### spring boot admin 
+### spring boot admin
+
 用户名和密码访问设置请参考： application.yml, 默认为 jzboss/jzboss123
 
 ### aistore-gateway
@@ -40,17 +40,18 @@ vluee-cloud
 
 参考: [cloud gateway与knife4j集成](https://blog.csdn.net/u010192145/article/details/100152984)
 
-#### AI店长服务说明和网关API访问路径 
+#### AI店长服务说明和网关API访问路径
 
 |  注册的服务   | API访问路径  | 说明 |
 |  ----  | ----  | ---- |
-| common-api  | /common | 图片，附件上传等基础服务 |
-| essync  | /search | ES索引建立，搜索 |
-| message  | /notify | 短信，激光等各种通知 |
-| revenue-center  | /revenue | 收益相关 |
-| store-center  | /store | 门店相关 |
-| task-center  | /task | 任务相关 |
-| user-center  | /user | 用户相关 |
+| commons  | /common | 图片，附件上传等基础服务 |
+| auth | /search | ES索引建立，搜索 |
+| gateway  | /gateway | 短信，激光等各种通知 |
+| monitor  | /monitor | 收益相关 |
+| organizations  | /orgs | 组织机构，门店相关 |
+| statistics  | /statistics | 数据统计 |
+| tenants  | /user | 租户管理相关 |
+| uams  | /uams | 用户信息相关 |
 
 ### 部署和启动
 
@@ -62,5 +63,16 @@ docker run -d -p 8702:8080 --name aistore-monitor --link nacos-standalone --netw
 
 ```
 
-### 前端界面集成
+### 前端快速开发方案 ### 
+
 https://www.erupt.xyz/#!/
+
+### 待解决的问题 ###
+
+1. Kafka作为Event Dispatcher的标准实现方式
+2. 分布式锁的实现，暂时内置了基于本地数据库的分布式锁，需要实现基于Redis\Nacos\Zookeeper的方案
+3. 前端实现方案 - 暂时想基于Angular的实现方案 （工程管理、编码规范优势）
+4. k8s部署方案 （部署和监控、服务治理相关）
+5. 数据Schema的初始化管理方式、升级管理方案 （在DevOps 集成开发形式)
+6. Spring Integration/Spring BPM的相关的引入和集成场景
+7. 独立的搜索服务场景(Searches 基于ES的独立搜索服务提供)

@@ -50,7 +50,7 @@
         <module>organizations</module>
         <module>auth</module>
         <module>uams</module>
-		<module>statistics</module>
+        <module>statistics</module>
         <!--
         <module>vluee-docker-maven-plugin</module>
         -->
@@ -175,41 +175,6 @@
                     <groupId>io.fabric8</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
                     <version>${docker.maven.plugin.version}</version>
-                    <configuration>
-                        <dockerHost>${docker.host}</dockerHost>
-                        <verbose>true</verbose>
-                        <authConfig>
-                            <username>nimysan</username>
-                            <password>csaums*#6</password>
-                        </authConfig>
-                        <images>
-                            <image>
-                                <name>aistore/${project.name}</name>
-                                <build>
-                                    <from>${docker.from}</from>
-                                    <assembly>
-                                        <basedir>/app</basedir>
-                                        <descriptorRef>artifact</descriptorRef>
-                                    </assembly>
-                                    <env>
-                                        <JAVA_APP_JAR>${project.build.finalName}.jar</JAVA_APP_JAR>
-                                    </env>
-                                    <tags>
-                                        <tag>latest</tag>
-                                    </tags>
-                                </build>
-                            </image>
-                        </images>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>build-image</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>build</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
                 <!--
                 <plugin>
@@ -252,6 +217,64 @@
                         <configuration>
                             <skip>true</skip>
                         </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>spring-dev-docker</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <docker.host>http://10.0.41.220:5000</docker.host>
+            </properties>
+            <build>
+                <plugins>
+                    <!-- Spring 基本配置 -->
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                    </plugin>
+                    <!-- 不打 docker 包 -->
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <configuration>
+                            <dockerHost>${docker.host}</dockerHost>
+                            <verbose>true</verbose>
+                            <authConfig>
+                                <username>nimysan</username>
+                                <password>csaums*#6</password>
+                            </authConfig>
+                            <images>
+                                <image>
+                                    <name>aistore/${project.name}</name>
+                                    <build>
+                                        <from>${docker.from}</from>
+                                        <assembly>
+                                            <basedir>/app</basedir>
+                                            <descriptorRef>artifact</descriptorRef>
+                                        </assembly>
+                                        <env>
+                                            <JAVA_APP_JAR>${project.build.finalName}.jar</JAVA_APP_JAR>
+                                        </env>
+                                        <tags>
+                                            <tag>latest</tag>
+                                        </tags>
+                                    </build>
+                                </image>
+                            </images>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>build-image</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
