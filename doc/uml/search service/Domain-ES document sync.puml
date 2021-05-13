@@ -1,0 +1,40 @@
+@startuml
+participant 门店服务 as ShopService order 10
+participant 员工服务 as EmployeeService order 11
+participant 任务服务 as TaskService order 3 #0Fc
+participant 搜索服务 as SearchService order 5 #Fcc
+participant 前端App  as web order 1
+
+'actor       actor       as Foo1
+'boundary    boundary    as Foo2
+control     EventDispatcher     as EventDispatcher order 15
+entity      任务文档     as TaskDocument order 16
+database    任务数据库    as TaskDatabase order 4
+collections ES as 搜索文档库ES order 18
+'queue       Kafka       as Foo7
+
+activate TaskService
+TaskService -> TaskDatabase : 创建任务并存入任务数据库
+
+activate EventDispatcher
+
+TaskService -> EventDispatcher : 发布“任务已创建”事件
+
+activate SearchService
+EventDispatcher -> SearchService : 任务已创建通知
+deactivate EventDispatcher
+SearchService -> ShopService : 获取门店数据
+SearchService -> TaskService : 获取任务数据
+SearchService -> EmployeeService : 获取创建人数据
+SearchService -> SearchService : 结合任务、门店、雇员数据组合任务文档
+SearchService -> 搜索文档库ES : 持久化文档
+
+
+activate web
+
+web -> SearchService : 搜索门店的相关任务
+SearchService -> web : 不经任务服务直接返回搜索给前端
+deactivate web
+deactivate SearchService
+
+@enduml

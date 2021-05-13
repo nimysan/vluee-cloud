@@ -10,6 +10,7 @@
 
 [Nacos](https://nacos.io/zh-cn/docs/quick-start-spring-cloud.html)
 
+[PlantUML文档工具](https://plantuml.com/zh/activity-diagram-beta)
 ```
 File | Settings | Build, Execution, Deployment | Compiler | Build process VM options 
 添加：
