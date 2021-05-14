@@ -11,6 +11,7 @@
 [Nacos](https://nacos.io/zh-cn/docs/quick-start-spring-cloud.html)
 
 [PlantUML文档工具](https://plantuml.com/zh/activity-diagram-beta)
+
 ```
 File | Settings | Build, Execution, Deployment | Compiler | Build process VM options 
 添加：
@@ -77,3 +78,4 @@ https://www.erupt.xyz/#!/
 5. 数据Schema的初始化管理方式、升级管理方案 （在DevOps 集成开发形式)
 6. Spring Integration/Spring BPM的相关的引入和集成场景
 7. 独立的搜索服务场景(Searches 基于ES的独立搜索服务提供)
+8. Module生成(带架构和基本包的)maven定制插件

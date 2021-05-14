@@ -1,4 +1,6 @@
 @startuml
+'skinparam handwritten true
+
 participant 门店服务 as ShopService order 10
 participant 员工服务 as EmployeeService order 11
 participant 任务服务 as TaskService order 3 #0Fc
@@ -8,7 +10,7 @@ participant 前端App  as web order 1
 'actor       actor       as Foo1
 'boundary    boundary    as Foo2
 control     EventDispatcher     as EventDispatcher order 15
-entity      任务文档     as TaskDocument order 16
+'entity      任务文档     as TaskDocument order 16
 database    任务数据库    as TaskDatabase order 4
 collections ES as 搜索文档库ES order 18
 'queue       Kafka       as Foo7

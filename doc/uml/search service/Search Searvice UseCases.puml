@@ -1,0 +1,31 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+skinparam actorStyle awesome
+'skinparam handwritten true
+
+:运维管理: as Admin
+:外部领域事件: as DomainEvent
+:用户: as User
+
+(搜索文档) as (Search)
+(构建领域文档) as (BuildIndex)
+(构建领域集合文档) as (BuildDomainFullIndex)
+(管理领域文档构建逻辑) as (MaintainDomainIndexSchema)
+
+note left of (BuildDomainFullIndex) : 全量构建某个领域对象的文档
+note right of (BuildIndex) : 构建基于主键的单个领域对象的文档
+
+User --> (Search)
+
+DomainEvent --> (BuildIndex) #line:green; :领域变化实时更新
+Admin ---> (MaintainDomainIndexSchema)
+Admin ---> (BuildIndex) #line:blue; :主动更新
+Admin ---> (BuildDomainFullIndex) : 主动全量构建
+
+note right of Admin : 系统管理人员
+note right of User : 应用端用户
+
+note "This note is connected\nto several objects." as N3
+(DomainEvent) .. N3
+N3 .. (BuildIndex)
+@enduml
