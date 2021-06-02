@@ -1,5 +1,11 @@
 ## 模块说明
 
+### 典型场景：
+
+1. 维护门店信息， 门店拥有品牌。 门店有相关员工和店长， 系统根据规则分发任务给到门店。
+2. 任务创建后，实时统计任务数量
+3. 任务创建后，实时纳入搜索引擎
+
 > 本项目不含酒店业务逻辑，仅包含 用户/授权/网关等管理工具和服务
 
 > [lombok与IDEA不兼容问题](https://youtrack.jetbrains.com/issue/IDEA-250718#focus=Comments-27-4418347.0-0)
@@ -42,7 +48,7 @@ vluee-cloud
 
 参考: [cloud gateway与knife4j集成](https://blog.csdn.net/u010192145/article/details/100152984)
 
-#### AI店长服务说明和网关API访问路径
+### AI店长服务说明和网关API访问路径
 
 |  注册的服务   | API访问路径  | 说明 |
 |  ----  | ----  | ---- |
@@ -54,16 +60,16 @@ vluee-cloud
 | statistics  | /statistics | 数据统计 |
 | tenants  | /user | 租户管理相关 |
 | uams  | /uams | 用户信息相关 |
+| uams  | /uams | 用户信息相关 |
+| uams  | /uams | 用户信息相关 |
 
 ### 部署和启动
 
-```bash
-docker network create aistore-network
+|  路径   | 说明 |
+|  ----   | ---- |
+| deploy  | 部署支持 |
+| doc  | 设计文档等 |
 
-docker run -d -p 8701:8080 --name aistore-gateway --link nacos-standalone --network aistore-network aistore/gateway:latest
-docker run -d -p 8702:8080 --name aistore-monitor --link nacos-standalone --network aistore-network aistore/monitor:latest
-
-```
 
 ### 前端快速开发方案 ### 
 
