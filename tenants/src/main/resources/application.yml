@@ -10,3 +10,9 @@ spring:
     database-platform: org.hibernate.dialect.MySQL57Dialect
     hibernate:
       ddl-auto: create-drop
+
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: cloud-domain-events
