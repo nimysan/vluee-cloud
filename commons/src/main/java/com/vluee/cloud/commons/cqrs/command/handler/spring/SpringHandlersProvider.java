@@ -17,18 +17,19 @@ package com.vluee.cloud.commons.cqrs.command.handler.spring;
 
 import com.vluee.cloud.commons.cqrs.command.handler.CommandHandler;
 import com.vluee.cloud.commons.cqrs.command.impl.RunEnvironment;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 public class SpringHandlersProvider implements RunEnvironment.HandlersProvider, ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
@@ -37,7 +38,7 @@ public class SpringHandlersProvider implements RunEnvironment.HandlersProvider, 
     private Map<Class<?>, String> handlers = new HashMap<Class<?>, String>();
 
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public CommandHandler<Object, Object> getHandler(Object command) {
         String beanName = handlers.get(command.getClass());
         if (beanName == null) {
@@ -55,7 +56,12 @@ public class SpringHandlersProvider implements RunEnvironment.HandlersProvider, 
             BeanDefinition commandHandler = beanFactory.getBeanDefinition(beanName);
             try {
                 Class<?> handlerClass = Class.forName(commandHandler.getBeanClassName());
-                handlers.put(getHandledCommandType(handlerClass), beanName);
+                //TODO 修复CGLIB代理的类（因为某些Spring Annotation)无法找到raw type的问题
+                if (handlerClass.getName().contains("$$EnhancerBySpringCGLIB")) {
+                    handlers.put(getHandledCommandType(handlerClass.getSuperclass()), beanName);
+                } else {
+                    handlers.put(getHandledCommandType(handlerClass), beanName);
+                }
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }

@@ -6,9 +6,11 @@ spring:
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
-kafka:
-  broker:
-    list: localhost:9092
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: cloud-domain-events
   jpa:
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL57Dialect

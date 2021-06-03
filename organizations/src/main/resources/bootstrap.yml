@@ -11,7 +11,7 @@ management:
 
 spring:
   application:
-    name: saas-users
+    name: saas-orgs
 
   cloud:
     nacos:

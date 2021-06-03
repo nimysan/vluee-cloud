@@ -9,3 +9,10 @@ spring:
     database-platform: org.hibernate.dialect.MySQL55Dialect
     hibernate:
       ddl-auto: 'create-drop'
+
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: cloud-domain-events    #消息发往的目的地
+          content-type: text/plain
