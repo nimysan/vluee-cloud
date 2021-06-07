@@ -10,16 +10,17 @@ import com.vluee.cloud.commons.ddd.support.event.serialize.DomainEventSerializer
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.EventListenerBeanPostProcessor;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.JacksonDomainEventSerializer;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.SimpleDomainEventPublisher;
-import com.vluee.cloud.commons.ddd.support.infrastructure.events.kafka.KafkaDomainEventSender;
+import com.vluee.cloud.commons.ddd.support.infrastructure.events.stream.DomainEventClient;
+import com.vluee.cloud.commons.ddd.support.infrastructure.events.stream.SpringCloudStreamEventPublisher;
 import com.vluee.cloud.commons.distributedlock.MutexLockFactory;
 import com.vluee.cloud.commons.distributedlock.MutexLockRepository;
 import com.vluee.cloud.commons.distributedlock.mem.InMemMutexLockRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.producer.Producer;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,7 @@ import org.springframework.context.annotation.DependsOn;
 
 @Slf4j
 @Configuration
+@EnableBinding(DomainEventClient.class)
 public class DomainEventConfig implements ApplicationRunner, ApplicationContextAware {
 
     @Bean
@@ -50,8 +52,8 @@ public class DomainEventConfig implements ApplicationRunner, ApplicationContextA
 
     @Bean
     @ConditionalOnMissingBean
-    public DelegateDomainEventSender domainEventSender(DomainEventRepository domainEventRepository, DomainEventFactory domainEventFactory, Producer<Integer, Object> kafkaProducer, DomainEventSerializer domainEventSerializer) {
-        return new KafkaDomainEventSender(domainEventRepository, domainEventFactory, kafkaProducer, domainEventSerializer);
+    public DelegateDomainEventSender domainEventSender(DomainEventRepository domainEventRepository, DomainEventFactory domainEventFactory, DomainEventClient domainEventClient, DomainEventSerializer domainEventSerializer) {
+        return new SpringCloudStreamEventPublisher(domainEventRepository, domainEventFactory, domainEventClient, domainEventSerializer);
     }
 
     @Bean

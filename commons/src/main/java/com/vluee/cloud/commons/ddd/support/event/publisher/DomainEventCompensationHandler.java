@@ -31,10 +31,11 @@ public class DomainEventCompensationHandler {
                 try {
                     mutexLockFactory.workWithLock("domain-events-" + resourceIdentifier, TimeUnit.MILLISECONDS, 400, () -> {
                         //distributeLock.lock(5 * 1000);
-                        log.info("Fetch unpublished events and resend them");
+                        log.debug("Fetch unpublished events and resend them");
                         Collection<SimpleDomainEvent> domainEvents = fetchUnPublishedEvents();
                         if (domainEvents == null || domainEvents.isEmpty()) {
-                            ThreadUtil.safeSleep(10 * 1000);//暂停10s不处理
+                            ThreadUtil.safeSleep(30 * 1000);//暂停10s不处理
+                            log.debug("There is no more waiting publish events, will sleep 30s and try again");
                         } else {
                             for (SimpleDomainEvent domainEvent : domainEvents) {
                                 sendEvent(domainEvent);
