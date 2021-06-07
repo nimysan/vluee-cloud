@@ -12,6 +12,6 @@ import java.io.Serializable;
 @ToString
 public class HotelAddedEvent implements Serializable {
 
-    private AggregateId roleId;
+    private AggregateId hotelId;
 
 }

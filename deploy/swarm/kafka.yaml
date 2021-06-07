@@ -7,7 +7,7 @@ services:
       - "9092:9092"
       - "1099:1099"
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: 10.8.34.143 # IP记得更新这个IP 否则会报错
+      KAFKA_ADVERTISED_HOST_NAME: 10.8.33.249 # IP记得更新这个IP 否则会报错
       KAFKA_CREATE_TOPICS: "heyjue-test:1:1"
       KAFKA_ZOOKEEPER_CONNECT: zoo1:2181,zoo1:2182,zoo1:2183
       JMX_PORT: 1099

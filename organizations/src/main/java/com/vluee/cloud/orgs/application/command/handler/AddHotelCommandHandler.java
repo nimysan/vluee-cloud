@@ -8,10 +8,11 @@ import com.vluee.cloud.orgs.application.command.AddHotelCommand;
 import com.vluee.cloud.orgs.core.hotel.domain.Hotel;
 import com.vluee.cloud.orgs.core.hotel.domain.HotelRepository;
 import com.vluee.cloud.orgs.core.hotel.domain.events.HotelAddedEvent;
+import com.vluee.cloud.orgs.spring.RealtimeCollector;
+import com.vluee.cloud.orgs.spring.StreamClient;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +20,15 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @ApplicationService
 @CommandHandlerAnnotation
-@EnableBinding(Source.class)
+@EnableBinding({StreamClient.class, RealtimeCollector.class})
 @Slf4j
 public class AddHotelCommandHandler implements CommandHandler<AddHotelCommand, Void> {
 
     private final HotelRepository hotelRepository;
 
-    private final Source source;
+    //    private final Source source;
+    private final StreamClient streamClient;
+    private final RealtimeCollector realtimeCollector;
 
     public Void handle(AddHotelCommand addHotelCommand) {
         Hotel hotel = new Hotel(AggregateId.generate(), addHotelCommand.getHotelName(), addHotelCommand.getHotelName(), addHotelCommand.getHotelState());
@@ -34,8 +37,12 @@ public class AddHotelCommandHandler implements CommandHandler<AddHotelCommand, V
         //代码应该放置在何处 是个需要考虑的问题？ TODO
 
 //        DomainEventPublisherFactory.getPublisher().publish(new HotelAddedEvent(hotel.getAggregateId()));
-        source.output().send(MessageBuilder.withPayload(new HotelAddedEvent(hotel.getAggregateId())).build());
-        log.info("Send event successfully");
+
+        streamClient.outout().send(MessageBuilder.withPayload(new HotelAddedEvent(hotel.getAggregateId())).build());
+        log.info("Send stream client successfully");
+
+        realtimeCollector.output().send(MessageBuilder.withPayload("test").setHeader("h1", "h1-value").build());
+        log.info("Send rc event successfully");
         return null;
     }
 }

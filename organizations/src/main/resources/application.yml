@@ -10,9 +10,12 @@ spring:
     hibernate:
       ddl-auto: 'create-drop'
 
+  kafka:
+    consumer:
+      group-id: vc-orgs
   cloud:
     stream:
       bindings:
-        output:
+        vluee-cloud-pigu:
           destination: cloud-domain-events    #消息发往的目的地
-          content-type: text/plain
+          content-type: application/json

@@ -20,7 +20,18 @@ public class HotelStatisticsListener {
      */
     @StreamListener(Sink.INPUT)
     public void test(Object payload) {
-        log.info("--- {} --- ", payload);
+        log.info("---fefefe {} --- ", payload);
         applicationService.getHotelGeneralStatistics().increment();
+        applicationService.save();
+    }
+
+    /**
+     * 接听事件并写入统计数据
+     */
+    @StreamListener(Sink.INPUT)
+    public void go(Object payload) {
+        log.info("---gogogo {} --- ", payload);
+        applicationService.getHotelGeneralStatistics().increment();
+        applicationService.save();
     }
 }
