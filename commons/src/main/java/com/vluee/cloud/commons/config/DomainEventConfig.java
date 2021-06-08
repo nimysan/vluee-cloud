@@ -26,6 +26,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
+/**
+
+ * 引入基于 Domain Event设计模式以及对于DomainEventPublisher的组件相关支持(默认采用Kafka作为Event中间件.
+ */
 @Slf4j
 @Configuration
 @EnableBinding(DomainEventClient.class)

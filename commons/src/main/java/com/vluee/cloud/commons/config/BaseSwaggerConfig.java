@@ -15,7 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Swagger基础配置
+ * 基于Swagger的Doc配置
+ * <p>
  */
 public abstract class BaseSwaggerConfig {
 

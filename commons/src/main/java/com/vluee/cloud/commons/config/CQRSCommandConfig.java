@@ -8,6 +8,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * 引入CQRS模式的基础组件，组要是提供Gate。
+ *
+ * @see Gate
+ */
 @Configuration
 public class CQRSCommandConfig {
 

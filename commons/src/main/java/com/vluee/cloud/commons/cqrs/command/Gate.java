@@ -20,14 +20,13 @@ package com.vluee.cloud.commons.cqrs.command;
  * It handles:
  * <ul>
  * <li>filtering command duplicates
- * <li>command queues for asynchronous commands 
+ * <li>command queues for asynchronous commands
  * </ul>
- * 
- * @author Slawek
  *
+ * @author Slawek
  */
 public interface Gate {
 
-	public abstract Object dispatch(Object command);
+    public abstract Object dispatch(Object command);
 
 }
