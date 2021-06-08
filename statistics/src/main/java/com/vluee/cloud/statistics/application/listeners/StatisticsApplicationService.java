@@ -24,6 +24,8 @@ public class StatisticsApplicationService {
         } catch (Exception e) {
             throw new RuntimeException("Failed ", e);
         }
+
+
     }
 
     public void save() {

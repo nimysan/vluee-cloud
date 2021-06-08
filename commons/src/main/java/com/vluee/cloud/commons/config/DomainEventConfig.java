@@ -7,7 +7,6 @@ import com.vluee.cloud.commons.ddd.support.event.DomainEventRepository;
 import com.vluee.cloud.commons.ddd.support.event.publisher.DomainEventCompensationHandler;
 import com.vluee.cloud.commons.ddd.support.event.publisher.DomainEventPublisher;
 import com.vluee.cloud.commons.ddd.support.event.serialize.DomainEventSerializer;
-import com.vluee.cloud.commons.ddd.support.infrastructure.events.EventListenerBeanPostProcessor;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.JacksonDomainEventSerializer;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.SimpleDomainEventPublisher;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.stream.DomainEventClient;
@@ -38,12 +37,12 @@ public class DomainEventConfig implements ApplicationRunner, ApplicationContextA
         return new SimpleDomainEventPublisher(domainEventRepository, domainEventSerializer, domainEventFactory, delegateDomainEventSender);
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    @DependsOn
-    public EventListenerBeanPostProcessor eventListenerBeanPostProcessor() {
-        return new EventListenerBeanPostProcessor();
-    }
+//    @Bean
+//    @ConditionalOnMissingBean
+//    @DependsOn
+//    public EventListenerBeanPostProcessor eventListenerBeanPostProcessor() {
+//        return new EventListenerBeanPostProcessor();
+//    }
 
     @Bean
     public DomainEventFactory domainEventFactory(DomainEventSerializer domainEventSerializer) {
@@ -86,7 +85,7 @@ public class DomainEventConfig implements ApplicationRunner, ApplicationContextA
     @Override
     public void run(ApplicationArguments args) throws Exception {
         DomainEventCompensationHandler bean = applicationContext.getBean(DomainEventCompensationHandler.class);
-        bean.startCompensate(eventLockIdentifier());
+//        bean.startCompensate(eventLockIdentifier()); TODO disable the spin try
     }
 
     private ApplicationContext applicationContext;

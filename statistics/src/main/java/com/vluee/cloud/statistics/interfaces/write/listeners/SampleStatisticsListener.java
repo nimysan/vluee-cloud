@@ -1,6 +1,5 @@
 package com.vluee.cloud.statistics.interfaces.write.listeners;
 
-import com.vluee.cloud.commons.ddd.annotations.event.KafkaDomainEventListener;
 import lombok.extern.slf4j.Slf4j;
 import org.influxdb.InfluxDB;
 import org.influxdb.dto.Point;
@@ -15,7 +14,6 @@ public class SampleStatisticsListener {
     @Resource
     private InfluxDB influxDB;  //注入influxDB
 
-    @KafkaDomainEventListener
     public void processMessage(String content) {
         try {
             influxDB.setDatabase("mydb");
