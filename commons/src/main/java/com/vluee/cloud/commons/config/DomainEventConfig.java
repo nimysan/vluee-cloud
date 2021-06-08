@@ -3,6 +3,7 @@ package com.vluee.cloud.commons.config;
 import com.vluee.cloud.commons.common.data.id.LongIdGenerator;
 import com.vluee.cloud.commons.ddd.support.event.DelegateDomainEventSender;
 import com.vluee.cloud.commons.ddd.support.event.DomainEventFactory;
+import com.vluee.cloud.commons.ddd.support.event.DomainEventPublisherFactory;
 import com.vluee.cloud.commons.ddd.support.event.DomainEventRepository;
 import com.vluee.cloud.commons.ddd.support.event.publisher.DomainEventCompensationHandler;
 import com.vluee.cloud.commons.ddd.support.event.publisher.DomainEventPublisher;
@@ -11,6 +12,7 @@ import com.vluee.cloud.commons.ddd.support.infrastructure.events.JacksonDomainEv
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.SimpleDomainEventPublisher;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.stream.DomainEventClient;
 import com.vluee.cloud.commons.ddd.support.infrastructure.events.stream.SpringCloudStreamEventPublisher;
+import com.vluee.cloud.commons.ddd.support.infrastructure.repository.jdbc.DomainEventRepositoryJdbcImpl;
 import com.vluee.cloud.commons.distributedlock.MutexLockFactory;
 import com.vluee.cloud.commons.distributedlock.MutexLockRepository;
 import com.vluee.cloud.commons.distributedlock.mem.InMemMutexLockRepository;
@@ -24,10 +26,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
+
+import javax.sql.DataSource;
 
 /**
-
  * 引入基于 Domain Event设计模式以及对于DomainEventPublisher的组件相关支持(默认采用Kafka作为Event中间件.
  */
 @Slf4j
@@ -41,16 +43,14 @@ public class DomainEventConfig implements ApplicationRunner, ApplicationContextA
         return new SimpleDomainEventPublisher(domainEventRepository, domainEventSerializer, domainEventFactory, delegateDomainEventSender);
     }
 
-//    @Bean
-//    @ConditionalOnMissingBean
-//    @DependsOn
-//    public EventListenerBeanPostProcessor eventListenerBeanPostProcessor() {
-//        return new EventListenerBeanPostProcessor();
-//    }
-
     @Bean
     public DomainEventFactory domainEventFactory(DomainEventSerializer domainEventSerializer) {
         return new DomainEventFactory(domainEventSerializer);
+    }
+
+    @Bean
+    public DomainEventPublisherFactory domainEventPublisherFactory() {
+        return new DomainEventPublisherFactory();
     }
 
     @Bean
@@ -78,6 +78,11 @@ public class DomainEventConfig implements ApplicationRunner, ApplicationContextA
             log.warn("!!!!!!-----InMemMutexLockRepository----only for testing purpose. Can't be used in PROD environments");
         }
         return new MutexLockFactory(mutexLockRepository, longIdGenerator);
+    }
+
+    @Bean
+    public DomainEventRepository domainEventRepository(DataSource dataSource) {
+        return new DomainEventRepositoryJdbcImpl(dataSource);
     }
 
     @Bean

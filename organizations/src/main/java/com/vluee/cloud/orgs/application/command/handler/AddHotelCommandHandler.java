@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @ApplicationService
 @CommandHandlerAnnotation
-//@EnableBinding({StreamClient.class, RealtimeCollector.class})
 @Slf4j
 public class AddHotelCommandHandler implements CommandHandler<AddHotelCommand, Void> {
 
