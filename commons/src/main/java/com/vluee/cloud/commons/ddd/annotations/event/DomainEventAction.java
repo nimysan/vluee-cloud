@@ -6,6 +6,10 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 
 import java.lang.annotation.*;
 
+
+/**
+ * 一个具体的处理消息的方法
+ */
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @MessageMapping

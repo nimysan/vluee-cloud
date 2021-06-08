@@ -14,10 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 public class HotelStatisticsListener {
     private final StatisticsApplicationService applicationService;
 
-    /**
-     * 接听事件并写入统计数据
-     */
-//    @StreamListener(DomainEventClient.INPUT_TOPIC)
     @DomainEventAction
     public void test(String payload) {
         log.info("---fefefe {} --- ", payload);
@@ -25,13 +21,4 @@ public class HotelStatisticsListener {
         applicationService.save();
     }
 
-//    /**
-//     * 接听事件并写入统计数据
-//     */
-//    @DomainEventListener
-//    public void go(Object payload) {
-//        log.info("---gogogo {} --- ", payload);
-//        applicationService.getHotelGeneralStatistics().increment();
-//        applicationService.save();
-//    }
 }
