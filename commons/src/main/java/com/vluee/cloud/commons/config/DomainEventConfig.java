@@ -1,6 +1,7 @@
 package com.vluee.cloud.commons.config;
 
 import com.vluee.cloud.commons.common.data.id.LongIdGenerator;
+import com.vluee.cloud.commons.ddd.support.actuator.DomainEventActuatorEndpoint;
 import com.vluee.cloud.commons.ddd.support.event.*;
 import com.vluee.cloud.commons.ddd.support.event.publisher.DomainEventCompensationHandler;
 import com.vluee.cloud.commons.ddd.support.event.publisher.DomainEventPublisher;

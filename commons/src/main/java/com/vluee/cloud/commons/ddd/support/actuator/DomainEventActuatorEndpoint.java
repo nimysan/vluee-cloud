@@ -1,6 +1,8 @@
-package com.vluee.cloud.commons.ddd.support.event;
+package com.vluee.cloud.commons.ddd.support.actuator;
 
 import com.vluee.cloud.commons.canonicalmodel.publishedlanguage.AggregateId;
+import com.vluee.cloud.commons.ddd.support.event.DomainEventRepository;
+import com.vluee.cloud.commons.ddd.support.event.SimpleDomainEvent;
 import com.vluee.cloud.commons.ddd.support.event.publisher.DomainEventCompensationHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
