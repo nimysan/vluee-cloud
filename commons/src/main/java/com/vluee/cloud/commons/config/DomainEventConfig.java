@@ -1,10 +1,7 @@
 package com.vluee.cloud.commons.config;
 
 import com.vluee.cloud.commons.common.data.id.LongIdGenerator;
-import com.vluee.cloud.commons.ddd.support.event.DelegateDomainEventSender;
-import com.vluee.cloud.commons.ddd.support.event.DomainEventFactory;
-import com.vluee.cloud.commons.ddd.support.event.DomainEventPublisherFactory;
-import com.vluee.cloud.commons.ddd.support.event.DomainEventRepository;
+import com.vluee.cloud.commons.ddd.support.event.*;
 import com.vluee.cloud.commons.ddd.support.event.publisher.DomainEventCompensationHandler;
 import com.vluee.cloud.commons.ddd.support.event.publisher.DomainEventPublisher;
 import com.vluee.cloud.commons.ddd.support.event.serialize.DomainEventSerializer;
@@ -53,6 +50,17 @@ public class DomainEventConfig implements ApplicationRunner, ApplicationContextA
         return new DomainEventPublisherFactory();
     }
 
+    /**
+     * Add Domain Event Actuator
+     *
+     * @param domainEventRepository
+     * @return
+     */
+    @Bean
+    public DomainEventActuatorEndpoint domainEventActuatorEndpoint(DomainEventRepository domainEventRepository, DomainEventCompensationHandler domainEventCompensationHandler) {
+        return new DomainEventActuatorEndpoint(domainEventRepository, domainEventCompensationHandler);
+    }
+
     @Bean
     @ConditionalOnMissingBean
     public DelegateDomainEventSender domainEventSender(DomainEventRepository domainEventRepository, DomainEventFactory domainEventFactory, DomainEventClient domainEventClient, DomainEventSerializer domainEventSerializer) {
@@ -68,7 +76,7 @@ public class DomainEventConfig implements ApplicationRunner, ApplicationContextA
     @Bean
     @ConditionalOnMissingBean
     public DomainEventCompensationHandler domainEventCompensationHandler(MutexLockFactory mutexLockFactory, DomainEventRepository domainEventRepository, DelegateDomainEventSender delegateDomainEventSender) {
-        return new DomainEventCompensationHandler(delegateDomainEventSender, domainEventRepository, mutexLockFactory);
+        return new DomainEventCompensationHandler(delegateDomainEventSender, domainEventRepository, mutexLockFactory, true);
     }
 
     @Bean

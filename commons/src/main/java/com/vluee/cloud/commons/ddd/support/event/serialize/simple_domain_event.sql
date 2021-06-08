@@ -1,7 +1,7 @@
 CREATE TABLE `simple_domain_event` (
-	`aggregate_id` VARCHAR(255) NOT NULL COLLATE 'utf8_general_ci',
+	`aggregate_id` VARCHAR(128) NOT NULL COLLATE 'utf8_general_ci',
 	`aggregate_status` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
-	`version` BIGINT(20) NULL DEFAULT NULL,
+	`version` INT(4) NULL DEFAULT NULL,
 	`content` BLOB NOT NULL,
 	`event_name` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8_general_ci',
 	`event_time` DATETIME NULL DEFAULT NULL,

@@ -24,10 +24,22 @@ public class DomainEventCompensationHandler {
     private final DelegateDomainEventSender delegateDomainEventSender;
     private final DomainEventRepository domainEventRepository;
     private final MutexLockFactory mutexLockFactory;
+    private boolean open = true;
+
+    public synchronized void active() {
+        this.open = true;
+    }
+
+    public synchronized void deactivate() {
+        this.open = false;
+    }
 
     public void startCompensate(String resourceIdentifier) {
         ThreadUtil.execAsync(() -> {
             for (; ; ) {
+                if (open == false) {
+                    ThreadUtil.safeSleep(30 * 1000); //暂停30s不处理
+                }
                 try {
                     mutexLockFactory.workWithLock("domain-events-" + resourceIdentifier, TimeUnit.MILLISECONDS, 400, () -> {
                         //distributeLock.lock(5 * 1000);
