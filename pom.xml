@@ -51,7 +51,7 @@
         <module>auth</module>
         <module>uams</module>
         <module>statistics</module>
-        <module>search</module>
+        <module>search-builder</module>
         <!--
         <module>vluee-docker-maven-plugin</module>
         -->
