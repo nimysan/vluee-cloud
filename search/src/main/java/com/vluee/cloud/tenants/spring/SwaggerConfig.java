@@ -11,9 +11,9 @@ public class SwaggerConfig extends BaseSwaggerConfig {
     @Override
     public SwaggerProperties swaggerProperties() {
         return SwaggerProperties.builder()
-                .apiBasePackage("com.vluee.cloud.tenants.interfaces")
-                .title("租户管理服务")
-                .description("租户管理服务相关")
+                .apiBasePackage("com.vluee.cloud.search.interfaces")
+                .title("统一搜索服务")
+                .description("搜索内容创建，搜索接口提供")
                 .contactName("234aini@163.com")
                 .version("1.0")
                 .enableSecurity(true)

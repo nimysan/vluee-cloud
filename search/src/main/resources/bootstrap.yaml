@@ -1,5 +1,5 @@
 server:
-  port: 8901
+  port: 8902
 management:
   endpoints:
     web:
@@ -11,7 +11,7 @@ management:
 
 spring:
   application:
-    name: saas-tenants
+    name: saas-search
   cloud:
     nacos:
       discovery:
