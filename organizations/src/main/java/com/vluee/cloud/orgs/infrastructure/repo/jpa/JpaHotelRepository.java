@@ -6,6 +6,6 @@ import com.vluee.cloud.orgs.core.hotel.domain.Hotel;
 import com.vluee.cloud.orgs.core.hotel.domain.HotelRepository;
 
 @DomainRepositoryImpl
-public class JpaCRoleRepository extends GenericJpaRepository<Hotel> implements HotelRepository {
+public class JpaHotelRepository extends GenericJpaRepository<Hotel> implements HotelRepository {
 
 }

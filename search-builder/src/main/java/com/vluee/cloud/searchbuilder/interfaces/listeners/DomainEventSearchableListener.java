@@ -20,7 +20,7 @@ public class DomainEventSearchableListener {
 
     @DomainEventAction
     public void buildDocumentFromDomainEvent(Object payload) {
-        log.info("Build searchable document for aggregate: {}", payload);
+        log.debug("Build searchable document for aggregate: {}", payload);
         SearchableDocumentMetadata metadata = searchableDocumentMetadataParser.parse(payload);
         SearchableDocument document = searchableDocumentBuilder.build(metadata);
         searchableDocumentRepository.save(document);

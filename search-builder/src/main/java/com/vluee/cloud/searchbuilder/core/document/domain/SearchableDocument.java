@@ -1,13 +1,22 @@
 package com.vluee.cloud.searchbuilder.core.document.domain;
 
+import lombok.Builder;
+import lombok.Getter;
+
 /**
  * 可 搜索  的文档
  */
-public interface SearchableDocument {
+@Builder
+public class SearchableDocument {
 
-    public String getId();
+    @Getter
+    private String id;
 
-    public String getIndex();
+    @Getter
+    private String index;
 
-    
+    @Getter
+    private String source;
+
+
 }

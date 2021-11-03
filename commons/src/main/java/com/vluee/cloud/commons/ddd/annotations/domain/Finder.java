@@ -26,10 +26,9 @@ import java.lang.annotation.Target;
 
 /**
  * @author Slawek
- * 
  */
 @Service
-@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Finder {

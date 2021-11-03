@@ -19,3 +19,11 @@ docker stack deploy -c ./swarm/zookeeper.yaml zc
 docker stack deploy -c kafka.yaml kc
 
 [kafka_manager](http://localhost:9093/)
+
+## 安装 elasticsearch ## 
+
+```bash
+docker run -d --name elasticsearch --net as-dev-swarm -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:6.8.16
+
+# http://localhost:9200/
+```

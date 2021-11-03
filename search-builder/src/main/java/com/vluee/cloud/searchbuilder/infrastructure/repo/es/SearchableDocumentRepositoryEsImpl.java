@@ -10,10 +10,10 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.xcontent.XContentType;
 
 import java.io.IOException;
 
-import static java.util.Collections.singletonMap;
 import static org.elasticsearch.action.support.WriteRequest.RefreshPolicy.IMMEDIATE;
 
 /**
@@ -30,8 +30,7 @@ public class SearchableDocumentRepositoryEsImpl implements SearchableDocumentRep
     public void save(SearchableDocument searchableDocument) {
         try {
             IndexRequest request = new IndexRequest(searchableDocument.getIndex())
-                    .id(searchableDocument.getId())
-                    .source(singletonMap("feature", "high-level-rest-client"))
+                    .id(searchableDocument.getId()).source("", XContentType.JSON)
                     .setRefreshPolicy(IMMEDIATE);
             IndexResponse response = highLevelClient.index(request, RequestOptions.DEFAULT);
             log.debug("Document Build Response is {}", response);

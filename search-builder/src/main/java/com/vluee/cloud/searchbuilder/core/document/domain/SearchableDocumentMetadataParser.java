@@ -1,5 +1,11 @@
 package com.vluee.cloud.searchbuilder.core.document.domain;
 
-public interface SearchableDocumentMetadataParser {
-    SearchableDocumentMetadata parse(Object payload);
+import org.springframework.stereotype.Component;
+
+@Component
+public class SearchableDocumentMetadataParser {
+    public SearchableDocumentMetadata parse(Object payload) {
+        //TODO
+        return null;
+    }
 }

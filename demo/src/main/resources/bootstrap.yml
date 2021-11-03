@@ -12,18 +12,18 @@ spring:
     name: saas-demo
   cloud:
     inetutils:
-      preferred-networks: 10.0.1
+      preferred-networks: ${preferred-networks}
     discovery:
       enabled: true
     nacos:
       config:
         enabled: false
-        server-addr: localhost:8848
+        server-addr: ${nacos.server.endpoint}
       discovery:
         watch:
           enabled: true
         enabled: true
-        server-addr: localhost:8848
+        server-addr: ${nacos.server.endpoint}
 
     gateway:
       discovery:
