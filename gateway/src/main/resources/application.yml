@@ -1,14 +1,14 @@
 spring:
   redis:
-    host: localhost
-    port: 6380
+    host: ${gateway.redis.host}
+    port: ${gateway.redis.port}
 
   security:
     oauth2:
       resourceserver:
         jwt:
           # jwk-set-uri: http://localhost:8082/rsa/publicKey
-          jwk-set-uri: http://localhost/rsa/publicKey
+          jwk-set-uri: ${oauth.key.uri}
 
 
 secure:

@@ -1,0 +1,55 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    k8s.kuboard.cn/ingress: 'false'
+    k8s.kuboard.cn/service: None
+    k8s.kuboard.cn/workload: svc-ms-auth-server
+  labels:
+    k8s.kuboard.cn/layer: svc
+    k8s.kuboard.cn/name: svc-ms-auth-server
+  name: svc-ms-auth-server
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s.kuboard.cn/layer: svc
+      k8s.kuboard.cn/name: svc-ms-auth-server
+  template:
+    metadata:
+      labels:
+        k8s.kuboard.cn/layer: svc
+        k8s.kuboard.cn/name: svc-ms-auth-server
+    spec:
+      containers:
+        -
+          envFrom:
+            - configMapRef:
+                name: spring-cloud-cm
+          image: '123160261797.dkr.ecr.ap-east-1.amazonaws.com/ms-auth-server:0.0.1'
+          imagePullPolicy: Always
+          name: ms-auth-server
+      dnsConfig: {}
+      imagePullSecrets:
+        - name: jjhotel-ecr
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    k8s.kuboard.cn/workload: svc-ms-auth-server
+  labels:
+    k8s.kuboard.cn/layer: svc
+    k8s.kuboard.cn/name: svc-ms-auth-server
+  name: svc-ms-auth-server
+  namespace: default
+spec:
+  clusterIP: None
+  selector:
+    k8s.kuboard.cn/layer: svc
+    k8s.kuboard.cn/name: svc-ms-auth-server
+  type: ClusterIP
